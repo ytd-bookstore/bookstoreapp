@@ -1,0 +1,15 @@
+{
+  "name": "concurrently",
+  "version": "1.0.0",
+  "description": "Allows start both frontend (after added) and backend servers at the same time",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" ",
+    "start": "concurrently \"cd backend && npm run start\" "
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.4.0"
+  }
+}
