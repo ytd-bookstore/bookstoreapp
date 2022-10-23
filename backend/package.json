@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "supervisor ./bin/www"
+    "dev": "supervisor ./bin/www",
+    "db-create": "\"node -e require('./database/scripts/execSql').execSql('./database/scripts/createTables.sql')\"",
+    "db-drop": "\"node -e require('./database/scripts/execSql').execSql('./database/scripts/dropTables.sql')\""
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

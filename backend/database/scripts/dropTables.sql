@@ -1,0 +1,10 @@
+DROP TABLE `district`;
+DROP TABLE `order_books`;
+DROP TABLE `cart_books`;
+DROP TABLE `favorites`;
+DROP TABLE `book`;
+DROP TABLE `book_genre`;
+DROP TABLE `cart`;
+DROP TABLE `order`;
+DROP TABLE `address`;
+DROP TABLE `user`;

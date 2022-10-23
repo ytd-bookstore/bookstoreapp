@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev\" ",
-    "start": "concurrently \"cd backend && npm run start\" "
+    "start": "concurrently \"cd backend && npm run start\" ",
+    "db-create": "\"node -e require('./backend/database/scripts/execSql').execSql('./backend/database/scripts/createTables.sql')\"",
+    "db-drop": "\"node -e require('./backend/database/scripts/execSql').execSql('./backend/database/scripts/dropTables.sql')\""
   },
   "author": "",
   "license": "ISC",
