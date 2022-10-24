@@ -1,3 +1,4 @@
+// Deprecated! Do not use in app!
 const mysql = require("mysql");
 
 const dbConfig = {
