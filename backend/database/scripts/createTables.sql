@@ -1,28 +1,29 @@
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
   `surname` varchar(255),
-  `email` varchar(320),
+  `email` varchar(255),
   `passwordHash` varchar(255),
   `passwordSalt` varchar(255),
   `credit` int,
   `is_admin` boolean,
-  `created_at` timestamp
+  `created_at` timestamp,
+  `updated_at` timestamp
 );
 
-CREATE TABLE `address` (
+CREATE TABLE `addresses` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
-  `address_line1` varchar(255),
-  `address_line2` varchar(255),
+  `address_line` text,
   `city` varchar(255),
   `district` varchar(255),
   `postal_code` varchar(255),
   `mobile` varchar(255),
-  `created_at` timestamp
+  `created_at` timestamp,
+  `updated_at` timestamp
 );
 
-CREATE TABLE `book` (
+CREATE TABLE `books` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `title` varchar(255),
   `author` varchar(255),
@@ -36,76 +37,79 @@ CREATE TABLE `book` (
   `rating_count` int,
   `image` blob,
   `stock` int,
-  `genre_id` int
+  `genre_id` varchar(255),
+  `created_at` timestamp,
+  `updated_at` timestamp
 );
 
-CREATE TABLE `book_genre` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255),
-  `description` varchar(255)
-);
-
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `address_id` int,
   `total` int,
-  `created_at` timestamp
+  `status` varchar(255),
+  `created_at` timestamp,
+  `updated_at` timestamp
 );
 
-CREATE TABLE `order_books` (
+CREATE TABLE `orderbooks` (
   `order_id` int,
   `book_id` int,
   `quantity` int DEFAULT 1,
   `created_at` timestamp,
+  `updated_at` timestamp,
   PRIMARY KEY (`order_id`, `book_id`)
 );
 
 CREATE TABLE `favorites` (
   `user_id` int,
   `book_id` int,
+  `created_at` timestamp,
+  `updated_at` timestamp,
   PRIMARY KEY (`user_id`, `book_id`)
 );
 
-CREATE TABLE `cart` (
+CREATE TABLE `carts` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `total` int,
-  `created_at` timestamp
+  `created_at` timestamp,
+  `updated_at` timestamp
 );
 
-CREATE TABLE `cart_books` (
-  `order_id` int,
+CREATE TABLE `cartbooks` (
+  `cart_id` int,
   `book_id` int,
   `quantity` int DEFAULT 1,
   `created_at` timestamp,
-  PRIMARY KEY (`order_id`, `book_id`)
+  `updated_at` timestamp,
+  PRIMARY KEY (`cart_id`, `book_id`)
 );
 
-CREATE TABLE `district` (
+CREATE TABLE `districts` (
   `city_name` varchar(255),
   `name` varchar(255),
+  `created_at` timestamp,
+  `updated_at` timestamp,
   PRIMARY KEY (`city_name`, `name`)
 );
 
-ALTER TABLE `address` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `addresses` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `book` ADD FOREIGN KEY (`genre_id`) REFERENCES `book_genre` (`id`);
+ALTER TABLE `orders` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `order` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `orders` ADD FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`);
 
-ALTER TABLE `order` ADD FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+ALTER TABLE `orderbooks` ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
 
-ALTER TABLE `order_books` ADD FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
+ALTER TABLE `orderbooks` ADD FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
 
-ALTER TABLE `order_books` ADD FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
+ALTER TABLE `favorites` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `favorites` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `favorites` ADD FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
 
-ALTER TABLE `favorites` ADD FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
+ALTER TABLE `carts` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
-ALTER TABLE `cart` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `cartbooks` ADD FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`);
 
-ALTER TABLE `cart_books` ADD FOREIGN KEY (`order_id`) REFERENCES `cart` (`id`);
-
-ALTER TABLE `cart_books` ADD FOREIGN KEY (`book_id`) REFERENCES `book` (`id`);
+ALTER TABLE `cartbooks` ADD FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
