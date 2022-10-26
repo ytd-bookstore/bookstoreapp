@@ -1,19 +1,12 @@
 import * as React from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
-import { useFonts } from "expo-font";
 
 import colors from "../assets/colors/colors";
 
 Feather.loadFont();
 
 export default function SearchBar() {
-  const [fontsLoaded] = useFonts({
-    "OpenSans-SemiBold": require("../assets/fonts/OpenSans-SemiBold.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <View overflow={"hidden"} paddingBottom={6}>
       <View style={styles.searchWrapper}>
@@ -36,7 +29,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: "center",
     //Shadow
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     elevation: 10,
     backgroundColor: colors.background,
   },
@@ -48,7 +41,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     alignItems: "center",
     //Shadow
-    shadowColor: "#000",
+    shadowColor: colors.shadow,
     elevation: 10,
     backgroundColor: colors.background,
   },

@@ -1,16 +1,9 @@
 import * as React from "react";
-import { Text, View, StyleSheet, StatusBar } from "react-native";
-import { useFonts } from "expo-font";
+import { Text, View, StyleSheet } from "react-native";
 
 import colors from "../assets/colors/colors";
 
 export default function Header() {
-  const [fontsLoaded] = useFonts({
-    "OpenSans-Bold": require("../assets/fonts/OpenSans-Bold.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <View style={styles.headerWrapper}>
       <Text style={styles.headerText}>ytd bookstore</Text>
