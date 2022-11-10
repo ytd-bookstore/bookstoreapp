@@ -5,7 +5,6 @@ import colors from "../assets/colors/colors";
 
 import Header from "../components/Header";
 import BookContainer from "../components/BookContainer";
-import Footer from "../components/Footer";
 
 const DATA = [
   {
@@ -75,7 +74,7 @@ export default function Favorites({ navigation }) {
       >
         {books}
       </ScrollView>
-      <Footer page={"Favorites"} navigation={navigation} />
+      {/* <Footer page={"Favorites"} navigation={navigation} /> */}
     </View>
   );
 }

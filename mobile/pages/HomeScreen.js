@@ -13,7 +13,6 @@ import colors from "../assets/colors/colors";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import BookShelf from "../components/BookShelf";
-import Footer from "../components/Footer";
 
 const DATA = [
   {
@@ -139,7 +138,12 @@ export default function Home({ navigation }) {
 
   for (let i = 0; i < DATA.length; i++) {
     bookShelves.push(
-      <BookShelf key={i} genre={DATA[i].genre} books={DATA[i].books} />
+      <BookShelf
+        key={i}
+        genre={DATA[i].genre}
+        books={DATA[i].books}
+        navigation={navigation}
+      />
     );
   }
 
@@ -150,7 +154,6 @@ export default function Home({ navigation }) {
       <ScrollView overScrollMode={"never"} showsVerticalScrollIndicator={false}>
         {bookShelves}
       </ScrollView>
-      <Footer page={"Home"} navigation={navigation} />
     </View>
   );
 }

@@ -1,12 +1,13 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import Home from "./pages/Home";
-import Favorites from "./pages/Favorites";
+Ionicons.loadFont();
+MaterialIcons.loadFont();
 
-const Stack = createNativeStackNavigator();
+import MainContainer from "./components/MainContainer";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -18,22 +19,7 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Favorites"
-          component={Favorites}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+      <MainContainer />
     </NavigationContainer>
   );
 }
