@@ -6,7 +6,13 @@ import GenreBook from "../components/GenreBook";
 
 export default function BookShelf(props) {
   const GenreBookItem = ({ item }) => {
-    return <GenreBook image={item.image} title={item.title} />;
+    return (
+      <GenreBook
+        image={item.image}
+        title={item.title}
+        navigation={props.navigation}
+      />
+    );
   };
   return (
     <View style={{ height: 275 }}>
@@ -18,7 +24,6 @@ export default function BookShelf(props) {
         <FlatList
           data={props.books}
           renderItem={GenreBookItem}
-          keyExtractor={(item) => item.id}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           overScrollMode={"never"}
