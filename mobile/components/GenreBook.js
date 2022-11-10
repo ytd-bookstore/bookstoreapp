@@ -1,25 +1,27 @@
 import * as React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import colors from "../assets/colors/colors";
 
 export default function GenreBook(props) {
   return (
-    <View style={styles.bookWrapper}>
-      <View height={160} width={120}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: props.image,
-          }}
-        />
+    <TouchableOpacity onPress={() => props.navigation.push("BookScreen")}>
+      <View style={styles.bookWrapper}>
+        <View height={160} width={120}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: props.image,
+            }}
+          />
+        </View>
+        <View>
+          <Text numberOfLines={2} style={styles.title}>
+            {props.title}
+          </Text>
+        </View>
       </View>
-      <View>
-        <Text numberOfLines={2} style={styles.title}>
-          {props.title}
-        </Text>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
