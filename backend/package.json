@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "dev": "supervisor ./bin/www",
     "db-create": "\"node -e require('./database/migration').migrate()\"",
-    "db-drop": "\"node -e require('./database/scripts/execSql').execSql('./database/scripts/dropTables.sql')\""
+    "db-drop": "\"node -e require('./database/scripts/execSql').execSql('./database/scripts/dropTables.sql')\"",
+    "db-import": "\"node -e require('./database/importData').importData()\""
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
