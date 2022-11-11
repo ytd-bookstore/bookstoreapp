@@ -37,10 +37,6 @@ Book.init(
       type: DataTypes.STRING,
     },
 
-    isbn: {
-      type: DataTypes.STRING,
-    },
-
     page: {
       type: DataTypes.STRING,
     },
@@ -53,17 +49,13 @@ Book.init(
       type: DataTypes.INTEGER,
     },
 
-    image: {
-      type: DataTypes.BLOB,
+    image_url: {
+      type: DataTypes.STRING,
     },
 
     stock: {
       type: DataTypes.INTEGER.UNSIGNED,
       defaultValue: 0,
-    },
-
-    genres: {
-      type: DataTypes.STRING,
     },
   },
   {
