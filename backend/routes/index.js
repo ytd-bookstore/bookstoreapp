@@ -1,14 +1,10 @@
-var express = require("express");
-var router = express.Router();
-var connection = require("../database/connection");
+const express = require("express");
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  connection.query("SELECT * FROM test", (err, rows, fields) => {
-    if (err) throw err;
-    console.log(rows);
-  });
-  res.json({ title: "Express" });
-});
+const controller = require("../controllers/index");
+
+const router = express.Router();
+
+router.use("/users", controller.users);
+router.use("/books", controller.books);
 
 module.exports = router;
