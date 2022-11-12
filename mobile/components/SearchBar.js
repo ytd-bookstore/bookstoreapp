@@ -4,8 +4,6 @@ import Feather from "react-native-vector-icons/Feather";
 
 import colors from "../assets/colors/colors";
 
-Feather.loadFont();
-
 export default function SearchBar() {
   return (
     <View overflow={"hidden"} paddingBottom={6}>

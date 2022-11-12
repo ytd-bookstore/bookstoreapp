@@ -3,9 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Feather from "react-native-vector-icons/Feather";
 
 Ionicons.loadFont();
 MaterialIcons.loadFont();
+Feather.loadFont();
 
 import MainContainer from "./components/MainContainer";
 
