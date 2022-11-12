@@ -2,15 +2,20 @@ import * as React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import colors from "../assets/colors/colors";
+
 import Home from "../pages/HomeScreen";
 import Book from "../pages/BookScreen";
 import FavoritesScreen from "../pages/FavoritesScreen";
-import { createStackNavigator } from "@react-navigation/stack";
+import Login from "../pages/LoginScreen";
+import Register from "../pages/RegisterScreen";
 
+const Main = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const LoginStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
@@ -19,7 +24,17 @@ const HomeStackScreen = () => (
   </HomeStack.Navigator>
 );
 
-export default function MainContainer() {
+const LoginStackScreen = () => (
+  <LoginStack.Navigator screenOptions={{ headerShown: false }}>
+    <LoginStack.Screen name="LoginScreen" component={Login}></LoginStack.Screen>
+    <LoginStack.Screen
+      name="RegisterScreen"
+      component={Register}
+    ></LoginStack.Screen>
+  </LoginStack.Navigator>
+);
+
+function BottomTabs() {
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
@@ -62,6 +77,15 @@ export default function MainContainer() {
         options={styles.tabScreenOptions}
       />
     </Tabs.Navigator>
+  );
+}
+
+export default function MainContainer() {
+  return (
+    <Main.Navigator screenOptions={{ headerShown: false }}>
+      <Main.Screen name="Login" component={LoginStackScreen} />
+      <Main.Screen name="HomeTabs" component={BottomTabs} />
+    </Main.Navigator>
   );
 }
 

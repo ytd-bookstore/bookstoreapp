@@ -1,0 +1,31 @@
+import * as React from "react";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
+
+import colors from "../assets/colors/colors";
+
+export default function SearchBar(props) {
+  return (
+    <TouchableOpacity style={styles.button} onPress={props.onPress}>
+      <Text style={styles.buttonText}>{props.title}</Text>
+    </TouchableOpacity>
+  );
+}
+
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 10,
+    width: 110,
+    height: 40,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.headerTextColor,
+    shadowColor: colors.shadow,
+    elevation: 5,
+  },
+  buttonText: {
+    color: colors.white,
+    fontFamily: "OpenSans-SemiBold",
+    fontSize: 16,
+  },
+});
