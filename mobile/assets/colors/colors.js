@@ -5,6 +5,8 @@ const colors = {
   shadow: "#000000",
   favorite: "#CC0000",
   black: "#000000",
+  loginColor: "#434343",
+  white: "#FFFFFF",
 };
 
 export default colors;
