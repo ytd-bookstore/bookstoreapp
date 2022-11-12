@@ -29,7 +29,7 @@ CREATE TABLE `books` (
   `author` varchar(255),
   `price` float,
   `publisher` varchar(255),
-  `description` varchar(255),
+  `description` text,
   `edition` varchar(255),
   `format` varchar(255),
   `page` int,
@@ -94,6 +94,17 @@ CREATE TABLE `districts` (
   PRIMARY KEY (`city_name`, `name`)
 );
 
+CREATE TABLE `bookgenres` (
+  `book_id` int,
+  `genre_id` int,
+  PRIMARY KEY (`book_id`, `genre_id`)
+);
+
+CREATE TABLE `genres` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255)
+);
+
 ALTER TABLE `addresses` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `orders` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
@@ -113,3 +124,7 @@ ALTER TABLE `carts` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 ALTER TABLE `cartbooks` ADD FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`);
 
 ALTER TABLE `cartbooks` ADD FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
+
+ALTER TABLE `bookgenres` ADD FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
+
+ALTER TABLE `bookgenres` ADD FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`);
