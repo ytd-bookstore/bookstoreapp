@@ -9,6 +9,8 @@ import colors from "../assets/colors/colors";
 import Home from "../pages/HomeScreen";
 import Book from "../pages/BookScreen";
 import FavoritesScreen from "../pages/FavoritesScreen";
+import CartScreen from "../pages/CartScreen";
+
 import Login from "../pages/LoginScreen";
 import Register from "../pages/RegisterScreen";
 
@@ -68,7 +70,7 @@ function BottomTabs() {
       />
       <Tabs.Screen
         name="Cart"
-        component={FavoritesScreen}
+        component={CartScreen}
         options={styles.tabScreenOptions}
       />
       <Tabs.Screen
