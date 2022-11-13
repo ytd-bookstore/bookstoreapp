@@ -74,7 +74,6 @@ export default function Favorites({ navigation }) {
       >
         {books}
       </ScrollView>
-      {/* <Footer page={"Favorites"} navigation={navigation} /> */}
     </View>
   );
 }
