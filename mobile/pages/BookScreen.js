@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
   Button,
+  ActivityIndicator,
 } from "react-native";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -17,28 +18,6 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 import colors from "../assets/colors/colors";
 
 import Header from "../components/Header";
-
-const DATA = {
-  authors: ["Suzanne Collins"],
-  description:
-    "Winning will make you famous. Losing means certain death.The nation of Panem, formed from a post-apocalyptic North America, is a country that consists of a wealthy Capitol region surrounded by 12 poorer districts. Early in its history, a rebellion led by a 13th district against the Capitol resulted in its destruction and the creation of an annual televised event known as the Hunger Games. In punishment, and as a reminder of the power and grace of the Capitol, each district must yield one boy and one girl between the ages of 12 and 18 through a lottery system to participate in the games. The 'tributes' are chosen during the annual Reaping and are forced to fight to the death, leaving only one survivor to claim victory.When 16-year-old Katniss's young sister, Prim, is selected as District 12's female representative, Katniss volunteers to take her place. She and her male counterpart Peeta, are pitted against bigger, stronger representatives, some of whom have trained for this their whole lives. He sees it as a death sentence. But Katniss has been close to death before. For her, survival is second nature.",
-  edition: "",
-  format: "Hardcover",
-  page_count: "374 pages",
-  rating: 4.33,
-  rating_count: "5519135",
-  title: "The Hunger Games",
-  tags: [
-    "Young Adult",
-    "Fiction",
-    "Science Fiction",
-    "Dystopia",
-    "Fantasy",
-    "Science",
-  ],
-  image_url: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-  price: "29.99$",
-};
 
 function formatToUnits(number, precision) {
   const abbrev = ["", "k", "m", "b", "t"];
@@ -112,13 +91,37 @@ function parse_list(list) {
   return list_string;
 }
 
-const createAlert = () =>
-  Alert.alert(DATA.title, "Added to Favorites", [
+const createAlert = (title) =>
+  Alert.alert(title, "Added to Favorites", [
     { text: "OK", onPress: () => console.log("OK Pressed") },
   ]);
 
 export default function Book({ navigation }) {
-  return (
+  const [isLoading, setLoading] = React.useState(true);
+  const [DATA, setData] = React.useState({});
+  const getBook = async () => {
+    try {
+      const response = await fetch("http://10.0.2.2:3000/api/books/1");
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  React.useEffect(() => {
+    getBook();
+  }, []);
+
+  return isLoading ? (
+    <View style={styles.container}>
+      <Header />
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size="large" color={colors.headerTextColor} />
+      </View>
+    </View>
+  ) : (
     <View style={styles.container}>
       <Header />
       <ScrollView overScrollMode={"never"} showsVerticalScrollIndicator={false}>
@@ -149,7 +152,7 @@ export default function Book({ navigation }) {
                 alignItems: "flex-end",
               }}
             >
-              <TouchableOpacity onPress={createAlert}>
+              <TouchableOpacity onPress={() => createAlert(DATA.title)}>
                 <IonIcons
                   name={"heart-outline"}
                   color={colors.headerTextColor}
@@ -165,21 +168,24 @@ export default function Book({ navigation }) {
           </View>
 
           <Text style={styles.title}>{DATA.title}</Text>
-          <Text style={styles.authors}>{parse_list(DATA.authors)}</Text>
+          <Text style={styles.authors}>{DATA.author.replace("|", ", ")}</Text>
           <Text style={styles.editionAndTags}>
             {DATA.edition ? DATA.edition : "Standard Edition"}
           </Text>
-          <Text style={styles.editionAndTags}>{parse_list(DATA.tags)}</Text>
+          <Text style={styles.editionAndTags}>{DATA.tags}</Text>
           <View style={styles.pageCountWrapper}>
             <Text style={styles.editionAndTags}>Page Count: </Text>
-            <Text style={styles.pageCount}>{DATA.page_count}</Text>
+            <Text style={styles.pageCount}>{DATA.page}</Text>
+            <View style={styles.verticleLine}></View>
+            <Text style={styles.editionAndTags}>Stock: </Text>
+            <Text style={styles.pageCount}>{DATA.stock}</Text>
           </View>
           <Text style={styles.description}>{DATA.description}</Text>
         </View>
       </ScrollView>
       <View style={styles.addToCartWrapper}>
         <View style={styles.priceTextWrapper}>
-          <Text style={styles.priceText}>{DATA.price}</Text>
+          <Text style={styles.priceText}>{DATA.price}$</Text>
         </View>
 
         <View style={styles.addToCartButtonWrapper}>
@@ -272,13 +278,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "OpenSans-SemiBold",
     color: colors.textColor,
-    marginHorizontal: 5,
+    //marginHorizontal: 5,
     textAlign: "center",
   },
   pageCountWrapper: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 5,
   },
   pageCount: {
     fontSize: 12,
