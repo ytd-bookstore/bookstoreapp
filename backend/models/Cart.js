@@ -17,7 +17,7 @@ Cart.init(
     },
 
     total: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
   },
