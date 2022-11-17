@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev\" ",
     "start": "concurrently \"cd backend && npm run start\" ",
-    "db-create": "\"node -e require('./backend/database/migration').migrate()\"",
-    "db-drop": "\"node -e require('./backend/database/scripts/execSql').execSql('./backend/database/scripts/dropTables.sql')\""
+    "db-create": "cd backend && npm run db-create",
+    "db-drop": "cd backend && npm run db-drop",
+    "db-import": "cd backend && npm run db-import"
   },
   "author": "",
   "license": "ISC",
