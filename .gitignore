@@ -1,2 +1,13 @@
 node_modules/
 backend/database/dataset
+
+# Database Key
+backend/database/dbConfig.json
+backend/database/dbConfigLocal.json
+
+# Elastic Beanstalk Files
+backend/.elasticbeanstalk/*
+backend/.elasticbeanstalk/*.cfg.yml
+backend/.elasticbeanstalk/*.global.yml
+backend/Procfile
+
