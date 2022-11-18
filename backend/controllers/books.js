@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.get("/", userService.getBooks);
 router.get("/:id", userService.getBooksById);
+router.get("/:id/genres", userService.getBooksByIdWithGenres);
 
 module.exports = router;
