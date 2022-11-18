@@ -2,6 +2,7 @@ const { InvalidQueryError, APIError } = require("../utils/errors");
 const HttpStatusCode = require("../utils/httpStatusCode");
 const expectedQueryValidator = require("../utils/expectedQueryValidator");
 const Book = require("../models/Book");
+const Genre = require("../models/Genre");
 const httpStatusCode = require("../utils/httpStatusCode");
 
 const getBooks = async (req, res, next) => {
@@ -45,4 +46,33 @@ const getBooksById = async (req, res, next) => {
   }
 };
 
-module.exports = { getBooks, getBooksById };
+const getBooksByIdWithGenres = async (req, res, next) => {
+  try {
+    if (expectedQueryValidator(req.query, [])) {
+      throw new InvalidQueryError(req.originalUrl);
+    }
+
+    const id = req.params.id;
+    const book = await Book.findByPk(id, {
+      include: {
+        model: Genre,
+        through: {
+          attributes: [],
+        },
+        as: "genres",
+      },
+    });
+
+    if (!book)
+      throw new APIError(
+        httpStatusCode.NOT_FOUND,
+        "Book not found!",
+        req.originalUrl
+      );
+    res.json(book);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getBooks, getBooksById, getBooksByIdWithGenres };
