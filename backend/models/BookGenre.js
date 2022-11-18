@@ -20,6 +20,7 @@ BookGenre.init(
   {
     sequelize,
     modelName: "BookGenre",
+    timestamps: false,
   }
 );
 

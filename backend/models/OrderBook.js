@@ -26,6 +26,7 @@ OrderBook.init(
   {
     sequelize,
     modelName: "OrderBook",
+    timestamps: false,
   }
 );
 

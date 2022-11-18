@@ -20,6 +20,7 @@ District.init(
   {
     sequelize,
     modelName: "District",
+    timestamps: false,
   }
 );
 

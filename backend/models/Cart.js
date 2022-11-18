@@ -24,6 +24,7 @@ Cart.init(
   {
     sequelize,
     modelName: "Cart",
+    timestamps: false,
   }
 );
 
