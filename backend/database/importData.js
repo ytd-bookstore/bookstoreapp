@@ -10,9 +10,11 @@ function importGenres() {
   fsStream
     .pipe(parse({ delimiter: ",", from_line: 2 }))
     .on("data", function (row) {
-      Genre.create({
-        name: row[0],
-      });
+      if (row[0] != "Childrens") {
+        Genre.create({
+          name: row[0],
+        });
+      }
     });
 }
 
@@ -57,7 +59,13 @@ async function importBooks() {
 
         let genres = row[10].split("|");
         const genresMap = new Map();
-        for (let i = 0; i < genres.length && !genresMap.get(genres[i]); i++) {
+        for (
+          let i = 0;
+          i < genres.length &&
+          !genresMap.get(genres[i]) &&
+          genres[i] != "Childrens";
+          i++
+        ) {
           genresMap.set(genres[i], true);
 
           var genre = await Genre.findOne({
