@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 export default function ProfileOptionContianer(props) {
   return (

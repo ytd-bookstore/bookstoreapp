@@ -4,7 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 import Login from "../pages/LoginScreen";
 import Register from "../pages/RegisterScreen";

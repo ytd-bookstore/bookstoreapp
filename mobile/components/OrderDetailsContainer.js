@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 export default function OrderDetailsContainer(props) {
   return (

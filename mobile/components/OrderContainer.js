@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 export default function OrderContainer(props) {
   var images = [];

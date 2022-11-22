@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 export default function FormTextInput(props) {
   return (

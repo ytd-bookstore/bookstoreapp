@@ -8,14 +8,13 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  Button,
   ActivityIndicator,
 } from "react-native";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import IonIcons from "react-native-vector-icons/Ionicons";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 

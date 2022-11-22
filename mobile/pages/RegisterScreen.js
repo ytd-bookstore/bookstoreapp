@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 import LoginHeader from "../components/LoginHeader";
 import FormTextInput from "../components/FormTextInput";

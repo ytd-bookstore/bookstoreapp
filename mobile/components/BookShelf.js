@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 import GenreBook from "../components/GenreBook";
 
 export default function BookShelf(props) {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View, StyleSheet, StatusBar, ScrollView } from "react-native";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 import ProfileOptionContianer from "../components/ProfileOptionContainer";
