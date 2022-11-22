@@ -6,18 +6,23 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import colors from "../assets/colors/colors";
 
-import Home from "../pages/HomeScreen";
-import Book from "../pages/BookScreen";
-import FavoritesScreen from "../pages/FavoritesScreen";
-import CartScreen from "../pages/CartScreen";
-
 import Login from "../pages/LoginScreen";
 import Register from "../pages/RegisterScreen";
+
+import Home from "../pages/HomeScreen";
+import Book from "../pages/BookScreen";
+
+import FavoritesScreen from "../pages/FavoritesScreen";
+
+import CartScreen from "../pages/CartScreen";
+
+import Profile from "../pages/ProfileScreen";
 
 const Main = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const LoginStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
@@ -34,6 +39,12 @@ const LoginStackScreen = () => (
       component={Register}
     ></LoginStack.Screen>
   </LoginStack.Navigator>
+);
+
+const ProfileStackScreen = () => (
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+    <ProfileStack.Screen name="ProfileScreen" component={Profile} />
+  </ProfileStack.Navigator>
 );
 
 function BottomTabs() {
@@ -75,7 +86,7 @@ function BottomTabs() {
       />
       <Tabs.Screen
         name="Profile"
-        component={FavoritesScreen}
+        component={ProfileStackScreen}
         options={styles.tabScreenOptions}
       />
     </Tabs.Navigator>
