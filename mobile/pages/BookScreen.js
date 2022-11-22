@@ -17,6 +17,7 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
+import useBook from "../hooks/useBook";
 
 function formatToUnits(number, precision) {
   const abbrev = ["", "k", "m", "b", "t"];
@@ -80,38 +81,23 @@ function Stars(props) {
   return stars;
 }
 
-function parse_list(list) {
-  var list_string = "";
-  let i = 0;
-  for (i = 0; i < list.length - 1; i++) {
-    list_string += list[i] + ", ";
-  }
-  list_string += list[i];
-  return list_string;
-}
-
 const createAlert = (title) =>
   Alert.alert(title, "Added to Favorites", [
     { text: "OK", onPress: () => console.log("OK Pressed") },
   ]);
 
+function Genres(props) {
+  let genres = [];
+  for (let i = 0; i < props.genres.length - 1; i++) {
+    genres.push(props.genres[i].name + ", ");
+  }
+  genres.push(props.genres[props.genres.length - 1].name);
+
+  return <Text style={props.style}>{genres}</Text>;
+}
+
 export default function Book({ navigation }) {
-  const [isLoading, setLoading] = React.useState(true);
-  const [DATA, setData] = React.useState({});
-  const getBook = async () => {
-    try {
-      const response = await fetch("http://10.0.2.2:3000/api/books/1");
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  React.useEffect(() => {
-    getBook();
-  }, []);
+  const { data: book, isSuccess, isLoading } = useBook(31);
 
   return isLoading ? (
     <View style={styles.container}>
@@ -129,21 +115,21 @@ export default function Book({ navigation }) {
             <Image
               style={styles.image}
               source={{
-                uri: DATA.image_url,
+                uri: book.image_url,
               }}
             />
           </View>
 
           <View style={styles.ratingWrapper}>
-            <Text style={styles.ratingText}>{roundRating(DATA.rating)}</Text>
+            <Text style={styles.ratingText}>{roundRating(book.rating)}</Text>
             <View style={{ flexDirection: "row", marginLeft: "2%" }}>
-              <Stars rating={DATA.rating}></Stars>
+              <Stars rating={book.rating}></Stars>
             </View>
 
             <View style={styles.verticleLine}></View>
 
             <Text style={styles.ratingText}>
-              {formatToUnits(DATA.rating_count, 2)} ratings
+              {formatToUnits(book.rating_count, 2)} ratings
             </Text>
             <View
               style={{
@@ -151,7 +137,7 @@ export default function Book({ navigation }) {
                 alignItems: "flex-end",
               }}
             >
-              <TouchableOpacity onPress={() => createAlert(DATA.title)}>
+              <TouchableOpacity onPress={() => createAlert(book.title)}>
                 <IonIcons
                   name={"heart-outline"}
                   color={colors.headerTextColor}
@@ -163,28 +149,30 @@ export default function Book({ navigation }) {
 
           <View style={styles.formatWrapper}>
             <Text style={styles.formatText}>Book Format: </Text>
-            <Text style={styles.formatDataText}>{DATA.format}</Text>
+            <Text style={styles.formatbookText}>{book.format}</Text>
           </View>
 
-          <Text style={styles.title}>{DATA.title}</Text>
-          <Text style={styles.authors}>{DATA.author.replace("|", ", ")}</Text>
-          <Text style={styles.editionAndTags}>
-            {DATA.edition ? DATA.edition : "Standard Edition"}
+          <Text style={styles.title}>{book.title}</Text>
+          <Text style={styles.authors}>
+            {book.author.replace(/[|]/g, ", ")}
           </Text>
-          <Text style={styles.editionAndTags}>{DATA.tags}</Text>
+          <Text style={styles.editionAndTags}>
+            {book.edition ? book.edition : "Standard Edition"}
+          </Text>
+          <Genres style={styles.editionAndTags} genres={book.genres}></Genres>
           <View style={styles.pageCountWrapper}>
             <Text style={styles.editionAndTags}>Page Count: </Text>
-            <Text style={styles.pageCount}>{DATA.page}</Text>
+            <Text style={styles.pageCount}>{book.page}</Text>
             <View style={styles.verticleLine}></View>
             <Text style={styles.editionAndTags}>Stock: </Text>
-            <Text style={styles.pageCount}>{DATA.stock}</Text>
+            <Text style={styles.pageCount}>{book.stock}</Text>
           </View>
-          <Text style={styles.description}>{DATA.description}</Text>
+          <Text style={styles.description}>{book.description}</Text>
         </View>
       </ScrollView>
       <View style={styles.addToCartWrapper}>
         <View style={styles.priceTextWrapper}>
-          <Text style={styles.priceText}>{DATA.price}$</Text>
+          <Text style={styles.priceText}>{book.price}$</Text>
         </View>
 
         <View style={styles.addToCartButtonWrapper}>
@@ -254,7 +242,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "OpenSans-SemiBold",
   },
-  formatDataText: {
+  formatbookText: {
     color: colors.black,
     fontSize: 16,
     fontFamily: "OpenSans-SemiBold",
