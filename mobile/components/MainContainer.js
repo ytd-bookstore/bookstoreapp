@@ -17,6 +17,7 @@ import FavoritesScreen from "../pages/FavoritesScreen";
 import CartScreen from "../pages/CartScreen";
 
 import Profile from "../pages/ProfileScreen";
+import Orders from "../pages/OrdersScreen";
 
 const Main = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -44,6 +45,7 @@ const LoginStackScreen = () => (
 const ProfileStackScreen = () => (
   <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
     <ProfileStack.Screen name="ProfileScreen" component={Profile} />
+    <ProfileStack.Screen name="Orders" component={Orders} />
   </ProfileStack.Navigator>
 );
 
