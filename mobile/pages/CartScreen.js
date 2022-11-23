@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import colors from "../assets/colors/colors";
+import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 import CartBookContainer from "../components/CartBookContainer";

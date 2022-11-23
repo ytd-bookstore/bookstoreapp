@@ -4,33 +4,29 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 import colors from "../assets/constants/colors";
 
-export default function BookContainer(props) {
+export default function OrderedBookContainer(props) {
   return (
-    <View style={styles.bookWrapper}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: props.book.image,
-        }}
-      />
-      <View style={styles.propertiesWrapper}>
-        <Text numberOfLines={2} style={styles.title}>
-          {props.book.title}
-        </Text>
-        <Text numberOfLines={1} style={styles.author}>
-          {props.book.author}
-        </Text>
-        <Text numberOfLines={2} style={styles.genre}>
-          {props.book.genre}
-        </Text>
+    <TouchableOpacity onPress={() => props.navigation.navigate("BookScreen")}>
+      <View style={styles.bookWrapper}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: props.book.image_url,
+          }}
+        />
+        <View style={styles.propertiesWrapper}>
+          <Text numberOfLines={2} style={styles.title}>
+            {props.book.title}
+          </Text>
+          <Text numberOfLines={1} style={styles.author}>
+            Quantity: {props.book.quantity}
+          </Text>
+          <Text numberOfLines={2} style={styles.genre}>
+            Price: {props.book.price}$
+          </Text>
+        </View>
       </View>
-
-      <View>
-        <TouchableOpacity onPress={() => props.deleteFavorite()}>
-          <Ionicons name="heart-dislike" size={34} style={styles.icon} />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -39,7 +35,7 @@ const styles = StyleSheet.create({
     //borderWidth: 1,
     borderRadius: 24,
     height: 150,
-    //width: 350,
+    width: 350,
     marginHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
@@ -73,9 +69,5 @@ const styles = StyleSheet.create({
   genre: {
     fontsize: 16,
     fontFamily: "OpenSans-SemiBold",
-  },
-  icon: {
-    color: colors.favorite,
-    marginRight: 16,
   },
 });
