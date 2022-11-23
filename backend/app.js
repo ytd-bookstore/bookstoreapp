@@ -20,7 +20,7 @@ app.use("/api", router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(APIError(404, "Not Found"));
+  next(new APIError(404, "Not Found"));
 });
 
 // error logger
