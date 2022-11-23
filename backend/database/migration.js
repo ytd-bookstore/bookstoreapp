@@ -83,7 +83,7 @@ Genre.belongsToMany(Book, {
   through: BookGenre,
   foreignKey: "genre_id",
   otherKey: "book_id",
-  as: "genres",
+  as: "books",
 });
 
 Book.hasMany(BookGenre, { foreignKey: "book_id" });
