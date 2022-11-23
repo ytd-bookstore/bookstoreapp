@@ -1,23 +1,22 @@
 const { InvalidQueryError, APIError } = require("../utils/errors");
-const HttpStatusCode = require("../utils/httpStatusCode");
-const expectedQueryValidator = require("../utils/expectedQueryValidator");
 const Book = require("../models/Book");
 const Genre = require("../models/Genre");
 const httpStatusCode = require("../utils/httpStatusCode");
 
 const getBooks = async (req, res, next) => {
   try {
-    if (expectedQueryValidator(req.query, ["title", "author", "edition"])) {
+    const { title, author, edition, ...others } = req.query;
+
+    if (Object.keys(others).length != 0) {
       throw new InvalidQueryError(req.originalUrl);
     }
 
-    const { title, author, edition } = req.query;
     let where = {};
     if (title) where.title = title;
     if (author) where.author = author;
     if (edition) where.edition = edition;
 
-    books = await Book.findAll(where);
+    const books = await Book.findAll({ where });
 
     res.json(books);
   } catch (err) {
@@ -27,7 +26,9 @@ const getBooks = async (req, res, next) => {
 
 const getBooksById = async (req, res, next) => {
   try {
-    if (expectedQueryValidator(req.query, [])) {
+    const { ...others } = req.query;
+
+    if (Object.keys(others).length != 0) {
       throw new InvalidQueryError(req.originalUrl);
     }
 
@@ -48,7 +49,9 @@ const getBooksById = async (req, res, next) => {
 
 const getBooksByIdWithGenres = async (req, res, next) => {
   try {
-    if (expectedQueryValidator(req.query, [])) {
+    const { ...others } = req.query;
+
+    if (Object.keys(others).length != 0) {
       throw new InvalidQueryError(req.originalUrl);
     }
 
