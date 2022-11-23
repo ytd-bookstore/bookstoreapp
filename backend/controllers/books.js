@@ -1,11 +1,11 @@
 const express = require("express");
 
-const userService = require("../services/books");
+const bookService = require("../services/books");
 
 const router = express.Router();
 
-router.get("/", userService.getBooks);
-router.get("/:id", userService.getBooksById);
-router.get("/:id/genres", userService.getBooksByIdWithGenres);
+router.get("/", bookService.getBooks);
+router.get("/:id", bookService.getBooksById);
+router.get("/:id/genres", bookService.getBooksByIdWithGenres);
 
 module.exports = router;
