@@ -35,12 +35,6 @@ User.init(
       allowNull: false,
     },
 
-    credit: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-    },
-
     is_admin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -50,6 +44,7 @@ User.init(
   {
     sequelize,
     modelName: "User",
+    timestamps: false,
   }
 );
 

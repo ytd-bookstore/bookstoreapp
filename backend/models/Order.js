@@ -25,6 +25,7 @@ Order.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
+
     status: {
       type: DataTypes.ENUM,
       values: ["Order Placed", "Order Ready", "In Transit", "Delivered"],
@@ -34,6 +35,7 @@ Order.init(
   {
     sequelize,
     modelName: "Order",
+    timestamps: false,
   }
 );
 

@@ -61,6 +61,7 @@ Book.init(
   {
     sequelize,
     modelName: "Book",
+    timestamps: false,
   }
 );
 

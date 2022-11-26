@@ -18,7 +18,7 @@ CartBook.init(
     },
 
     quantity: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       defaultValue: 1,
       allowNull: false,
     },

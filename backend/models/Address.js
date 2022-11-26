@@ -16,7 +16,7 @@ Address.init(
       allowNull: false,
     },
 
-    address: {
+    address_line: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
@@ -31,12 +31,8 @@ Address.init(
       allowNull: false,
     },
 
-    postal_code: {
-      type: DataTypes.STRING,
-    },
-
     mobile: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(11),
       allowNull: false,
     },
   },
@@ -44,6 +40,7 @@ Address.init(
     sequelize,
     modelName: "Address",
     tableName: "Addresses",
+    timestamps: false,
   }
 );
 
