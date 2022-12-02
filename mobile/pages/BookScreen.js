@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  ActivityIndicator,
 } from "react-native";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -18,6 +17,7 @@ import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 import RequestError from "../components/RequestErrorScreen";
+import Loading from "../components/LoadingScreen";
 import useBook from "../hooks/useBook";
 
 function formatToUnits(number, precision) {
@@ -101,16 +101,7 @@ export default function Book({ navigation }) {
   const { data: book, isSuccess, isLoading } = useBook(1);
 
   if (isLoading && !isSuccess) {
-    return (
-      <View style={styles.container}>
-        <Header />
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <ActivityIndicator size="large" color={colors.headerTextColor} />
-        </View>
-      </View>
-    );
+    return <Loading />;
   } else if (!isLoading && isSuccess) {
     return (
       <View style={styles.container}>
