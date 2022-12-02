@@ -55,7 +55,9 @@ export default function Favorites({ navigation }) {
   var books = [];
 
   for (let i = 0; i < DATA.length; i++) {
-    books.push(<BookContainer key={i} book={DATA[i]} />);
+    books.push(
+      <BookContainer key={i} book={DATA[i]} navigation={navigation} />
+    );
   }
   return (
     <View style={styles.container}>
