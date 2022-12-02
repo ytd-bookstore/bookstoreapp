@@ -97,92 +97,125 @@ function Genres(props) {
 }
 
 export default function Book({ navigation }) {
-  const { data: book, isSuccess, isLoading } = useBook(31);
+  const { data: book, isSuccess, isLoading } = useBook(1);
 
-  return isLoading ? (
-    <View style={styles.container}>
-      <Header />
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <ActivityIndicator size="large" color={colors.headerTextColor} />
+  if (isLoading && !isSuccess) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator size="large" color={colors.headerTextColor} />
+        </View>
       </View>
-    </View>
-  ) : (
-    <View style={styles.container}>
-      <Header />
-      <ScrollView overScrollMode={"never"} showsVerticalScrollIndicator={false}>
-        <View>
-          <View style={styles.imageWrapper}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: book.image_url,
-              }}
-            />
-          </View>
-
-          <View style={styles.ratingWrapper}>
-            <Text style={styles.ratingText}>{roundRating(book.rating)}</Text>
-            <View style={{ flexDirection: "row", marginLeft: "2%" }}>
-              <Stars rating={book.rating}></Stars>
+    );
+  } else if (!isLoading && isSuccess) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <ScrollView
+          overScrollMode={"never"}
+          showsVerticalScrollIndicator={false}
+        >
+          <View>
+            <View style={styles.imageWrapper}>
+              <Image
+                style={styles.image}
+                source={{
+                  uri: book.image_url,
+                }}
+              />
             </View>
 
-            <View style={styles.verticleLine}></View>
+            <View style={styles.ratingWrapper}>
+              <Text style={styles.ratingText}>{roundRating(book.rating)}</Text>
+              <View style={{ flexDirection: "row", marginLeft: "2%" }}>
+                <Stars rating={book.rating}></Stars>
+              </View>
 
-            <Text style={styles.ratingText}>
-              {formatToUnits(book.rating_count, 2)} ratings
+              <View style={styles.verticleLine}></View>
+
+              <Text style={styles.ratingText}>
+                {formatToUnits(book.rating_count, 2)} ratings
+              </Text>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "flex-end",
+                }}
+              >
+                <TouchableOpacity onPress={() => createAlert(book.title)}>
+                  <IonIcons
+                    name={"heart-outline"}
+                    color={colors.headerTextColor}
+                    size={30}
+                  ></IonIcons>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.formatWrapper}>
+              <Text style={styles.formatText}>Book Format: </Text>
+              <Text style={styles.formatbookText}>{book.format}</Text>
+            </View>
+
+            <Text style={styles.title}>{book.title}</Text>
+            <Text style={styles.authors}>
+              {book.author.replace(/[|]/g, ", ")}
             </Text>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "flex-end",
-              }}
-            >
-              <TouchableOpacity onPress={() => createAlert(book.title)}>
-                <IonIcons
-                  name={"heart-outline"}
-                  color={colors.headerTextColor}
-                  size={30}
-                ></IonIcons>
-              </TouchableOpacity>
+            <Text style={styles.editionAndTags}>
+              {book.edition ? book.edition : "Standard Edition"}
+            </Text>
+            <Genres style={styles.editionAndTags} genres={book.genres}></Genres>
+            <View style={styles.pageCountWrapper}>
+              <Text style={styles.editionAndTags}>Page Count: </Text>
+              <Text style={styles.pageCount}>{book.page}</Text>
+              <View style={styles.verticleLine}></View>
+              <Text style={styles.editionAndTags}>Stock: </Text>
+              <Text style={styles.pageCount}>{book.stock}</Text>
             </View>
+            <Text style={styles.description}>{book.description}</Text>
+          </View>
+        </ScrollView>
+        <View style={styles.addToCartWrapper}>
+          <View style={styles.priceTextWrapper}>
+            <Text style={styles.priceText}>{book.price}$</Text>
           </View>
 
-          <View style={styles.formatWrapper}>
-            <Text style={styles.formatText}>Book Format: </Text>
-            <Text style={styles.formatbookText}>{book.format}</Text>
+          <View style={styles.addToCartButtonWrapper}>
+            <TouchableOpacity style={styles.addToCartButton}>
+              <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+            </TouchableOpacity>
           </View>
-
-          <Text style={styles.title}>{book.title}</Text>
-          <Text style={styles.authors}>
-            {book.author.replace(/[|]/g, ", ")}
-          </Text>
-          <Text style={styles.editionAndTags}>
-            {book.edition ? book.edition : "Standard Edition"}
-          </Text>
-          <Genres style={styles.editionAndTags} genres={book.genres}></Genres>
-          <View style={styles.pageCountWrapper}>
-            <Text style={styles.editionAndTags}>Page Count: </Text>
-            <Text style={styles.pageCount}>{book.page}</Text>
-            <View style={styles.verticleLine}></View>
-            <Text style={styles.editionAndTags}>Stock: </Text>
-            <Text style={styles.pageCount}>{book.stock}</Text>
-          </View>
-          <Text style={styles.description}>{book.description}</Text>
-        </View>
-      </ScrollView>
-      <View style={styles.addToCartWrapper}>
-        <View style={styles.priceTextWrapper}>
-          <Text style={styles.priceText}>{book.price}$</Text>
-        </View>
-
-        <View style={styles.addToCartButtonWrapper}>
-          <TouchableOpacity style={styles.addToCartButton}>
-            <Text style={styles.addToCartButtonText}>Add to Cart</Text>
-          </TouchableOpacity>
         </View>
       </View>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          <Image
+            style={styles.image}
+            source={require("../assets/cryingBook.png")}
+          />
+          <Text style={styles.errorText}>Oops...</Text>
+          <Text style={styles.tryAgainText}>
+            We are unable to fulfill your request right now. Please try again
+            later.
+          </Text>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -316,5 +349,20 @@ const styles = StyleSheet.create({
     color: colors.background,
     fontSize: 16,
     fontFamily: "OpenSans-SemiBold",
+  },
+  errorText: {
+    color: colors.headerTextColor,
+    fontSize: 30,
+    fontFamily: "OpenSans-SemiBold",
+  },
+  tryAgainText: {
+    color: colors.textColor,
+    fontSize: 16,
+    fontFamily: "OpenSans-SemiBold",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
   },
 });
