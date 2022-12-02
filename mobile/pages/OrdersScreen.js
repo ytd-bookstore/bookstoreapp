@@ -31,42 +31,42 @@ const DATA = [
     ],
   },
   {
-    id: 1,
+    id: 2,
     user_id: 12,
     total: 144.25,
     date: "1.11.2022",
     status: "Delivered",
     books: [
       {
-        id: 123,
+        id: 124,
         title: "Hunger Games",
         quantity: 3,
         price: 11.25,
         image_url: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
       },
       {
-        id: 11233,
+        id: 125,
         title: "Harry Potter: Order of The Phoenix",
         quantity: 5,
         price: 22.1,
         image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
       },
       {
-        id: 11233,
+        id: 126,
         title: "Harry Potter: Order of The Phoenix",
         quantity: 5,
         price: 22.1,
         image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
       },
       {
-        id: 11233,
+        id: 127,
         title: "Harry Potter: Order of The Phoenix",
         quantity: 5,
         price: 22.1,
         image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
       },
       {
-        id: 11233,
+        id: 128,
         title: "Harry Potter: Order of The Phoenix",
         quantity: 5,
         price: 22.1,
@@ -76,7 +76,7 @@ const DATA = [
   },
 ];
 
-export default function Favorites({ navigation }) {
+export default function Orders({ navigation }) {
   var orders = [];
 
   for (let i = 0; i < DATA.length; i++) {
