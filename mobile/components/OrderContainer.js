@@ -33,40 +33,41 @@ export default function OrderContainer(props) {
   }
 
   return (
-    <TouchableOpacity onPress={() => props.navigation.push("OrderDetails")}>
-      <View style={styles.orderWrapper}>
-        <View style={styles.propertiesWrapper}>
-          <Text numberOfLines={2} style={styles.textStyle}>
-            {props.order.date}
-          </Text>
-          <Text numberOfLines={1} style={styles.textStyle}>
-            {props.order.status}
-          </Text>
-          <Text numberOfLines={2} style={styles.textStyle}>
-            Purchased {props.order.books.length} books
-          </Text>
-          <View style={{ flexDirection: "row" }}>{images}</View>
+    <TouchableOpacity
+      style={styles.orderWrapper}
+      onPress={() => props.navigation.push("OrderDetails")}
+    >
+      <View style={styles.propertiesWrapper}>
+        <Text numberOfLines={2} style={styles.textStyle}>
+          {props.order.date}
+        </Text>
+        <Text numberOfLines={1} style={styles.textStyle}>
+          {props.order.status}
+        </Text>
+        <Text numberOfLines={2} style={styles.textStyle}>
+          Purchased {props.order.books.length} books
+        </Text>
+        <View style={{ flexDirection: "row" }}>{images}</View>
 
-          <View style={{ flexDirection: "row" }}>
-            <Text numberOfLines={2} style={styles.textStyle}>
-              Total Price:{" "}
-            </Text>
-            <Text numberOfLines={2} style={styles.priceStyle}>
-              {props.order.total}$
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            justifyContent: "flex-start",
-            marginTop: 5,
-            marginRight: 15,
-          }}
-        >
+        <View style={{ flexDirection: "row" }}>
           <Text numberOfLines={2} style={styles.textStyle}>
-            Details
+            Total Price:{" "}
+          </Text>
+          <Text numberOfLines={2} style={styles.priceStyle}>
+            {props.order.total}$
           </Text>
         </View>
+      </View>
+      <View
+        style={{
+          justifyContent: "flex-start",
+          marginTop: 5,
+          marginRight: 15,
+        }}
+      >
+        <Text numberOfLines={2} style={styles.textStyle}>
+          Details
+        </Text>
       </View>
     </TouchableOpacity>
   );
