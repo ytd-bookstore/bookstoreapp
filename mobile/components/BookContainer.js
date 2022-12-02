@@ -6,7 +6,10 @@ import colors from "../assets/constants/colors";
 
 export default function BookContainer(props) {
   return (
-    <View style={styles.bookWrapper}>
+    <TouchableOpacity
+      style={styles.bookWrapper}
+      onPress={() => props.navigation.navigate("BookScreen")}
+    >
       <Image
         style={styles.image}
         source={{
@@ -30,7 +33,7 @@ export default function BookContainer(props) {
           <Ionicons name="heart-dislike" size={34} style={styles.icon} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
