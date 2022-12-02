@@ -22,6 +22,7 @@ import Payment from "../pages/PaymentScreen";
 import Profile from "../pages/ProfileScreen";
 import Orders from "../pages/OrdersScreen";
 import OrderDetails from "../pages/OrderDetailsScreen";
+import Settings from "../pages/SettingsScreen";
 
 const Main = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -54,6 +55,7 @@ const ProfileStackScreen = () => (
     <ProfileStack.Screen name="ProfileScreen" component={Profile} />
     <ProfileStack.Screen name="Orders" component={Orders} />
     <ProfileStack.Screen name="OrderDetails" component={OrderDetails} />
+    <ProfileStack.Screen name="Settings" component={Settings} />
   </ProfileStack.Navigator>
 );
 

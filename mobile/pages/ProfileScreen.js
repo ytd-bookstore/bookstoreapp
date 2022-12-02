@@ -30,7 +30,7 @@ export default function Profile({ navigation }) {
         <ProfileOptionContianer
           optionName="Settings"
           navigation={navigation}
-          screenName="Orders"
+          screenName="Settings"
         />
       </ScrollView>
     </View>
