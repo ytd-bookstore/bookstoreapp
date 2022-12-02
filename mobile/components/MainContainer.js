@@ -16,6 +16,7 @@ import Genre from "../pages/GenreScreen";
 import FavoritesScreen from "../pages/FavoritesScreen";
 
 import CartScreen from "../pages/CartScreen";
+import Payment from "../pages/PaymentScreen";
 
 import Profile from "../pages/ProfileScreen";
 import Orders from "../pages/OrdersScreen";
@@ -26,6 +27,7 @@ const Tabs = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const LoginStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const CartStack = createStackNavigator();
 
 const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
@@ -51,6 +53,16 @@ const ProfileStackScreen = () => (
     <ProfileStack.Screen name="Orders" component={Orders} />
     <ProfileStack.Screen name="OrderDetails" component={OrderDetails} />
   </ProfileStack.Navigator>
+);
+
+const CartStackScreen = () => (
+  <CartStack.Navigator screenOptions={{ headerShown: false }}>
+    <CartStack.Screen
+      name="CartScreen"
+      component={CartScreen}
+    ></CartStack.Screen>
+    <CartStack.Screen name="Payment" component={Payment}></CartStack.Screen>
+  </CartStack.Navigator>
 );
 
 function BottomTabs() {
@@ -87,7 +99,7 @@ function BottomTabs() {
       />
       <Tabs.Screen
         name="Cart"
-        component={CartScreen}
+        component={CartStackScreen}
         options={styles.tabScreenOptions}
       />
       <Tabs.Screen

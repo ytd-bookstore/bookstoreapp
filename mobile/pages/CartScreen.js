@@ -66,7 +66,14 @@ export default function Cart({ navigation }) {
         </View>
 
         <View style={styles.purchaseButtonWrapper}>
-          <TouchableOpacity style={styles.purchaseButton}>
+          <TouchableOpacity
+            style={styles.purchaseButton}
+            onPress={() =>
+              navigation.push("Payment", {
+                price: DATA.total,
+              })
+            }
+          >
             <Text style={styles.purchaseButtonText}>Purchase</Text>
           </TouchableOpacity>
         </View>
