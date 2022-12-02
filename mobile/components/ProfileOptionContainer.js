@@ -5,10 +5,11 @@ import colors from "../assets/constants/colors";
 
 export default function ProfileOptionContianer(props) {
   return (
-    <TouchableOpacity onPress={() => props.navigation.push(props.screenName)}>
-      <View style={styles.optionWrapper}>
-        <Text style={styles.optionName}>{props.optionName}</Text>
-      </View>
+    <TouchableOpacity
+      style={styles.optionWrapper}
+      onPress={() => props.navigation.push(props.screenName)}
+    >
+      <Text style={styles.optionName}>{props.optionName}</Text>
     </TouchableOpacity>
   );
 }

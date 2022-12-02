@@ -6,25 +6,26 @@ import colors from "../assets/constants/colors";
 
 export default function OrderedBookContainer(props) {
   return (
-    <TouchableOpacity onPress={() => props.navigation.navigate("BookScreen")}>
-      <View style={styles.bookWrapper}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: props.book.image_url,
-          }}
-        />
-        <View style={styles.propertiesWrapper}>
-          <Text numberOfLines={2} style={styles.title}>
-            {props.book.title}
-          </Text>
-          <Text numberOfLines={1} style={styles.author}>
-            Quantity: {props.book.quantity}
-          </Text>
-          <Text numberOfLines={2} style={styles.genre}>
-            Price: {props.book.price}$
-          </Text>
-        </View>
+    <TouchableOpacity
+      style={styles.bookWrapper}
+      onPress={() => props.navigation.navigate("BookScreen")}
+    >
+      <Image
+        style={styles.image}
+        source={{
+          uri: props.book.image_url,
+        }}
+      />
+      <View style={styles.propertiesWrapper}>
+        <Text numberOfLines={2} style={styles.title}>
+          {props.book.title}
+        </Text>
+        <Text numberOfLines={1} style={styles.author}>
+          Quantity: {props.book.quantity}
+        </Text>
+        <Text numberOfLines={2} style={styles.genre}>
+          Price: {props.book.price}$
+        </Text>
       </View>
     </TouchableOpacity>
   );

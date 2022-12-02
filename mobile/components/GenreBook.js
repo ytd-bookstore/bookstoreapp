@@ -5,21 +5,22 @@ import colors from "../assets/constants/colors";
 
 export default function GenreBook(props) {
   return (
-    <TouchableOpacity onPress={() => props.navigation.push("BookScreen")}>
-      <View style={styles.bookWrapper}>
-        <View height={160} width={120}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: props.image,
-            }}
-          />
-        </View>
-        <View>
-          <Text numberOfLines={2} style={styles.title}>
-            {props.title}
-          </Text>
-        </View>
+    <TouchableOpacity
+      style={styles.bookWrapper}
+      onPress={() => props.navigation.push("BookScreen")}
+    >
+      <View height={160} width={120}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: props.image,
+          }}
+        />
+      </View>
+      <View>
+        <Text numberOfLines={2} style={styles.title}>
+          {props.title}
+        </Text>
       </View>
     </TouchableOpacity>
   );
