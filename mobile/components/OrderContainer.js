@@ -21,6 +21,7 @@ export default function OrderContainer(props) {
   if (props.order.books.length > 3) {
     images.push(
       <Text
+        key={props.order.books.length}
         style={{
           fontSize: 40,
           alignSelf: "center",
