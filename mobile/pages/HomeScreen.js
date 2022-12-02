@@ -150,7 +150,7 @@ export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       <Header />
-      <SearchBar />
+      <SearchBar navigation={navigation} />
       <ScrollView overScrollMode={"never"} showsVerticalScrollIndicator={false}>
         {bookShelves}
       </ScrollView>
