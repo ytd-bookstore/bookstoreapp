@@ -11,6 +11,7 @@ import Register from "../pages/RegisterScreen";
 
 import Home from "../pages/HomeScreen";
 import Book from "../pages/BookScreen";
+import Genre from "../pages/GenreScreen";
 
 import FavoritesScreen from "../pages/FavoritesScreen";
 
@@ -30,6 +31,7 @@ const HomeStackScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name="HomeScreen" component={Home} />
     <HomeStack.Screen name="BookScreen" component={Book} />
+    <HomeStack.Screen name="Genre" component={Genre} />
   </HomeStack.Navigator>
 );
 
