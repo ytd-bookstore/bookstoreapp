@@ -85,6 +85,11 @@ Genre.belongsToMany(Book, {
   as: "books",
 });
 
+User.hasOne(Address, {
+  foreignKey: "user_id",
+  as: "address",
+});
+
 Book.hasMany(BookGenre, { foreignKey: "book_id" });
 BookGenre.belongsTo(Book, { foreignKey: "book_id" });
 
