@@ -52,7 +52,10 @@ async function importBooks() {
           rating: row[6],
           rating_count: row[7],
           title: row[9],
-          image_url: row[11],
+          image_url:
+            row[11] != ""
+              ? row[11]
+              : "https://www.nipponniche.com/wp-content/uploads/2021/04/fentres-pdf.jpeg",
           price: getRandomPrice(5, 25),
           stock: getRandomStock(0, 50),
         });
