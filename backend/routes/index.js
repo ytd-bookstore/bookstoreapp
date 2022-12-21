@@ -1,11 +1,15 @@
 const express = require("express");
 
-const controller = require("../controllers/index");
+const userRouter = require("./users");
+const bookRouter = require("./books");
+const genreRouter = require("./genres");
+const addressRouter = require("./addresses");
 
 const router = express.Router();
 
-router.use("/users", controller.users);
-router.use("/books", controller.books);
-router.use("/genres", controller.genres);
+router.use("/users", userRouter);
+router.use("/books", bookRouter);
+router.use("/genres", genreRouter);
+router.use("/addresses", addressRouter);
 
 module.exports = router;

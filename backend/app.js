@@ -7,6 +7,7 @@ const logger = require("morgan");
 const router = require("./routes/index");
 const { APIError } = require("./utils/errors");
 const migrate = require("./database/migration");
+const httpStatusCode = require("./utils/httpStatusCode");
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use("/api", router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(new APIError(404, "Not Found"));
+  next(new APIError(httpStatusCode.NOT_FOUND, "Endpoint not found!"));
 });
 
 // error logger
@@ -32,9 +33,17 @@ app.use(function (err, req, res, next) {
 // error handler
 app.use(function (err, req, res, next) {
   // render the error page
-  const status = err.status || 500;
+  if (
+    err.name === "SequelizeValidationError" ||
+    err.name === "SequelizeUniqueConstraintError"
+  ) {
+    const errors = err.errors.map((error) => error.message);
+    res.status(httpStatusCode.INVALID_FORMAT).json({ errors });
+    return;
+  }
 
-  res.status(status).json({ message: err.message });
+  const status = err.status || httpStatusCode.INTERNAL_SERVER;
+  res.status(status).json({ errors: [err.message] });
 });
 
 module.exports = app;

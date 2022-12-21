@@ -1,79 +1,46 @@
 const Book = require("../models/Book");
 const Genre = require("../models/Genre");
-const { InvalidQueryError } = require("../utils/errors");
+const { APIError, NotFoundError } = require("../utils/errors");
 
-const getGenres = async (req, res, next) => {
-  try {
-    const { name, ...others } = req.query;
-
-    if (Object.keys(others).length != 0) {
-      throw new InvalidQueryError(req.originalUrl);
+class GenreService {
+  getGenres = async (where) => {
+    try {
+      const genres = await Genre.findAll({ where });
+      return genres;
+    } catch (err) {
+      throw new APIError(err);
     }
+  };
 
-    const genres = await Genre.findAll({
-      where: { name },
-    });
-
-    res.json(genres);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getGenresById = async (req, res, next) => {
-  try {
-    const { ...others } = req.query;
-
-    if (Object.keys(others).length != 0) {
-      throw new InvalidQueryError(req.originalUrl);
+  getGenresById = async (id) => {
+    try {
+      const genre = await Genre.findByPk(id);
+      if (!genre) throw new NotFoundError();
+      return genre;
+    } catch (err) {
+      throw new APIError(err);
     }
+  };
 
-    const id = req.params.id;
-    const genre = await Genre.findByPk(id);
-
-    if (!genre)
-      throw new APIError(
-        httpStatusCode.NOT_FOUND,
-        "Genre not found!",
-        req.originalUrl
-      );
-
-    res.json(genre);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getGenresByIdWithBooks = async (req, res, next) => {
-  try {
-    const { ...others } = req.query;
-
-    if (Object.keys(others).length != 0) {
-      throw new InvalidQueryError(req.originalUrl);
-    }
-
-    const id = req.params.id;
-    const genre = await Genre.findByPk(id, {
-      include: {
-        model: Book,
-        through: {
-          attributes: [],
+  getGenresByIdWithBooks = async (id) => {
+    try {
+      const genre = await Genre.findByPk(id, {
+        include: {
+          model: Book,
+          through: {
+            attributes: [],
+          },
+          as: "books",
         },
-        as: "books",
-      },
-    });
+      });
+      if (!genre) throw new NotFoundError();
+      return genre;
+    } catch (err) {
+      throw new APIError(err);
+    }
+  };
+}
 
-    if (!genre)
-      throw new APIError(
-        httpStatusCode.NOT_FOUND,
-        "Genre not found!",
-        req.originalUrl
-      );
+const genreService = new GenreService();
 
-    res.json(genre);
-  } catch (err) {
-    next(err);
-  }
-};
-
-module.exports = { getGenres, getGenresById, getGenresByIdWithBooks };
+module.exports = genreService;

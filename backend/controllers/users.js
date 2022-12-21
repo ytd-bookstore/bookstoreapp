@@ -1,11 +1,96 @@
-const express = require("express");
-
 const userService = require("../services/users");
+const { InvalidQueryError } = require("../utils/errors");
+const httpStatusCode = require("../utils/httpStatusCode");
 
-const router = express.Router();
+class UserController {
+  getUsers = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
 
-router.get("/", userService.getUsers);
-router.get("/:id", userService.getUsersById);
-router.get("/:id/address", userService.getUsersByIdWithAddress);
+      const users = await userService.getUsers();
 
-module.exports = router;
+      res.json(users);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  getUsersById = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+
+      const user = await userService.getUsersById(id);
+
+      res.json(user);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  getUsersByIdWithAddress = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+      const user = await userService.getUsersByIdWithAddress(id);
+      res.json(user);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  createUser = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const user = await userService.createUser(req.body);
+      res.status(httpStatusCode.CREATED).json(user);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  updateUser = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+      const user = await userService.updateUser(id, req.body);
+      res.json(user);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  deleteUser = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+      await userService.deleteUser(id);
+      res.status(httpStatusCode.NO_CONTENT).send();
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
+const userController = new UserController();
+
+module.exports = userController;

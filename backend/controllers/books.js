@@ -1,11 +1,60 @@
-const express = require("express");
+const { InvalidQueryError } = require("../utils/errors");
+const bookService = require("../services/books");
 
-const BookServices = require("../services/books");
+class BookController {
+  getBooks = async (req, res, next) => {
+    try {
+      const { title, author, edition, ...others } = req.query;
 
-const router = express.Router();
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
 
-router.get("/", BookServices.getBooks);
-router.get("/:id", BookServices.getBooksById);
-router.get("/:id/genres", BookServices.getBooksByIdWithGenres);
+      let where = {};
+      if (title) where = { ...where, title };
+      if (author) where = { ...where, author };
+      if (edition) where = { ...where, edition };
 
-module.exports = router;
+      const books = await bookService.getBooks(where);
+      res.json(books);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  getBooksById = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+
+      const book = await bookService.getBooksById(id);
+      res.json(book);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  getBooksByIdWithGenres = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+
+      const id = req.params.id;
+      const book = await bookService.getBooksByIdWithGenres(id);
+      res.json(book);
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
+const bookController = new BookController();
+
+module.exports = bookController;

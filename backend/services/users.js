@@ -1,67 +1,95 @@
 const User = require("../models/User");
 const Address = require("../models/Address");
 
-const { InvalidQueryError, NotFoundError } = require("../utils/errors");
+const { NotFoundError, APIError } = require("../utils/errors");
 
-const getUsers = async (req, res, next) => {
-  try {
-    const { ...others } = req.query;
-    if (Object.keys(others).length != 0) {
-      throw new InvalidQueryError(req.originalUrl);
+class UserService {
+  getUsers = async () => {
+    try {
+      const users = await User.findAll();
+      return users;
+    } catch (err) {
+      throw new APIError();
     }
-    let where = {};
-    const users = await User.findAll({ where });
-    res.json(users);
-  } catch (err) {
-    next(err);
-  }
-};
+  };
 
-const getUsersById = async (req, res, next) => {
-  try {
-    const { ...others } = req.query;
-
-    if (Object.keys(others).length != 0) {
-      throw new InvalidQueryError(req.originalUrl);
+  getUsersById = async (id) => {
+    try {
+      const user = await User.findByPk(id);
+      if (!user) throw new NotFoundError();
+      return user;
+    } catch (err) {
+      if (err instanceof NotFoundError) throw err;
+      throw new APIError();
     }
+  };
 
-    const id = req.params.id;
-    const user = await User.findByPk(id);
-
-    if (!user) {
-      throw new NotFoundError(req.originalUrl);
+  getUsersByIdWithAddress = async (id) => {
+    try {
+      const user = await User.findByPk(id, {
+        include: {
+          model: Address,
+          as: "address",
+        },
+      });
+      if (!user) throw new NotFoundError();
+      return user;
+    } catch (err) {
+      if (err instanceof NotFoundError) throw err;
+      throw new APIError();
     }
+  };
 
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getUsersByIdWithAddress = async (req, res, next) => {
-  try {
-    const { ...others } = req.query;
-
-    if (Object.keys(others).length != 0) {
-      throw new InvalidQueryError(req.originalUrl);
+  createUser = async (form) => {
+    try {
+      const user = await User.create(form);
+      if (!user) throw new NotFoundError();
+      return user;
+    } catch (err) {
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof NotFoundError
+      ) {
+        throw err;
+      }
+      throw new APIError();
     }
+  };
 
-    const id = req.params.id;
-    const user = await User.findByPk(id, {
-      include: {
-        model: Address,
-        as: "address",
-      },
-    });
-
-    if (!user) {
-      throw new NotFoundError(req.originalUrl);
+  updateUser = async (id, form) => {
+    try {
+      let user = await User.findByPk(id);
+      if (!user) throw new NotFoundError();
+      user = await user.update(form);
+      return user;
+    } catch (err) {
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof NotFoundError
+      ) {
+        throw err;
+      }
+      throw new APIError();
     }
+  };
 
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-};
+  deleteUser = async (id) => {
+    try {
+      let user = await User.findByPk(id);
+      if (!user) throw new NotFoundError();
+      await user.destroy();
+      return;
+    } catch (err) {
+      if (err instanceof NotFoundError) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+}
 
-module.exports = { getUsers, getUsersById, getUsersByIdWithAddress };
+const userService = new UserService();
+
+module.exports = userService;
