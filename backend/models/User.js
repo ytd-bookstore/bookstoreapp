@@ -39,6 +39,9 @@ User.init(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       allowNull: false,
+      validate: {
+        is: ["^(?:tru|fals)e$"],
+      },
     },
   },
   {
