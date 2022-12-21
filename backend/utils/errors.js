@@ -4,8 +4,8 @@ class BaseError extends Error {
   status;
   url;
 
-  constructor(status, description, url) {
-    super(description);
+  constructor(status, message, url) {
+    super(message);
     Object.setPrototypeOf(this, new.target.prototype);
 
     this.status = status;
@@ -18,10 +18,10 @@ class BaseError extends Error {
 class APIError extends BaseError {
   constructor(
     status = HttpStatusCode.INTERNAL_SERVER,
-    description = "Internal server error",
+    message = "Internal server error",
     url = ""
   ) {
-    super(status, description, url);
+    super(status, message, url);
   }
 }
 
@@ -43,9 +43,16 @@ class InvalidFormatError extends BaseError {
   }
 }
 
+class BadRequestError extends BaseError {
+  constructor(url = "") {
+    super(HttpStatusCode.BAD_REQUEST, "Bad Request", url);
+  }
+}
+
 module.exports = {
   APIError,
   NotFoundError,
   InvalidQueryError,
   InvalidFormatError,
+  BadRequestError,
 };
