@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Address = require("../models/Address");
 
-const { NotFoundError, APIError } = require("../utils/errors");
+const { NotFoundError, APIError, BadRequestError } = require("../utils/errors");
 
 class UserService {
   getUsers = async () => {
@@ -43,13 +43,13 @@ class UserService {
   createUser = async (form) => {
     try {
       const user = await User.create(form);
-      if (!user) throw new NotFoundError();
+      if (!user) throw new BadRequestError();
       return user;
     } catch (err) {
       if (
         err.name === "SequelizeValidationError" ||
         err.name === "SequelizeUniqueConstraintError" ||
-        err instanceof NotFoundError
+        err instanceof BadRequestError
       ) {
         throw err;
       }
@@ -60,14 +60,44 @@ class UserService {
   updateUser = async (id, form) => {
     try {
       let user = await User.findByPk(id);
-      if (!user) throw new NotFoundError();
+      if (!user) throw new BadRequestError();
       user = await user.update(form);
       return user;
     } catch (err) {
       if (
         err.name === "SequelizeValidationError" ||
         err.name === "SequelizeUniqueConstraintError" ||
-        err instanceof NotFoundError
+        err instanceof BadRequestError
+      ) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+
+  updateUserWithAddress = async (id, form) => {
+    try {
+      let user = await User.findByPk(id);
+      if (!user || !form.address) throw new BadRequestError();
+
+      let response = await Address.findAll({ where: { user_id: id } });
+      let address = response[0];
+
+      form.address.user_id = id;
+      if (!address) {
+        address = await Address.create(form.address);
+      } else {
+        address = await address.update(form.address);
+      }
+      user = await user.update(form);
+
+      user.dataValues.address = address;
+      return user;
+    } catch (err) {
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof BadRequestError
       ) {
         throw err;
       }
@@ -78,11 +108,11 @@ class UserService {
   deleteUser = async (id) => {
     try {
       let user = await User.findByPk(id);
-      if (!user) throw new NotFoundError();
+      if (!user) throw new BadRequestError();
       await user.destroy();
       return;
     } catch (err) {
-      if (err instanceof NotFoundError) {
+      if (err instanceof BadRequestError) {
         throw err;
       }
       throw new APIError();

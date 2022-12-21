@@ -70,7 +70,21 @@ class UserController {
       }
       const id = req.params.id;
       const user = await userService.updateUser(id, req.body);
-      res.json(user);
+      res.status(httpStatusCode.CREATED).json(user);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  updateUserWithAddress = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+      const user = await userService.updateUserWithAddress(id, req.body);
+      res.status(httpStatusCode.CREATED).json(user);
     } catch (err) {
       next(err);
     }

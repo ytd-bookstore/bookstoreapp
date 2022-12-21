@@ -9,6 +9,7 @@ router.get("/:id", controller.getUsersById);
 router.get("/:id/address", controller.getUsersByIdWithAddress);
 router.post("/", controller.createUser);
 router.put("/:id", controller.updateUser);
+router.put("/:id/address", controller.updateUserWithAddress);
 router.delete("/:id", controller.deleteUser);
 
 module.exports = router;
