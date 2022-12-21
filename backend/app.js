@@ -43,7 +43,7 @@ app.use(function (err, req, res, next) {
   }
 
   const status = err.status || httpStatusCode.INTERNAL_SERVER;
-  res.status(status).json({ errors: [err.message] });
+  res.status(status).json({ error: err.message });
 });
 
 module.exports = app;
