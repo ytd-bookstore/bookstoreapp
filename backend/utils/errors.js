@@ -37,8 +37,15 @@ class InvalidQueryError extends BaseError {
   }
 }
 
+class InvalidFormatError extends BaseError {
+  constructor(url = "") {
+    super(HttpStatusCode.INVALID_FORMAT, "Invalid Format", url);
+  }
+}
+
 module.exports = {
   APIError,
   NotFoundError,
   InvalidQueryError,
+  InvalidFormatError,
 };
