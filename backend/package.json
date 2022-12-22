@@ -8,7 +8,7 @@
     "db-create": "\"node -e require('./database/migration').migrate()\"",
     "db-drop": "\"node -e require('./database/dropTables').dropTables()\"",
     "db-import": "\"node -e require('./database/importData').importData()\"",
-    "test": "jest"
+    "test": "jest --watchAll --detectOpenHandles"
   },
   "engines": {
     "npm": ">=8.0.0 <9.0.0",

@@ -29,7 +29,7 @@ describe("GET /users", () => {
 });
 
 describe("POST /users", () => {
-  let newUser = {
+  const newUser = {
     name: "John",
     surname: "Doe",
     email: "johndoe@gmail.com",
@@ -51,7 +51,7 @@ describe("POST /users", () => {
 });
 
 describe("PUT /users", () => {
-  let newUser = {
+  const newUser = {
     name: "John",
     surname: "Doe",
     email: "johndoe@gmail.com",
@@ -76,7 +76,7 @@ describe("PUT /users", () => {
 });
 
 describe("DELETE /users", () => {
-  let newUser = {
+  const newUser = {
     name: "John",
     surname: "Doe",
     email: "johndoe@gmail.com",
