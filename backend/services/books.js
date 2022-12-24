@@ -1,4 +1,4 @@
-const { APIError, NotFoundError } = require("../utils/errors");
+const { APIError, NotFoundError, BadRequestError } = require("../utils/errors");
 const Book = require("../models/Book");
 const Genre = require("../models/Genre");
 
@@ -35,6 +35,54 @@ class BookService {
       });
       return book;
     } catch (err) {
+      throw new APIError();
+    }
+  };
+
+  createBook = async (form) => {
+    try {
+      const book = await Book.create(form);
+      return book;
+    } catch (err) {
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof BadRequestError
+      ) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+
+  updateBook = async (id, form) => {
+    try {
+      let book = await Book.findByPk(id);
+      if (!book) throw new BadRequestError();
+      book = await book.update(form);
+      return book;
+    } catch (err) {
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof BadRequestError
+      ) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+
+  deleteBook = async (id) => {
+    try {
+      let book = await Book.findByPk(id);
+      if (!book) throw new BadRequestError();
+      await book.destroy();
+      return;
+    } catch (err) {
+      if (err instanceof BadRequestError) {
+        throw err;
+      }
       throw new APIError();
     }
   };

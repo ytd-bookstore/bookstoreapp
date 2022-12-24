@@ -43,7 +43,6 @@ class UserService {
   createUser = async (form) => {
     try {
       const user = await User.create(form);
-      if (!user) throw new BadRequestError();
       return user;
     } catch (err) {
       if (
