@@ -1,5 +1,6 @@
 const addressService = require("../services/addresses.js");
 const { InvalidQueryError } = require("../utils/errors.js");
+const httpStatusCode = require("../utils/httpStatusCode.js");
 
 class AddressController {
   getAddresses = async (req, res, next) => {
@@ -28,6 +29,47 @@ class AddressController {
       const id = req.params.id;
       const address = await addressService.getAddressesById(id);
       res.json(address);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  createAddress = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const address = await addressService.createAddress(req.body);
+      res.status(httpStatusCode.CREATED).json(address);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  updateAddress = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+      const address = await addressService.updateAddress(id, req.body);
+      res.status(httpStatusCode.CREATED).json(address);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  deleteAddress = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const id = req.params.id;
+      await addressService.deleteAddress(id);
+      res.status(httpStatusCode.NO_CONTENT).send();
     } catch (err) {
       next(err);
     }
