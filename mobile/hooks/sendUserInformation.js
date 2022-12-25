@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import apiConstants from "../assets/constants/apiConstants";
 
 const postInformation = async (userId, information) => {
-  const data = await fetch(apiConstants.api + `users/${userId}`, {
+  const data = await fetch(apiConstants.api + `users/${userId}/address`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

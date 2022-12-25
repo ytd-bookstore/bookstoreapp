@@ -41,10 +41,32 @@ export default function Settings() {
     isLoading: isLoadingUpdate,
     isSuccess: isSuccessUpdate,
     mutate,
-  } = sendUserInformation(1, { name, surname, email, password });
+  } = sendUserInformation(1, {
+    name,
+    surname,
+    email,
+    password,
+    address: {
+      city,
+      district,
+      mobile: phoneNumber,
+      address_line: addressLine,
+    },
+  });
 
   const updateUserInfo = () => {
-    mutate(1, { name, surname, email, password });
+    mutate(1, {
+      name,
+      surname,
+      email,
+      password,
+      address: {
+        city,
+        district,
+        mobile: phoneNumber,
+        address_line: addressLine,
+      },
+    });
   };
 
   React.useEffect(() => {
@@ -67,6 +89,10 @@ export default function Settings() {
       setName(userInfo.name);
       setSurname(userInfo.surname);
       setEmail(userInfo.email);
+      setCity(userInfo.address.city);
+      setDistrict(userInfo.address.district);
+      setPhoneNumber(userInfo.address.mobile);
+      setAddressLine(userInfo.address.address_line);
     }
   }, [isLoadingUpdate, isSuccessUpdate]);
 
