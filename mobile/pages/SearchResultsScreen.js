@@ -5,65 +5,70 @@ import {
   StyleSheet,
   StatusBar,
   ScrollView,
-  Button,
+  Image,
 } from "react-native";
 
 import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 import SearchedBookContainer from "../components/SearchedBookContainer";
+import useSearch from "../hooks/useSearch";
 
-const DATA = [
-  {
-    id: "1",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "2",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-  {
-    id: "3",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "4",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-  {
-    id: "5",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "6",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-];
+import Loading from "../components/LoadingScreen";
+import RequestError from "../components/RequestErrorScreen";
 
 export default function SearchResults({ route, navigation }) {
+  const {
+    data: searchResults,
+    isSuccess,
+    isLoading,
+  } = useSearch(route.params.searchedItem);
+
+  if (isLoading && !isSuccess) {
+    return <Loading />;
+  } else if (!isLoading && !isSuccess) {
+    return <RequestError />;
+  }
+
+  if (searchResults.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.headerWrapper}>
+          <Text style={styles.headerText}>
+            Search results for {"\n" + '"' + route.params.searchedItem + '"'}
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          <Image
+            style={styles.image}
+            source={require("../assets/cryingBook.png")}
+          />
+          <Text style={styles.errorText}>Sorry...</Text>
+          <Text style={styles.tryAgainText}>
+            We are unable to find the book you are looking for.
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
   var books = [];
 
-  for (let i = 0; i < DATA.length; i++) {
+  for (let i = 0; i < searchResults.length; i++) {
     books.push(
-      <SearchedBookContainer key={i} book={DATA[i]} navigation={navigation} />
+      <SearchedBookContainer
+        key={i}
+        book={searchResults[i]}
+        navigation={navigation}
+      />
     );
   }
   return (
@@ -96,8 +101,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   headerWrapper: {
-    //height: 100,
-    //borderWidth: 1,
     paddingLeft: 16,
     paddingTop: 8,
     paddingBottom: 5,
@@ -106,5 +109,20 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans-SemiBold",
     fontSize: 32,
     color: colors.textColor,
+  },
+  errorText: {
+    color: colors.headerTextColor,
+    fontSize: 30,
+    fontFamily: "OpenSans-SemiBold",
+  },
+  tryAgainText: {
+    color: colors.textColor,
+    fontSize: 16,
+    fontFamily: "OpenSans-SemiBold",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
   },
 });
