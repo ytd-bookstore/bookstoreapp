@@ -97,8 +97,8 @@ function Genres(props) {
   return <Text style={props.style}>{genres}</Text>;
 }
 
-export default function Book({ navigation }) {
-  const { data: book, isSuccess, isLoading } = useBook(1);
+export default function Book({ route, navigation }) {
+  const { data: book, isSuccess, isLoading } = useBook(route.params.id);
 
   if (isLoading && !isSuccess) {
     return <Loading />;

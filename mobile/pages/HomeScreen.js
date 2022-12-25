@@ -13,135 +13,46 @@ import colors from "../assets/constants/colors";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import BookShelf from "../components/BookShelf";
+import useGenre from "../hooks/useGenre";
+import Loading from "../components/LoadingScreen";
+import RequestError from "../components/RequestErrorScreen";
+import useGenreIDs from "../hooks/useGenreIDs";
 
-const DATA = [
+const genreNames = [
   {
-    genre: "Action",
-    books: [
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-    ],
+    genre: "action",
   },
   {
-    genre: "Science",
-    books: [
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-    ],
+    genre: "science",
   },
   {
-    genre: "History",
-    books: [
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-    ],
+    genre: "history",
   },
   {
-    genre: "Fiction",
-    books: [
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        title: "Hunger Games",
-        image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        title: "Harry Potter: Order of The Phoenix",
-        image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-    ],
+    genre: "fiction",
+  },
+  {
+    genre: "romance",
   },
 ];
 
 export default function Home({ navigation }) {
+  const { data: genres, isSuccess, isLoading } = useGenreIDs(genreNames);
+
+  if (isLoading && !isSuccess) {
+    return <Loading />;
+  } else if (!isLoading && !isSuccess) {
+    return <RequestError />;
+  }
+
   var bookShelves = [];
 
-  for (let i = 0; i < DATA.length; i++) {
+  for (let i = 0; i < genres.length; i++) {
     bookShelves.push(
       <BookShelf
         key={i}
-        genre={DATA[i].genre}
-        books={DATA[i].books}
+        genre={genres[i].name}
+        books={genres[i].books}
         navigation={navigation}
       />
     );

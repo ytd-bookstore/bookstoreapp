@@ -7,12 +7,16 @@ export default function SearchedBookContainer(props) {
   return (
     <TouchableOpacity
       style={styles.bookWrapper}
-      onPress={() => props.navigation.push("BookScreen")}
+      onPress={() =>
+        props.navigation.push("BookScreen", {
+          id: props.book.id,
+        })
+      }
     >
       <Image
         style={styles.image}
         source={{
-          uri: props.book.image,
+          uri: props.book.image_url,
         }}
       />
       <View style={styles.propertiesWrapper}>
