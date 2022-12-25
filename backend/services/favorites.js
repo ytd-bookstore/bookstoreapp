@@ -1,3 +1,4 @@
+const Book = require("../models/Book");
 const Favorite = require("../models/Favorite");
 const { NotFoundError, APIError, BadRequestError } = require("../utils/errors");
 
@@ -11,11 +12,18 @@ class FavoriteService {
     }
   };
 
-  getFavoritesOfUser = async (user_id) => {
+  getFavoritesOfUserWithBooks = async (user_id) => {
     try {
-      const favorites = await Favorite.findAll({ where: { user_id } });
+      const favorites = await Favorite.findAll({
+        where: { user_id },
+        include: {
+          model: Book,
+          as: "Book",
+        },
+      });
       return favorites;
     } catch (err) {
+      console.log(err);
       throw new APIError();
     }
   };

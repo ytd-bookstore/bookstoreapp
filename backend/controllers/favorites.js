@@ -18,7 +18,7 @@ class FavoriteController {
     }
   };
 
-  getFavoritesOfUser = async (req, res, next) => {
+  getFavoritesOfUserWithBooks = async (req, res, next) => {
     try {
       const { ...others } = req.query;
 
@@ -26,7 +26,9 @@ class FavoriteController {
         throw new InvalidQueryError(req.originalUrl);
       }
       const user_id = req.params.user_id;
-      const favorites = await favoriteService.getFavoritesOfUser(user_id);
+      const favorites = await favoriteService.getFavoritesOfUserWithBooks(
+        user_id
+      );
 
       res.json(favorites);
     } catch (err) {
