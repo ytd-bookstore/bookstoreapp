@@ -7,19 +7,26 @@ export default function GenreBook(props) {
   return (
     <TouchableOpacity
       style={styles.bookWrapper}
-      onPress={() => props.navigation.push("BookScreen")}
+      onPress={() =>
+        props.navigation.push("BookScreen", {
+          id: props.book.id,
+        })
+      }
     >
       <View height={160} width={120}>
         <Image
           style={styles.image}
           source={{
-            uri: props.image,
+            uri: props.book.image_url,
           }}
         />
       </View>
       <View>
         <Text numberOfLines={2} style={styles.title}>
-          {props.title}
+          {props.book.title}
+        </Text>
+        <Text numberOfLines={2} style={styles.price}>
+          {props.book.price}$
         </Text>
       </View>
     </TouchableOpacity>
@@ -29,7 +36,7 @@ export default function GenreBook(props) {
 const styles = StyleSheet.create({
   bookWrapper: {
     width: 120,
-    height: 200,
+    height: 220,
     backgroundColor: colors.background,
     borderRadius: 12,
     marginTop: 12,
@@ -46,15 +53,17 @@ const styles = StyleSheet.create({
     height: null,
     resizeMode: "contain",
   },
-  titleWrapper: {
-    height: 40,
-    width: 120,
-    alignItems: "center",
-  },
   title: {
     fontSize: 15,
     fontFamily: "OpenSans-SemiBold",
     color: colors.textColor,
+    marginHorizontal: 5,
+    textAlign: "center",
+  },
+  price: {
+    fontSize: 15,
+    fontFamily: "OpenSans-SemiBold",
+    color: colors.black,
     marginHorizontal: 5,
     textAlign: "center",
   },

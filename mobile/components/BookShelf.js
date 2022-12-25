@@ -12,31 +12,27 @@ import GenreBook from "../components/GenreBook";
 
 export default function BookShelf(props) {
   const GenreBookItem = ({ item }) => {
-    return (
-      <GenreBook
-        image={item.image}
-        title={item.title}
-        navigation={props.navigation}
-      />
-    );
+    return <GenreBook book={item} navigation={props.navigation} />;
   };
+
   return (
-    <View style={{ height: 275 }}>
+    <View style={{ height: 300 }}>
       <View style={styles.titleWrapper}>
         <Text style={styles.title}>{props.genre}</Text>
         <TouchableOpacity
           onPress={() =>
             props.navigation.push("Genre", {
               genre: props.genre,
+              books: props.books,
             })
           }
         >
           <Text style={styles.seeAll}>see all</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ height: 230 }}>
+      <View style={{ height: 250 }}>
         <FlatList
-          data={props.books}
+          data={props.books.slice(0, 6)}
           renderItem={GenreBookItem}
           horizontal={true}
           showsHorizontalScrollIndicator={false}

@@ -61,9 +61,13 @@ const DATA = [
 export default function Genre({ route, navigation }) {
   var books = [];
 
-  for (let i = 0; i < DATA.length; i++) {
+  for (let i = 0; i < route.params.books.length; i++) {
     books.push(
-      <SearchedBookContainer key={i} book={DATA[i]} navigation={navigation} />
+      <SearchedBookContainer
+        key={i}
+        book={route.params.books[i]}
+        navigation={navigation}
+      />
     );
   }
   return (
