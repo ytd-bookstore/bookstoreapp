@@ -1,5 +1,6 @@
 const Book = require("../models/Book");
 const Favorite = require("../models/Favorite");
+const Genre = require("../models/Genre");
 const { NotFoundError, APIError, BadRequestError } = require("../utils/errors");
 
 class FavoriteService {
@@ -19,6 +20,13 @@ class FavoriteService {
         include: {
           model: Book,
           as: "Book",
+          include: {
+            model: Genre,
+            through: {
+              attributes: [],
+            },
+            as: "genres",
+          },
         },
       });
       return favorites;
