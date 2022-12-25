@@ -17,7 +17,7 @@ export default function SearchBar(props) {
             cursorColor={colors.headerTextColor}
             onChangeText={setSearchItem}
             onSubmitEditing={() => {
-              if (searchedItem.length > 0) {
+              if (searchedItem.length > 2) {
                 props.navigation.push("SearchResults", {
                   searchedItem: searchedItem,
                 });
