@@ -1,3 +1,6 @@
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+
 const { APIError, NotFoundError, BadRequestError } = require("../utils/errors");
 const Book = require("../models/Book");
 const Genre = require("../models/Genre");
@@ -83,6 +86,21 @@ class BookService {
       if (err instanceof BadRequestError) {
         throw err;
       }
+      throw new APIError();
+    }
+  };
+
+  searchBooks = async (keyword) => {
+    try {
+      const books = await Book.findAll({
+        where: {
+          title: {
+            [Op.like]: `%${keyword}%`,
+          },
+        },
+      });
+      return books;
+    } catch (err) {
       throw new APIError();
     }
   };

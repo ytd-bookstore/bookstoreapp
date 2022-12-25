@@ -10,5 +10,6 @@ router.get("/:id/genres", controller.getBooksByIdWithGenres);
 router.post("/", controller.createBook);
 router.put("/:id", controller.updateBook);
 router.delete("/:id", controller.deleteBook);
+router.get("/search/:keyword", controller.searchBooks);
 
 module.exports = router;

@@ -95,6 +95,21 @@ class BookController {
       next(err);
     }
   };
+
+  searchBooks = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const keyword = req.params.keyword;
+      const books = await bookService.searchBooks(keyword);
+      res.json(books);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 const bookController = new BookController();
