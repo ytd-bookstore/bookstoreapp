@@ -23,11 +23,12 @@ export default function SettingsTextInput(props) {
           height: 15,
         }}
       >
-        {props.placeHolder}
+        {props.textName}
       </Text>
       <TextInput
         secureTextEntry={props.secure ? props.secure : false}
         onChangeText={props.onChangeText}
+        value={props.placeHolder}
         style={{
           width: props.width,
           height: props.height - 15,

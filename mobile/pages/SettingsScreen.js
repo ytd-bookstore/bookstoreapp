@@ -14,6 +14,11 @@ import colors from "../assets/constants/colors";
 import Header from "../components/Header";
 import SettingsTextInput from "../components/SettingsTextInput";
 
+import RequestError from "../components/RequestErrorScreen";
+import Loading from "../components/LoadingScreen";
+import useUser from "../hooks/useUser";
+import sendUserInformation from "../hooks/sendUserInformation";
+
 export default function Settings() {
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -22,8 +27,54 @@ export default function Settings() {
   const [city, setCity] = React.useState("");
   const [district, setDistrict] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [address, setAddress] = React.useState("");
+  const [addressLine, setAddressLine] = React.useState("");
 
+  const {
+    data: user,
+    isSuccess: isSuccessGet,
+    isLoading: isLoadingGet,
+    remove,
+  } = useUser(1);
+
+  const {
+    data: userInfo,
+    isLoading: isLoadingUpdate,
+    isSuccess: isSuccessUpdate,
+    mutate,
+  } = sendUserInformation(1, { name, surname, email, password });
+
+  const updateUserInfo = () => {
+    mutate(1, { name, surname, email, password });
+  };
+
+  React.useEffect(() => {
+    if (!isLoadingGet && isSuccessGet) {
+      setName(user.name);
+      setSurname(user.surname);
+      setEmail(user.email);
+      setCity(user.address.city);
+      setDistrict(user.address.district);
+      setPhoneNumber(user.address.mobile);
+      setAddressLine(user.address.address_line);
+    }
+  }, [isLoadingGet, isSuccessGet]);
+
+  React.useEffect(() => {
+    if (!isLoadingUpdate && isSuccessUpdate) {
+      if (!isLoadingGet && isSuccessGet) {
+        remove();
+      }
+      setName(userInfo.name);
+      setSurname(userInfo.surname);
+      setEmail(userInfo.email);
+    }
+  }, [isLoadingUpdate, isSuccessUpdate]);
+
+  if (isLoadingGet && !isSuccessGet) {
+    return <Loading />;
+  } else if (!isLoadingGet && !isSuccessGet) {
+    return <RequestError />;
+  }
   return (
     <View style={styles.container}>
       <Header />
@@ -46,26 +97,30 @@ export default function Settings() {
           <SettingsTextInput
             width={160}
             height={60}
-            placeHolder="Name"
+            placeHolder={name}
+            textName="Name"
             onChangeText={setName}
           />
           <SettingsTextInput
             width={160}
             height={60}
-            placeHolder="Surname"
+            placeHolder={surname}
+            textName="Surname"
             onChangeText={setSurname}
           />
         </View>
         <SettingsTextInput
           width={350}
           height={60}
-          placeHolder="Email"
+          placeHolder={email}
+          textName="Email"
           onChangeText={setEmail}
         />
         <SettingsTextInput
           width={350}
           height={60}
-          placeHolder="Password"
+          placeHolder={password}
+          textName="Password"
           secure={true}
           onChangeText={setPassword}
         />
@@ -77,27 +132,31 @@ export default function Settings() {
           <SettingsTextInput
             width={160}
             height={60}
-            placeHolder="City"
+            placeHolder={city}
+            textName="City"
             onChangeText={setCity}
           />
           <SettingsTextInput
             width={160}
             height={60}
-            placeHolder="District"
+            placeHolder={district}
+            textName="District"
             onChangeText={setDistrict}
           />
         </View>
         <SettingsTextInput
           width={350}
           height={60}
-          placeHolder="Mobile Phone"
+          placeHolder={phoneNumber}
+          textName="Mobile Phone"
           onChangeText={setPhoneNumber}
         />
         <SettingsTextInput
           width={350}
           height={140}
-          placeHolder="Address"
-          onChangeText={setAddress}
+          placeHolder={addressLine}
+          textName="Address"
+          onChangeText={setAddressLine}
         />
       </ScrollView>
       <View
@@ -117,6 +176,7 @@ export default function Settings() {
             justifyContent: "center",
             borderRadius: 10,
           }}
+          onPress={() => updateUserInfo()}
         >
           <Text
             style={{
