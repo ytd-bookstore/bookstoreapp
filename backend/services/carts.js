@@ -26,7 +26,7 @@ class CartService {
           as: "books",
         },
       });
-      return cart;
+      return cart ? cart : {};
     } catch (err) {
       console.log(err);
       throw new APIError(err);
@@ -45,7 +45,7 @@ class CartService {
           as: "books",
         },
       });
-      return cart;
+      return cart ? cart : {};
     } catch (err) {
       console.log(err);
       throw new APIError(err);
@@ -118,6 +118,7 @@ class CartService {
         where: { cart_id: cart.id, book_id },
         defaults: { cart_id: cart.id, book_id },
       });
+
       if (created_cartbook) {
         await cart.update({ total: cart.total + book.price });
       }
