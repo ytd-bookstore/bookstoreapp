@@ -53,7 +53,7 @@ const LoginStackScreen = () => (
 const ProfileStackScreen = () => (
   <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
     <ProfileStack.Screen name="ProfileScreen" component={Profile} />
-    <ProfileStack.Screen name="Orders" component={Orders} />
+    <ProfileStack.Screen name="OrdersScreen" component={Orders} />
     <ProfileStack.Screen name="OrderDetails" component={OrderDetails} />
     <ProfileStack.Screen name="Settings" component={Settings} />
   </ProfileStack.Navigator>

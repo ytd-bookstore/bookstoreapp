@@ -36,7 +36,11 @@ export default function OrderContainer(props) {
   return (
     <TouchableOpacity
       style={styles.orderWrapper}
-      onPress={() => props.navigation.push("OrderDetails")}
+      onPress={() =>
+        props.navigation.push("OrderDetails", {
+          order: props.order,
+        })
+      }
     >
       <View style={styles.propertiesWrapper}>
         <Text numberOfLines={2} style={styles.textStyle}>
