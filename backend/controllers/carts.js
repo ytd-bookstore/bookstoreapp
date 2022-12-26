@@ -38,6 +38,23 @@ class CartController {
     }
   };
 
+  getCartsOfUserWithBooks = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+
+      const user_id = req.params.user_id;
+      const cart = await cartService.getCartOfUserWithBooks(user_id);
+
+      res.json(cart);
+    } catch (err) {
+      next(err);
+    }
+  };
+
   createCart = async (req, res, next) => {
     try {
       const { ...others } = req.query;

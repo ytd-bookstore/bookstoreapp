@@ -33,6 +33,25 @@ class CartService {
     }
   };
 
+  getCartOfUserWithBooks = async (user_id) => {
+    try {
+      const cart = await Cart.findOne({
+        where: { user_id },
+        include: {
+          model: Book,
+          through: {
+            attributes: [],
+          },
+          as: "books",
+        },
+      });
+      return cart;
+    } catch (err) {
+      console.log(err);
+      throw new APIError(err);
+    }
+  };
+
   createCart = async (form) => {
     try {
       //TODO: User must be exist
@@ -84,35 +103,6 @@ class CartService {
   };
 
   addBookToCart = async (user_id, book_id) => {
-    try {
-      const user = await User.findByPk(user_id);
-      if (!user) throw new BadRequestError();
-      const book = await Book.findByPk(book_id);
-      if (!book) throw new BadRequestError();
-
-      const [cart, created_cart] = await Cart.findOrCreate({
-        where: { user_id },
-        defaults: { user_id, total: 0 },
-      });
-
-      const [cartbook, created_cartbook] = await CartBook.findOrCreate({
-        where: { cart_id: cart.id, book_id },
-        defaults: { cart_id: cart.id, book_id },
-      });
-      if (created_cartbook) {
-        await cart.update({ total: cart.total + book.price });
-      }
-      return;
-    } catch (err) {
-      console.log(err);
-      if (err instanceof BadRequestError) {
-        throw err;
-      }
-      throw new APIError();
-    }
-  };
-
-  removeBookToCart = async (user_id, book_id) => {
     try {
       const user = await User.findByPk(user_id);
       if (!user) throw new BadRequestError();
