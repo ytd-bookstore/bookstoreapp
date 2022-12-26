@@ -120,8 +120,8 @@ class CartService {
       });
 
       const [cartbook, created_cartbook] = await CartBook.findOrCreate({
-        where: { cart_id: cart.id, book_id },
-        defaults: { cart_id: cart.id, book_id },
+        where: { cart_id: user_id, book_id },
+        defaults: { cart_id: user_id, book_id },
       });
 
       if (created_cartbook) {
@@ -147,7 +147,7 @@ class CartService {
       if (!cart) throw new BadRequestError();
 
       const cartbook = await CartBook.findOne({
-        where: { cart_id: cart.id, book_id },
+        where: { cart_id: user_id, book_id },
       });
       if (!cartbook) throw new BadRequestError();
 
