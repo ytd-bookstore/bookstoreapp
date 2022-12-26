@@ -14,7 +14,6 @@ const fetchAddFavorite = async (userId, bookId) => {
   });
 
   const jsonData = await data.json();
-  console.log(jsonData);
   return jsonData;
 };
 
