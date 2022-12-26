@@ -3,6 +3,7 @@ const Address = require("../models/Address");
 const Crypto = require("crypto");
 
 const { NotFoundError, APIError, BadRequestError } = require("../utils/errors");
+const jwtToken = require("../utils/jwtToken");
 
 class UserService {
   getUsers = async () => {
@@ -132,6 +133,33 @@ class UserService {
       form.passwordSalt = passwordSalt;
       let newUser = await User.create(form);
       return newUser;
+    } catch (err) {
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof BadRequestError
+      ) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+
+  login = async (form) => {
+    try {
+      let user = await User.findOne({ where: { email: form.email } });
+      if (!user) throw new BadRequestError("Email is not match with any user!");
+
+      const passwordHash = Crypto.createHash("sha256")
+        .update(form.password)
+        .update(
+          Crypto.createHash("sha256").update(user.passwordSalt).digest("hex")
+        )
+        .digest("hex");
+      if (passwordHash != user.passwordHash) {
+        throw new BadRequestError("Wrong password!");
+      }
+      return jwtToken.generateAccessToken(user);
     } catch (err) {
       if (
         err.name === "SequelizeValidationError" ||
