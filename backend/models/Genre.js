@@ -9,6 +9,9 @@ Genre.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
 
     name: {

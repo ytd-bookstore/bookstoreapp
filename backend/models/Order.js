@@ -9,21 +9,33 @@ Order.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
 
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
 
     address_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
 
     total: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
 
     status: {
