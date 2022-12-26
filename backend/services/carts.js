@@ -123,7 +123,31 @@ class CartService {
       }
       return;
     } catch (err) {
-      console.log(err);
+      if (err instanceof BadRequestError) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+
+  removeBookFromCart = async (user_id, book_id) => {
+    try {
+      const user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError();
+      const book = await Book.findByPk(book_id);
+      if (!book) throw new BadRequestError();
+
+      const cart = await Cart.findOne({ where: { user_id } });
+      if (!cart) throw new BadRequestError();
+
+      const cartbook = await CartBook.findOne({
+        where: { cart_id: cart.id, book_id },
+      });
+      if (!cartbook) throw new BadRequestError();
+
+      cartbook.destroy();
+      await cart.update({ total: cart.total - book.price });
+    } catch (err) {
       if (err instanceof BadRequestError) {
         throw err;
       }

@@ -104,8 +104,23 @@ class CartController {
       }
       const user_id = req.params.user_id;
       const book_id = req.params.book_id;
-      const cart = await cartService.addBookToCart(user_id, book_id);
-      res.status(httpStatusCode.CREATED).json(cart);
+      await cartService.addBookToCart(user_id, book_id);
+      res.status(httpStatusCode.NO_CONTENT).send();
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  removeBookFromCart = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const user_id = req.params.user_id;
+      const book_id = req.params.book_id;
+      await cartService.removeBookFromCart(user_id, book_id);
+      res.status(httpStatusCode.NO_CONTENT).send();
     } catch (err) {
       next(err);
     }
