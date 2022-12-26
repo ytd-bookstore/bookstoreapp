@@ -1,5 +1,7 @@
 const Book = require("../models/Book");
 const Cart = require("../models/Cart");
+const User = require("../models/User");
+const CartBook = require("../models/CartBook");
 const { APIError, NotFoundError, BadRequestError } = require("../utils/errors");
 
 class CartService {
@@ -26,6 +28,7 @@ class CartService {
       });
       return cart;
     } catch (err) {
+      console.log(err);
       throw new APIError(err);
     }
   };
@@ -73,6 +76,64 @@ class CartService {
       await cart.destroy();
       return;
     } catch (err) {
+      if (err instanceof BadRequestError) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+
+  addBookToCart = async (user_id, book_id) => {
+    try {
+      const user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError();
+      const book = await Book.findByPk(book_id);
+      if (!book) throw new BadRequestError();
+
+      const [cart, created_cart] = await Cart.findOrCreate({
+        where: { user_id },
+        defaults: { user_id, total: 0 },
+      });
+
+      const [cartbook, created_cartbook] = await CartBook.findOrCreate({
+        where: { cart_id: cart.id, book_id },
+        defaults: { cart_id: cart.id, book_id },
+      });
+      if (created_cartbook) {
+        await cart.update({ total: cart.total + book.price });
+      }
+      return;
+    } catch (err) {
+      console.log(err);
+      if (err instanceof BadRequestError) {
+        throw err;
+      }
+      throw new APIError();
+    }
+  };
+
+  removeBookToCart = async (user_id, book_id) => {
+    try {
+      const user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError();
+      const book = await Book.findByPk(book_id);
+      if (!book) throw new BadRequestError();
+
+      const [cart, created_cart] = await Cart.findOrCreate({
+        where: { user_id },
+        defaults: { user_id, total: 0 },
+      });
+
+      const [cartbook, created_cartbook] = await CartBook.findOrCreate({
+        where: { cart_id: cart.id, book_id },
+        defaults: { cart_id: cart.id, book_id },
+      });
+      if (created_cartbook) {
+        await cart.update({ total: cart.total + book.price });
+      }
+      return;
+    } catch (err) {
+      console.log(err);
       if (err instanceof BadRequestError) {
         throw err;
       }
