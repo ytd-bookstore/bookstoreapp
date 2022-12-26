@@ -21,10 +21,25 @@ import checkout from "../hooks/checkout";
 import Loading from "../components/LoadingScreen";
 import RequestError from "../components/RequestErrorScreen";
 
+import { useIsFocused } from "@react-navigation/core";
+
 export default function Payment({ route, navigation }) {
+  const isFocused = useIsFocused();
+  const [pageState, setPageState] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isFocused && pageState) {
+      navigation.dispatch(StackActions.popToTop());
+    }
+    setPageState(true);
+  }, [isFocused]);
+
   const goToOrders = () => {
     navigation.dispatch(StackActions.popToTop());
-    navigation.navigate("OrdersScreen");
+    navigation.navigate("Profile", {
+      screen: "OrdersScreen",
+      initial: false,
+    });
   };
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -103,7 +118,7 @@ export default function Payment({ route, navigation }) {
     return <Loading />;
   } else if (!isLoading && !isSuccess && !isIdle) {
     return <RequestError />;
-  } else if (!isLoading && isSuccess && !isIdle) {
+  } else if (!isLoading && isSuccess && !isIdle && isFocused) {
     Alert.alert("Information", "Order is completed", [
       {
         text: "OK",
