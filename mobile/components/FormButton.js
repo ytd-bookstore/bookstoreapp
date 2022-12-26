@@ -5,7 +5,16 @@ import colors from "../assets/constants/colors";
 
 export default function SearchBar(props) {
   return (
-    <TouchableOpacity style={styles.button} onPress={props.onPress}>
+    <TouchableOpacity
+      style={{
+        ...styles.button,
+        backgroundColor: props.disabled
+          ? colors.textColor
+          : colors.headerTextColor,
+      }}
+      disabled={props.disabled}
+      onPress={props.onPress}
+    >
       <Text style={styles.buttonText}>{props.title}</Text>
     </TouchableOpacity>
   );
@@ -19,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.headerTextColor,
+
     shadowColor: colors.shadow,
     elevation: 5,
   },

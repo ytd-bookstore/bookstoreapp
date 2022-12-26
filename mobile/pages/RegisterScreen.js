@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ToastAndroid,
 } from "react-native";
 
 import colors from "../assets/constants/colors";
@@ -14,29 +15,80 @@ import colors from "../assets/constants/colors";
 import LoginHeader from "../components/LoginHeader";
 import FormTextInput from "../components/FormTextInput";
 import FormButton from "../components/FormButton";
+import register from "../hooks/register";
 
-function register(userName, mail, pswd, confirmPswd, navigation) {
-  console.log(userName);
-  console.log(mail);
-  console.log(pswd);
-  console.log(confirmPswd);
-  if (pswd === confirmPswd) {
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: "LoginScreen",
-        },
-      ],
-    });
-  }
+function registerUser(navigation, mail) {
+  navigation.reset({
+    index: 0,
+    routes: [
+      {
+        name: "LoginScreen",
+        params: { mail: mail },
+      },
+    ],
+  });
 }
 
 export default function Register({ navigation }) {
+  const [buttonDisabled, setButtonDisable] = React.useState(true);
+
   const [userName, onChangeName] = React.useState("");
+  const [surname, onChangeSurname] = React.useState("");
   const [mail, onChangeMail] = React.useState("");
   const [pswd, onChangePswd] = React.useState("");
-  const [confirmPswd, onChangeConfirmPswd] = React.useState("");
+
+  const { data, isSuccess, isLoading, isIdle, mutate } = register();
+
+  const mutateRegister = (name, surname, email, password) => {
+    mutate(
+      { name, surname, email, password },
+      {
+        onSuccess: () => {
+          if (!data) {
+            registerUser(navigation, mail);
+          }
+        },
+      }
+    );
+  };
+
+  React.useEffect(() => {
+    if (
+      pswd.length >= 8 &&
+      userName.length >= 3 &&
+      surname.length >= 3 &&
+      mail.length >= 5 &&
+      mail.includes("@") &&
+      mail.includes(".")
+    ) {
+      setButtonDisable(false);
+    } else {
+      setButtonDisable(true);
+    }
+  }, [userName, mail, pswd, surname]);
+
+  React.useEffect(() => {
+    if (data && data.errors) {
+      ToastAndroid.showWithGravity(
+        data.errors[0],
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }
+  }, [isSuccess]);
+
+  if (isLoading && !isSuccess) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  } else if (!isLoading && !isSuccess && !isIdle) {
+    <View>
+      <Text>Request Error...</Text>
+    </View>;
+  }
+
   return (
     <View style={styles.container}>
       <LoginHeader />
@@ -56,30 +108,32 @@ export default function Register({ navigation }) {
           <FormTextInput
             icon={"person-outline"}
             placeholder={"Name"}
+            value={userName}
             onChangeText={onChangeName}
+          ></FormTextInput>
+          <FormTextInput
+            icon={"person-outline"}
+            placeholder={"Surname"}
+            value={surname}
+            onChangeText={onChangeSurname}
           ></FormTextInput>
           <FormTextInput
             icon={"mail-outline"}
             placeholder={"Email"}
+            value={mail}
             onChangeText={onChangeMail}
           ></FormTextInput>
           <FormTextInput
             icon={"lock-closed-outline"}
             placeholder={"Password"}
+            value={pswd}
             secure={true}
             onChangeText={onChangePswd}
           ></FormTextInput>
-          <FormTextInput
-            icon={"lock-closed-outline"}
-            placeholder={"Confirm Password"}
-            secure={true}
-            onChangeText={onChangeConfirmPswd}
-          ></FormTextInput>
           <FormButton
             title="Register"
-            onPress={() =>
-              register(userName, mail, pswd, confirmPswd, navigation)
-            }
+            disabled={buttonDisabled}
+            onPress={() => mutateRegister(userName, surname, mail, pswd)}
           ></FormButton>
         </ScrollView>
       </View>

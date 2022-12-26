@@ -18,6 +18,7 @@ export default function FormTextInput(props) {
         placeholder={props.placeholder}
         secureTextEntry={props.secure ? props.secure : false}
         style={styles.inputText}
+        value={props.value}
       ></TextInput>
     </View>
   );
