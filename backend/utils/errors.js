@@ -44,8 +44,8 @@ class InvalidFormatError extends BaseError {
 }
 
 class BadRequestError extends BaseError {
-  constructor(url = "") {
-    super(HttpStatusCode.BAD_REQUEST, "Bad Request", url);
+  constructor(message = "Bad Request", url = "") {
+    super(HttpStatusCode.BAD_REQUEST, message, url);
   }
 }
 
