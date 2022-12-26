@@ -8,12 +8,16 @@ export default function BookContainer(props) {
   return (
     <TouchableOpacity
       style={styles.bookWrapper}
-      onPress={() => props.navigation.navigate("BookScreen")}
+      onPress={() =>
+        props.navigation.navigate("BookScreen", {
+          id: props.book.id,
+        })
+      }
     >
       <Image
         style={styles.image}
         source={{
-          uri: props.book.image,
+          uri: props.book.image_url,
         }}
       />
       <View style={styles.propertiesWrapper}>
