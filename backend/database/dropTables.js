@@ -14,8 +14,8 @@ module.exports.dropTables = async () => {
   await CartBook.drop();
   await BookGenre.drop();
   await Favorite.drop();
-  await Book.drop();
   await Cart.drop();
+  await Book.drop();
   await Order.drop();
   await Address.drop();
   await User.drop();

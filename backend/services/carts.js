@@ -54,7 +54,9 @@ class CartService {
 
   createCart = async (form) => {
     try {
-      //TODO: User must be exist
+      const user_id = form.user_id;
+      const user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError();
       const cart = await Cart.create(form);
       return cart;
     } catch (err) {
@@ -72,6 +74,9 @@ class CartService {
   updateCart = async (id, form) => {
     try {
       //TODO: User must be exist
+      const user_id = form.user_id;
+      const user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError();
       let cart = await Cart.findByPk(id);
       if (!cart) throw new BadRequestError();
       cart = await cart.update(form);

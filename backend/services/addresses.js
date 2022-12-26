@@ -26,8 +26,8 @@ class AddressService {
   createAddress = async (form) => {
     try {
       let user_id = form.user_id;
-      let addresses = await Address.findAll({ where: { user_id } });
-      if (addresses[0]) throw new BadRequestError();
+      let addresses = await Address.findOne({ where: { user_id } });
+      if (addresses) throw new BadRequestError();
       const address = await Address.create(form);
       return address;
     } catch (err) {
@@ -46,6 +46,8 @@ class AddressService {
     try {
       let address = await Address.findByPk(id);
       if (!address) throw new BadRequestError();
+      let addresses = await Address.findOne({ where: { user_id } });
+      if (addresses) throw new BadRequestError();
       address = await address.update(form);
       return address;
     } catch (err) {
