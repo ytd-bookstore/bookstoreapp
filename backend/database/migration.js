@@ -59,16 +59,22 @@ Cart.belongsTo(User, {
   onUpdate: "CASCADE",
 });
 
-CartBook.belongsTo(Cart, {
-  foreignKey: "cart_id",
+Book.belongsToMany(Cart, {
+  through: CartBook,
+  foreignKey: "book_id",
+  otherKey: "cart_id",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
+  as: "cart",
 });
 
-CartBook.belongsTo(Book, {
-  foreignKey: "book_id",
+Cart.belongsToMany(Book, {
+  through: CartBook,
+  foreignKey: "cart_id",
+  otherKey: "book_id",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
+  as: "books",
 });
 
 Book.belongsToMany(Genre, {
@@ -95,6 +101,12 @@ BookGenre.belongsTo(Book, { foreignKey: "book_id" });
 
 Genre.hasMany(BookGenre, { foreignKey: "genre_id" });
 BookGenre.belongsTo(Genre, { foreignKey: "genre_id" });
+
+Cart.hasMany(CartBook, { foreignKey: "cart_id" });
+CartBook.belongsTo(Book, { foreignKey: "cart_id" });
+
+Book.hasMany(CartBook, { foreignKey: "book_id" });
+CartBook.belongsTo(Genre, { foreignKey: "book_id" });
 
 module.exports.migrate = function () {
   // Synchronization of database
