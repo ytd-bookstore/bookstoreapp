@@ -105,7 +105,7 @@ class OrderService {
 
   checkout = async (user_id, form) => {
     try {
-      if (!this.#validateCartInformation(form)) throw new BadRequestError();
+      if (!this.#validateCardInformation(form)) throw new BadRequestError();
       const user = await User.findByPk(user_id);
       if (!user) throw new BadRequestError();
       const cart = await Cart.findOne({
@@ -142,13 +142,13 @@ class OrderService {
     }
   };
 
-  #validateCartInformation = (form) => {
+  #validateCardInformation = (form) => {
     if (
       form.name.length != 0 &&
       form.surname.length != 0 &&
       form.cardNumber.length == 16 &&
       0 < parseInt(form.month) &&
-      parseInt(form.month) < 12 &&
+      parseInt(form.month) <= 12 &&
       parseInt(form.year) < 2030 &&
       form.cvv.length == 3
     ) {
