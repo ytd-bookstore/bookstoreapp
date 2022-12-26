@@ -20,6 +20,7 @@ import RequestError from "../components/RequestErrorScreen";
 import Loading from "../components/LoadingScreen";
 import useBook from "../hooks/useBook";
 import addFavorite from "../hooks/addFavorite";
+import addBookToCart from "../hooks/addBookToCart";
 
 function formatToUnits(number, precision) {
   const abbrev = ["", "k", "m", "b", "t"];
@@ -104,17 +105,34 @@ export default function Book({ route, navigation }) {
     isSuccess: isSuccessAddFav,
     isLoading: isLoadingAddFav,
     isIdle: isIdleAddFav,
-    mutate,
+    mutate: mutateFav,
   } = addFavorite();
 
   const addFav = () => {
-    mutate({ userId: 1, bookId: book.id });
+    mutateFav({ userId: 1, bookId: book.id });
     setHeartIcon("heart");
+  };
+
+  const {
+    isSuccess: isSuccessAddToCart,
+    isLoading: isLoadingAddToCart,
+    isIdle: isIdleAddToCart,
+    mutate: mutateCart,
+  } = addBookToCart();
+
+  const addToCart = () => {
+    mutateCart({ userId: 1, bookId: book.id });
   };
 
   if (isLoadingAddFav && !isSuccessAddFav) {
     return <Loading />;
   } else if (!isLoadingAddFav && !isSuccessAddFav && !isIdleAddFav) {
+    return <RequestError />;
+  }
+
+  if (isLoadingAddToCart && !isSuccessAddToCart) {
+    return <Loading />;
+  } else if (!isLoadingAddToCart && !isSuccessAddToCart && !isIdleAddToCart) {
     return <RequestError />;
   }
 
@@ -198,7 +216,10 @@ export default function Book({ route, navigation }) {
           </View>
 
           <View style={styles.addToCartButtonWrapper}>
-            <TouchableOpacity style={styles.addToCartButton}>
+            <TouchableOpacity
+              style={styles.addToCartButton}
+              onPress={() => addToCart()}
+            >
               <Text style={styles.addToCartButtonText}>Add to Cart</Text>
             </TouchableOpacity>
           </View>

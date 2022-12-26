@@ -5,25 +5,21 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import colors from "../assets/constants/colors";
 
 export default function CartBookContainer(props) {
-  const [itemCount, changeItemCount] = React.useState(1);
-  const increaseItemCount = () => {
-    changeItemCount(itemCount + 1);
-  };
-  const decreaseItemCount = () => {
-    if (itemCount - 1 > 0) {
-      changeItemCount(itemCount - 1);
-    }
-  };
   return (
-    <View style={styles.bookWrapper}>
-      <TouchableOpacity onPress={() => props.navigation.navigate("BookScreen")}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: props.book.image_url,
-          }}
-        />
-      </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.bookWrapper}
+      onPress={() =>
+        props.navigation.navigate("BookScreen", {
+          id: props.book.id,
+        })
+      }
+    >
+      <Image
+        style={styles.image}
+        source={{
+          uri: props.book.image_url,
+        }}
+      />
 
       <View style={styles.propertiesWrapper}>
         <Text numberOfLines={2} style={styles.title}>
@@ -35,24 +31,11 @@ export default function CartBookContainer(props) {
       </View>
 
       <View style={styles.itemCountWrapper}>
-        <TouchableOpacity onPress={increaseItemCount}>
-          <Ionicons name="add-outline" size={24} style={styles.icon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>{props.book.quantity}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={decreaseItemCount}>
-          <Ionicons
-            name={
-              props.book.quantity > 1 ? "remove-outline" : "trash-bin-sharp"
-            }
-            size={24}
-            style={styles.icon}
-          />
+        <TouchableOpacity onPress={() => props.deleteFromCart(props.book.id)}>
+          <Ionicons name={"trash-bin-sharp"} size={24} style={styles.icon} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -92,7 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   icon: {
-    color: colors.black,
+    color: colors.favorite,
   },
   itemCountWrapper: {
     height: "100%",
