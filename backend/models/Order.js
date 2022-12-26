@@ -22,16 +22,6 @@ Order.init(
       },
     },
 
-    //Remove
-    address_id: {
-      type: DataTypes.INTEGER,
-      defaultValue: 1,
-      allowNull: false,
-      validate: {
-        isInt: true,
-      },
-    },
-
     total: {
       type: DataTypes.FLOAT.UNSIGNED,
       allowNull: false,
