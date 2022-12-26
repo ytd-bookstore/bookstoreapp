@@ -5,83 +5,60 @@ import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 import OrderContainer from "../components/OrderContainer";
+import useOrders from "../hooks/useOrders";
 
-const DATA = [
-  {
-    id: 1,
-    user_id: 12,
-    total: 144.25,
-    date: "1.11.2022",
-    status: "Shipping",
-    books: [
-      {
-        id: 123,
-        title: "Hunger Games",
-        quantity: 3,
-        price: 11.25,
-        image_url: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        id: 11233,
-        title: "Harry Potter: Order of The Phoenix",
-        quantity: 5,
-        price: 22.1,
-        image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-    ],
-  },
-  {
-    id: 2,
-    user_id: 12,
-    total: 144.25,
-    date: "1.11.2022",
-    status: "Delivered",
-    books: [
-      {
-        id: 124,
-        title: "Hunger Games",
-        quantity: 3,
-        price: 11.25,
-        image_url: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-      },
-      {
-        id: 125,
-        title: "Harry Potter: Order of The Phoenix",
-        quantity: 5,
-        price: 22.1,
-        image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        id: 126,
-        title: "Harry Potter: Order of The Phoenix",
-        quantity: 5,
-        price: 22.1,
-        image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        id: 127,
-        title: "Harry Potter: Order of The Phoenix",
-        quantity: 5,
-        price: 22.1,
-        image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-      {
-        id: 128,
-        title: "Harry Potter: Order of The Phoenix",
-        quantity: 5,
-        price: 22.1,
-        image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-      },
-    ],
-  },
-];
+import Loading from "../components/LoadingScreen";
+import RequestError from "../components/RequestErrorScreen";
+
+import { useIsFocused } from "@react-navigation/core";
 
 export default function Orders({ navigation }) {
+  const isFocused = useIsFocused();
+  const [pageState, setPageState] = React.useState(false);
+
+  const { data: ordersData, isSuccess, isLoading } = useOrders(pageState, 1);
+
+  React.useEffect(() => {
+    if (isFocused) {
+      setPageState(!pageState);
+    }
+  }, [isFocused]);
+
+  if (isLoading && !isSuccess) {
+    return <Loading />;
+  } else if (!isLoading && !isSuccess) {
+    return <RequestError />;
+  }
+
+  if (ordersData.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.headerWrapper}>
+          <Text style={styles.headerText}>My Orders</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          <Text style={styles.noOrdersText}>
+            You don't have any orders right now. You can order books from your
+            cart.
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
   var orders = [];
 
-  for (let i = 0; i < DATA.length; i++) {
+  for (let i = 0; i < ordersData.length; i++) {
     orders.push(
-      <OrderContainer key={i} order={DATA[i]} navigation={navigation} />
+      <OrderContainer key={i} order={ordersData[i]} navigation={navigation} />
     );
   }
   return (
@@ -121,5 +98,10 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans-SemiBold",
     fontSize: 32,
     color: colors.textColor,
+  },
+  noOrdersText: {
+    color: colors.textColor,
+    fontSize: 20,
+    fontFamily: "OpenSans-SemiBold",
   },
 });

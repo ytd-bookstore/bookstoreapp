@@ -97,6 +97,13 @@ function Genres(props) {
   return <Text style={props.style}>{genres}</Text>;
 }
 
+const createCartAlert = (bookTitle) =>
+  Alert.alert("Information", bookTitle + " is added to cart.", [
+    {
+      text: "OK",
+    },
+  ]);
+
 export default function Book({ route, navigation }) {
   const [hearthIconName, setHeartIcon] = React.useState("heart-outline");
   const { data: book, isSuccess, isLoading } = useBook(route.params.id);
@@ -122,6 +129,7 @@ export default function Book({ route, navigation }) {
 
   const addToCart = () => {
     mutateCart({ userId: 1, bookId: book.id });
+    createCartAlert(book.title);
   };
 
   if (isLoadingAddFav && !isSuccessAddFav) {
@@ -130,7 +138,7 @@ export default function Book({ route, navigation }) {
     return <RequestError />;
   }
 
-  if (isLoadingAddToCart && !isSuccessAddToCart) {
+  if (isLoadingAddToCart && !isSuccessAddToCart && !isIdleAddToCart) {
     return <Loading />;
   } else if (!isLoadingAddToCart && !isSuccessAddToCart && !isIdleAddToCart) {
     return <RequestError />;

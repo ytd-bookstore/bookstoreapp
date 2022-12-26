@@ -61,7 +61,7 @@ export default function Cart({ navigation }) {
     return <RequestError />;
   }
 
-  if (cart.books.length === 0) {
+  if (!cart.books || cart.books.length === 0) {
     return (
       <View style={styles.container}>
         <Header />

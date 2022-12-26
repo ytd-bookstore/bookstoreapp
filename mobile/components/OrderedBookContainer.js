@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
 import colors from "../assets/constants/colors";
 
@@ -8,7 +7,11 @@ export default function OrderedBookContainer(props) {
   return (
     <TouchableOpacity
       style={styles.bookWrapper}
-      onPress={() => props.navigation.navigate("BookScreen")}
+      onPress={() =>
+        props.navigation.navigate("BookScreen", {
+          id: props.book.id,
+        })
+      }
     >
       <Image
         style={styles.image}
@@ -19,9 +22,6 @@ export default function OrderedBookContainer(props) {
       <View style={styles.propertiesWrapper}>
         <Text numberOfLines={2} style={styles.title}>
           {props.book.title}
-        </Text>
-        <Text numberOfLines={1} style={styles.author}>
-          Quantity: {props.book.quantity}
         </Text>
         <Text numberOfLines={2} style={styles.genre}>
           Price: {props.book.price}$
