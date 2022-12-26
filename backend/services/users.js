@@ -159,8 +159,9 @@ class UserService {
       if (passwordHash != user.passwordHash) {
         throw new BadRequestError("Wrong password!");
       }
-      return jwtToken.generateAccessToken(user);
+      return jwtToken.generateAccessToken(user.toJSON());
     } catch (err) {
+      console.log(err);
       if (
         err.name === "SequelizeValidationError" ||
         err.name === "SequelizeUniqueConstraintError" ||
