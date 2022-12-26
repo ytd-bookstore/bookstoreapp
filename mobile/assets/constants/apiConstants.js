@@ -1,5 +1,6 @@
 const apiConstants = {
-  api: "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/",
+  api: "http://10.0.2.2:3000/api/",
+  tokenKey: "jwtToken",
 };
 
 export default apiConstants;

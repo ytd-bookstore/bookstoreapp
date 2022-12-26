@@ -7,22 +7,97 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ToastAndroid,
 } from "react-native";
 
 import colors from "../assets/constants/colors";
 
+import * as SecureStore from "expo-secure-store";
+
 import LoginHeader from "../components/LoginHeader";
 import FormTextInput from "../components/FormTextInput";
 import FormButton from "../components/FormButton";
+import signIn from "../hooks/signIn";
 
-function login(mail, pswd) {
-  console.log(mail);
-  console.log(pswd);
+function login(navigation) {
+  navigation.reset({
+    index: 0,
+    routes: [
+      {
+        name: "HomeTabs",
+      },
+    ],
+  });
 }
 
-export default function Login({ navigation }) {
+export default function Login({ navigation, route }) {
+  const [pageState, setPageState] = React.useState(false);
+  const [buttonDisabled, setButtonDisable] = React.useState(true);
+
   const [mail, onChangeMail] = React.useState("");
   const [pswd, onChangePswd] = React.useState("");
+
+  const { data, isSuccess, isLoading, isIdle, mutate } = signIn();
+
+  const mutateSignIn = (email, password) => {
+    mutate(
+      { email, password },
+      {
+        onSuccess: async (value) => {
+          if (value && !value.errors) {
+            await SecureStore.setItemAsync("jwtToken", value);
+            login(navigation);
+          }
+        },
+      }
+    );
+  };
+
+  React.useEffect(() => {
+    if (
+      pswd.length >= 8 &&
+      mail.length >= 5 &&
+      mail.includes("@") &&
+      mail.includes(".")
+    ) {
+      setButtonDisable(false);
+    } else {
+      setButtonDisable(true);
+    }
+  }, [mail, pswd]);
+
+  React.useEffect(() => {
+    if (!pageState && route.params) {
+      ToastAndroid.showWithGravity(
+        route.params.mail + " has registered!",
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP
+      );
+    }
+  }, [pageState]);
+
+  React.useEffect(() => {
+    if (data && data.errors) {
+      ToastAndroid.showWithGravity(
+        data.errors[0],
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+      );
+    }
+  }, [isSuccess]);
+
+  if (isLoading && !isSuccess) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  } else if (!isLoading && !isSuccess && !isIdle) {
+    <View>
+      <Text>Request Error...</Text>
+    </View>;
+  }
+
   return (
     <View style={styles.container}>
       <LoginHeader />
@@ -52,16 +127,8 @@ export default function Login({ navigation }) {
           ></FormTextInput>
           <FormButton
             title="Login"
-            onPress={() =>
-              navigation.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: "HomeTabs",
-                  },
-                ],
-              })
-            }
+            disabled={buttonDisabled}
+            onPress={() => mutateSignIn(mail, pswd)}
           ></FormButton>
         </ScrollView>
       </View>

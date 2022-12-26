@@ -1,19 +1,12 @@
 import * as React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  StatusBar,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, StatusBar, ScrollView } from "react-native";
 
 import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import BookShelf from "../components/BookShelf";
-import useGenre from "../hooks/useGenre";
+
 import Loading from "../components/LoadingScreen";
 import RequestError from "../components/RequestErrorScreen";
 import useGenreIDs from "../hooks/useGenreIDs";
