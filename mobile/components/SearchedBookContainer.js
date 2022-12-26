@@ -26,8 +26,8 @@ export default function SearchedBookContainer(props) {
         <Text numberOfLines={1} style={styles.author}>
           {props.book.author}
         </Text>
-        <Text numberOfLines={2} style={styles.genre}>
-          {props.book.genre}
+        <Text numberOfLines={2} style={styles.price}>
+          {props.book.price}$
         </Text>
       </View>
     </TouchableOpacity>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans-SemiBold",
     fontSize: 18,
   },
-  genre: {
+  price: {
     fontsize: 16,
     fontFamily: "OpenSans-SemiBold",
   },
