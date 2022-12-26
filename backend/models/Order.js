@@ -33,7 +33,7 @@ Order.init(
     },
 
     total: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.FLOAT.UNSIGNED,
       allowNull: false,
       validate: {
         isFloat: true,
