@@ -22,8 +22,10 @@ Order.init(
       },
     },
 
+    //Remove
     address_id: {
       type: DataTypes.INTEGER,
+      defaultValue: 1,
       allowNull: false,
       validate: {
         isInt: true,
@@ -34,7 +36,7 @@ Order.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       validate: {
-        isInt: true,
+        isFloat: true,
       },
     },
 
