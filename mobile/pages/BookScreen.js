@@ -19,6 +19,7 @@ import Header from "../components/Header";
 import RequestError from "../components/RequestErrorScreen";
 import Loading from "../components/LoadingScreen";
 import useBook from "../hooks/useBook";
+import addFavorite from "../hooks/addFavorite";
 
 function formatToUnits(number, precision) {
   const abbrev = ["", "k", "m", "b", "t"];
@@ -82,12 +83,10 @@ function Stars(props) {
   return stars;
 }
 
-const createAlert = (title) =>
-  Alert.alert(title, "Added to Favorites", [
-    { text: "OK", onPress: () => console.log("OK Pressed") },
-  ]);
-
 function Genres(props) {
+  if (props.genres.length === 0) {
+    return <Text style={props.style}>No genre information...</Text>;
+  }
   let genres = [];
   for (let i = 0; i < props.genres.length - 1; i++) {
     genres.push(props.genres[i].name + ", ");
@@ -98,7 +97,26 @@ function Genres(props) {
 }
 
 export default function Book({ route, navigation }) {
+  const [hearthIconName, setHeartIcon] = React.useState("heart-outline");
   const { data: book, isSuccess, isLoading } = useBook(route.params.id);
+
+  const {
+    isSuccess: isSuccessAddFav,
+    isLoading: isLoadingAddFav,
+    isIdle: isIdleAddFav,
+    mutate,
+  } = addFavorite();
+
+  const addFav = () => {
+    mutate({ userId: 1, bookId: book.id });
+    setHeartIcon("heart");
+  };
+
+  if (isLoadingAddFav && !isSuccessAddFav) {
+    return <Loading />;
+  } else if (!isLoadingAddFav && !isSuccessAddFav && !isIdleAddFav) {
+    return <RequestError />;
+  }
 
   if (isLoading && !isSuccess) {
     return <Loading />;
@@ -137,9 +155,13 @@ export default function Book({ route, navigation }) {
                   alignItems: "flex-end",
                 }}
               >
-                <TouchableOpacity onPress={() => createAlert(book.title)}>
+                <TouchableOpacity
+                  onPress={() => {
+                    addFav();
+                  }}
+                >
                   <IonIcons
-                    name={"heart-outline"}
+                    name={hearthIconName}
                     color={colors.headerTextColor}
                     size={30}
                   ></IonIcons>
