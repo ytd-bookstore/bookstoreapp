@@ -116,6 +116,19 @@ class UserController {
       next(err);
     }
   };
+
+  login = async (req, res, next) => {
+    try {
+      const { ...others } = req.query;
+      if (Object.keys(others).length != 0) {
+        throw new InvalidQueryError(req.originalUrl);
+      }
+      const token = await userService.login(req.body);
+      res.status(httpStatusCode.CREATED).json(token);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 const userController = new UserController();
