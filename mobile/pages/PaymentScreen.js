@@ -16,19 +16,16 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import Header from "../components/Header";
 import PaymentTextInput from "../components/PaymentTextInput";
+import checkout from "../hooks/checkout";
+
+import Loading from "../components/LoadingScreen";
+import RequestError from "../components/RequestErrorScreen";
 
 export default function Payment({ route, navigation }) {
   const goToOrders = () => {
     navigation.dispatch(StackActions.popToTop());
-    navigation.navigate("Profile", { screen: "Orders" });
+    navigation.navigate("OrdersScreen");
   };
-  const createAlert = () =>
-    Alert.alert("Information", "Order is completed", [
-      {
-        text: "OK",
-        onPress: () => goToOrders(),
-      },
-    ]);
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
   const [cardNumber, setCardNumber] = React.useState("");
@@ -37,9 +34,49 @@ export default function Payment({ route, navigation }) {
   const [cvv, setCVV] = React.useState("");
   const [checked, setChecked] = React.useState(false);
 
+  const { isSuccess, isLoading, isIdle, mutate } = checkout();
+
+  const mutateCheckout = (information) => {
+    mutate({ userId: 1, information });
+  };
+
+  const checkInfo = () => {
+    if (
+      name.length > 0 &&
+      surname.length > 0 &&
+      cardNumber.length === 16 &&
+      cvv.length === 3 &&
+      month.length > 0 &&
+      year.length === 4 &&
+      checked
+    ) {
+      mutateCheckout({
+        name,
+        surname,
+        cardNumber,
+        cvv,
+        month,
+        year,
+      });
+      /*
+       */
+    } else {
+      Alert.alert(
+        "Invalid Information",
+        "Please give valid card information.",
+        [
+          {
+            text: "OK",
+          },
+        ]
+      );
+    }
+  };
+
   const onChangeCardNumber = (text) => {
     setCardNumber(text.replace(/[^0-9]/g, ""));
   };
+
   const onChangeMonth = (text) => {
     text = text.replace(/[^0-9]/g, "");
     var number = Number(text);
@@ -61,6 +98,19 @@ export default function Payment({ route, navigation }) {
   const onChangeCVV = (text) => {
     setCVV(text.replace(/[^0-9]/g, ""));
   };
+
+  if (isLoading && !isSuccess) {
+    return <Loading />;
+  } else if (!isLoading && !isSuccess && !isIdle) {
+    return <RequestError />;
+  } else if (!isLoading && isSuccess && !isIdle) {
+    Alert.alert("Information", "Order is completed", [
+      {
+        text: "OK",
+        onPress: () => goToOrders(),
+      },
+    ]);
+  }
 
   return (
     <View style={styles.container}>
@@ -88,6 +138,7 @@ export default function Payment({ route, navigation }) {
             onChangeText={setName}
             marginHorizontal={15}
             marginTop={10}
+            value={name}
           />
           <PaymentTextInput
             width={160}
@@ -96,6 +147,7 @@ export default function Payment({ route, navigation }) {
             onChangeText={setSurname}
             marginHorizontal={15}
             marginTop={10}
+            value={surname}
           />
         </View>
         <PaymentTextInput
@@ -169,7 +221,7 @@ export default function Payment({ route, navigation }) {
         <View style={styles.checkoutButtonWrapper}>
           <TouchableOpacity
             style={styles.checkoutButton}
-            onPress={() => createAlert()}
+            onPress={() => checkInfo()}
           >
             <Text style={styles.checkoutButtonText}>Checkout</Text>
           </TouchableOpacity>

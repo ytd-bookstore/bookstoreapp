@@ -7,38 +7,14 @@ import Header from "../components/Header";
 import OrderDetailsContainer from "../components/OrderDetailsContainer";
 import OrderedBookContainer from "../components/OrderedBookContainer";
 
-const DATA = {
-  id: 1,
-  user_id: 12,
-  total: 144.25,
-  date: "1.11.2022",
-  status: "Shipping",
-  books: [
-    {
-      id: 123,
-      title: "Hunger Games",
-      quantity: 3,
-      price: 11.25,
-      image_url: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    },
-    {
-      id: 11233,
-      title: "Harry Potter: Order of The Phoenix",
-      quantity: 5,
-      price: 22.1,
-      image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    },
-  ],
-};
-
-export default function OrderDetails({ navigation }) {
+export default function OrderDetails({ navigation, route }) {
   var orderedBooks = [];
 
-  for (let i = 0; i < DATA.books.length; i++) {
+  for (let i = 0; i < route.params.order.books.length; i++) {
     orderedBooks.push(
       <OrderedBookContainer
         key={i}
-        book={DATA.books[i]}
+        book={route.params.order.books[i]}
         navigation={navigation}
       />
     );
@@ -59,7 +35,7 @@ export default function OrderDetails({ navigation }) {
           paddingBottom: 16,
         }}
       >
-        <OrderDetailsContainer key={0} order={DATA} />
+        <OrderDetailsContainer key={0} order={route.params.order} />
         {orderedBooks}
       </ScrollView>
     </View>
