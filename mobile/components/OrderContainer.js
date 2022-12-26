@@ -33,6 +33,8 @@ export default function OrderContainer(props) {
     );
   }
 
+  const date = new Date(props.order.createdAt).toLocaleDateString("en-EN");
+
   return (
     <TouchableOpacity
       style={styles.orderWrapper}
@@ -44,7 +46,7 @@ export default function OrderContainer(props) {
     >
       <View style={styles.propertiesWrapper}>
         <Text numberOfLines={2} style={styles.textStyle}>
-          {props.order.date}
+          {date}
         </Text>
         <Text numberOfLines={1} style={styles.textStyle}>
           {props.order.status}

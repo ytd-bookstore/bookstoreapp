@@ -4,11 +4,13 @@ import { Text, View, StyleSheet } from "react-native";
 import colors from "../assets/constants/colors";
 
 export default function OrderDetailsContainer(props) {
+  const date = new Date(props.order.createdAt).toLocaleDateString("en-EN");
+
   return (
     <View style={styles.orderWrapper}>
       <View style={styles.propertiesWrapper}>
         <Text numberOfLines={2} style={styles.textStyle}>
-          {props.order.date}
+          {date}
         </Text>
         <Text numberOfLines={1} style={styles.textStyle}>
           {props.order.status}
