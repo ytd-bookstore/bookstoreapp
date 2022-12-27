@@ -25,7 +25,7 @@ export default function Profile({ navigation }) {
         <ProfileOptionContianer
           optionName="Orders"
           navigation={navigation}
-          screenName="Orders"
+          screenName="OrdersScreen"
         />
         <ProfileOptionContianer
           optionName="Settings"

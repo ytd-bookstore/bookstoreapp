@@ -5,58 +5,89 @@ import colors from "../assets/constants/colors";
 
 import Header from "../components/Header";
 import BookContainer from "../components/BookContainer";
+import useFavorites from "../hooks/useFavorites";
 
-const DATA = [
-  {
-    id: "1",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "2",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-  {
-    id: "3",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "4",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-  {
-    id: "5",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "6",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-];
+import Loading from "../components/LoadingScreen";
+import RequestError from "../components/RequestErrorScreen";
+
+import { useIsFocused } from "@react-navigation/core";
+import deleteFavorite from "../hooks/deleteFavorite";
 
 export default function Favorites({ navigation }) {
+  const isFocused = useIsFocused();
+  const [pageState, setPageState] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isFocused) {
+      setPageState(!pageState);
+    }
+  }, [isFocused]);
+  const { data: favorites, isSuccess, isLoading } = useFavorites(pageState, 1);
+  const {
+    isSuccess: isSuccessDelete,
+    isLoading: isLoadingDelete,
+    isIdle: isIdleDelete,
+    mutate,
+  } = deleteFavorite();
+
+  const unFav = (bookId) => {
+    mutate({ userId: 1, bookId });
+  };
+
+  React.useEffect(() => {
+    if (!isLoadingDelete && isSuccessDelete) {
+      setPageState(!pageState);
+    }
+  }, [isLoadingDelete, isSuccessDelete]);
+
+  if (isLoadingDelete && !isSuccessDelete) {
+    return <Loading />;
+  } else if (!isLoadingDelete && !isSuccessDelete && !isIdleDelete) {
+    return <RequestError />;
+  }
+
+  if (isLoading && !isSuccess) {
+    return <Loading />;
+  } else if (!isLoading && !isSuccess) {
+    return <RequestError />;
+  }
+
+  if (favorites.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.headerWrapper}>
+          <Text style={styles.headerText}>Favorites</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          <Text style={styles.noFavoritesText}>
+            You don't have any favorites right now. You can add a book to your
+            favorites from book's page.
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
   var books = [];
 
-  for (let i = 0; i < DATA.length; i++) {
+  for (let i = 0; i < favorites.length; i++) {
     books.push(
-      <BookContainer key={i} book={DATA[i]} navigation={navigation} />
+      <BookContainer
+        key={i}
+        book={favorites[i].Book}
+        navigation={navigation}
+        deleteFavorite={() => {
+          unFav(favorites[i].Book.id);
+        }}
+      />
     );
   }
   return (
@@ -88,7 +119,6 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     height: 60,
-    //borderWidth: 1,
     paddingLeft: 16,
     paddingTop: 8,
   },
@@ -96,5 +126,10 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans-SemiBold",
     fontSize: 32,
     color: colors.textColor,
+  },
+  noFavoritesText: {
+    color: colors.textColor,
+    fontSize: 20,
+    fontFamily: "OpenSans-SemiBold",
   },
 });

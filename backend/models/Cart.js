@@ -9,16 +9,25 @@ Cart.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
 
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
 
     total: {
       type: DataTypes.FLOAT,
       allowNull: false,
+      validate: {
+        isFloat: true,
+      },
     },
   },
   {

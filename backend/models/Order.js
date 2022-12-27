@@ -9,21 +9,35 @@ Order.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
 
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
 
+    //Remove
     address_id: {
       type: DataTypes.INTEGER,
+      defaultValue: 1,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
 
     total: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.FLOAT.UNSIGNED,
       allowNull: false,
+      validate: {
+        isFloat: true,
+      },
     },
 
     status: {

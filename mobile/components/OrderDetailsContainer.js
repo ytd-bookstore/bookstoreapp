@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 
 import colors from "../assets/constants/colors";
 
@@ -32,11 +31,7 @@ export default function OrderDetailsContainer(props) {
           marginTop: 5,
           marginRight: 15,
         }}
-      >
-        <Text numberOfLines={2} style={styles.textStyle}>
-          Details
-        </Text>
-      </View>
+      ></View>
     </View>
   );
 }

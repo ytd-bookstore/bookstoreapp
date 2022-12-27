@@ -9,6 +9,9 @@ User.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
 
     name: {
@@ -23,6 +26,9 @@ User.init(
 
     email: {
       type: DataTypes.STRING(320),
+      validate: {
+        isEmail: true,
+      },
     },
 
     passwordHash: {

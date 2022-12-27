@@ -13,35 +13,90 @@ import colors from "../assets/constants/colors";
 import Header from "../components/Header";
 import CartBookContainer from "../components/CartBookContainer";
 
-const DATA = {
-  id: 1,
-  user_id: 12,
-  total: 144.25,
-  books: [
-    {
-      id: 123,
-      title: "Hunger Games",
-      quantity: 3,
-      price: 11.25,
-      image_url: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    },
-    {
-      id: 11233,
-      title: "Harry Potter: Order of The Phoenix",
-      quantity: 5,
-      price: 22.1,
-      image_url: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    },
-  ],
-};
+import Loading from "../components/LoadingScreen";
+import RequestError from "../components/RequestErrorScreen";
+
+import { useIsFocused } from "@react-navigation/core";
+import useCart from "../hooks/useCart";
+import deleteBookFromCart from "../hooks/deleteBookFromCart";
 
 export default function Cart({ navigation }) {
-  var books = [];
-  for (let i = 0; i < DATA.books.length; i++) {
-    books.push(
-      <CartBookContainer key={i} book={DATA.books[i]} navigation={navigation} />
+  const isFocused = useIsFocused();
+  const [pageState, setPageState] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isFocused) {
+      setPageState(!pageState);
+    }
+  }, [isFocused]);
+
+  const { data: cart, isSuccess, isLoading } = useCart(pageState, 1);
+
+  const {
+    isSuccess: isSuccessDelete,
+    isLoading: isLoadingDelete,
+    isIdle: isIdleDelete,
+    mutate,
+  } = deleteBookFromCart();
+
+  const deleteFromCart = (bookId) => {
+    mutate({ userId: 1, bookId });
+  };
+
+  React.useEffect(() => {
+    if (!isLoadingDelete && isSuccessDelete) {
+      setPageState(!pageState);
+    }
+  }, [isLoadingDelete, isSuccessDelete]);
+
+  if (isLoadingDelete && !isSuccessDelete) {
+    return <Loading />;
+  } else if (!isLoadingDelete && !isSuccessDelete && !isIdleDelete) {
+    return <RequestError />;
+  }
+
+  if (isLoading && !isSuccess) {
+    return <Loading />;
+  } else if (!isLoading && !isSuccess) {
+    return <RequestError />;
+  }
+
+  if (!cart.books || cart.books.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.headerWrapper}>
+          <Text style={styles.headerText}>My Cart</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          <Text style={styles.noBooksText}>
+            You don't have any books in your cart right now. You can add a book
+            to your cart from book's page.
+          </Text>
+        </View>
+      </View>
     );
   }
+
+  var books = [];
+  for (let i = 0; i < cart.books.length; i++) {
+    books.push(
+      <CartBookContainer
+        key={i}
+        book={cart.books[i]}
+        navigation={navigation}
+        deleteFromCart={deleteFromCart}
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Header />
@@ -62,7 +117,7 @@ export default function Cart({ navigation }) {
       <View style={styles.purchaseWrapper}>
         <View style={styles.priceTextWrapper}>
           <Text style={styles.priceText}>Total:</Text>
-          <Text style={styles.priceText}>{DATA.total}$</Text>
+          <Text style={styles.priceText}>{cart.total}$</Text>
         </View>
 
         <View style={styles.purchaseButtonWrapper}>
@@ -70,7 +125,7 @@ export default function Cart({ navigation }) {
             style={styles.purchaseButton}
             onPress={() =>
               navigation.push("Payment", {
-                price: DATA.total,
+                price: cart.total,
               })
             }
           >
@@ -126,6 +181,11 @@ const styles = StyleSheet.create({
   purchaseButtonText: {
     color: colors.background,
     fontSize: 16,
+    fontFamily: "OpenSans-SemiBold",
+  },
+  noBooksText: {
+    color: colors.textColor,
+    fontSize: 20,
     fontFamily: "OpenSans-SemiBold",
   },
 });

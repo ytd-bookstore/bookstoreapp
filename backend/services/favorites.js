@@ -1,6 +1,7 @@
 const Book = require("../models/Book");
 const Favorite = require("../models/Favorite");
 const Genre = require("../models/Genre");
+const User = require("../models/User");
 const { NotFoundError, APIError, BadRequestError } = require("../utils/errors");
 
 class FavoriteService {
@@ -15,6 +16,9 @@ class FavoriteService {
 
   getFavoritesOfUserWithBooks = async (user_id) => {
     try {
+      let user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError();
+
       const favorites = await Favorite.findAll({
         where: { user_id },
         include: {
@@ -31,7 +35,13 @@ class FavoriteService {
       });
       return favorites;
     } catch (err) {
-      console.log(err);
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof BadRequestError
+      ) {
+        throw err;
+      }
       throw new APIError();
     }
   };
@@ -56,8 +66,9 @@ class FavoriteService {
     try {
       let favorite = await Favorite.findOne({ where: { user_id, book_id } });
       if (!favorite) throw new BadRequestError();
-      favorite = await favorite.update(form);
-      return favorite;
+      this.deleteFavorite(user_id, book_id);
+      let newFavorite = this.createFavorite(form);
+      return newFavorite;
     } catch (err) {
       if (
         err.name === "SequelizeValidationError" ||

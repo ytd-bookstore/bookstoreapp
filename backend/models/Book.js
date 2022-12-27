@@ -9,6 +9,9 @@ Book.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
 
     title: {
@@ -23,6 +26,9 @@ Book.init(
     price: {
       type: DataTypes.FLOAT,
       allowNull: false,
+      validate: {
+        isFloat: true,
+      },
     },
 
     description: {
@@ -43,10 +49,16 @@ Book.init(
 
     rating: {
       type: DataTypes.FLOAT,
+      validate: {
+        isFloat: true,
+      },
     },
 
     rating_count: {
       type: DataTypes.INTEGER,
+      validate: {
+        isInt: true,
+      },
     },
 
     image_url: {
@@ -56,6 +68,9 @@ Book.init(
     stock: {
       type: DataTypes.INTEGER.UNSIGNED,
       defaultValue: 0,
+      validate: {
+        isInt: true,
+      },
     },
   },
   {

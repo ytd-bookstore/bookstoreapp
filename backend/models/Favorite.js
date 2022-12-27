@@ -9,12 +9,18 @@ Favorite.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
 
     book_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      validate: {
+        isInt: true,
+      },
     },
   },
   {
