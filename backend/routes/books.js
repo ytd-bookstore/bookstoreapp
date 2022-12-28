@@ -9,7 +9,7 @@ router.get("/", controller.getBooks);
 router.get("/:id", controller.getBooksById);
 router.get(
   "/:id/genres",
-  jwtToken.authenticateToken(),
+  jwtToken.authenticateToken,
   controller.getBooksByIdWithGenres
 );
 router.post("/", controller.createBook);
