@@ -3,14 +3,16 @@ import { useMutation } from "react-query";
 import apiConstants from "../assets/constants/apiConstants";
 
 const fetchDeleteFavorite = async (userId, bookId) => {
-  const data = await fetch(
-    apiConstants.api + `favorites/users/${userId}/books/${bookId}`,
-    {
-      method: "DELETE",
-    }
-  );
-  //const jsonData = await data.json();
-  //return jsonData;
+  const body = JSON.stringify({ book_id: bookId });
+  await fetch(apiConstants.mobile_api + `favorites/books`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + global.token,
+    },
+    method: "DELETE",
+    body: body,
+  });
 };
 
 const deleteFavorite = () =>

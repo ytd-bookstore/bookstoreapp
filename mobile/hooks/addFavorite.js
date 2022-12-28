@@ -3,11 +3,12 @@ import { useMutation } from "react-query";
 import apiConstants from "../assets/constants/apiConstants";
 
 const fetchAddFavorite = async (userId, bookId) => {
-  const body = JSON.stringify({ user_id: userId, book_id: bookId });
-  const data = await fetch(apiConstants.api + `favorites/`, {
+  const body = JSON.stringify({ book_id: bookId });
+  const data = await fetch(apiConstants.mobile_api + `favorites/books`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: "Bearer " + global.token,
     },
     method: "POST",
     body: body,

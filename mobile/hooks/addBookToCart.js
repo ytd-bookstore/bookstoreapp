@@ -3,16 +3,16 @@ import { useMutation } from "react-query";
 import apiConstants from "../assets/constants/apiConstants";
 
 const fetchAddBookToCart = async (userId, bookId) => {
-  const data = await fetch(
-    apiConstants.api + `carts/users/${userId}/books/${bookId}`,
-    {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    }
-  );
+  const body = JSON.stringify({ book_id: bookId });
+  await fetch(apiConstants.mobile_api + `carts/books`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + global.token,
+    },
+    method: "POST",
+    body: body,
+  });
 };
 
 const addBookToCart = () =>

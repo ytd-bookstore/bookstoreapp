@@ -3,10 +3,11 @@ import { useMutation } from "react-query";
 import apiConstants from "../assets/constants/apiConstants";
 
 const postInformation = async (userId, information) => {
-  const data = await fetch(apiConstants.api + `users/${userId}/address`, {
+  const data = await fetch(apiConstants.mobile_api + `users/address`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: "Bearer " + global.token,
     },
     method: "PUT",
     body: JSON.stringify(information),
