@@ -19,6 +19,9 @@ import FormTextInput from "../components/FormTextInput";
 import FormButton from "../components/FormButton";
 import signIn from "../hooks/signIn";
 
+import LoginLoading from "../components/LoginLoadingScreen";
+import LoginRequestError from "../components/LoginRequestErrorScreen";
+
 function login(navigation) {
   navigation.reset({
     index: 0,
@@ -87,15 +90,9 @@ export default function Login({ navigation, route }) {
   }, [isSuccess]);
 
   if (isLoading && !isSuccess) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <LoginLoading />;
   } else if (!isLoading && !isSuccess && !isIdle) {
-    <View>
-      <Text>Request Error...</Text>
-    </View>;
+    <LoginRequestError />;
   }
 
   return (

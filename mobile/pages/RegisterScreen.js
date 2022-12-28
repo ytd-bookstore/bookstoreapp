@@ -17,6 +17,9 @@ import FormTextInput from "../components/FormTextInput";
 import FormButton from "../components/FormButton";
 import register from "../hooks/register";
 
+import LoginLoading from "../components/LoginLoadingScreen";
+import LoginRequestError from "../components/LoginRequestErrorScreen";
+
 function registerUser(navigation, mail) {
   navigation.reset({
     index: 0,
@@ -78,15 +81,9 @@ export default function Register({ navigation }) {
   }, [isSuccess]);
 
   if (isLoading && !isSuccess) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <LoginLoading />;
   } else if (!isLoading && !isSuccess && !isIdle) {
-    <View>
-      <Text>Request Error...</Text>
-    </View>;
+    <LoginRequestError />;
   }
 
   return (
