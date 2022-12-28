@@ -4,6 +4,13 @@ import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../assets/constants/colors";
 
 export default function ProfileOptionContianer(props) {
+  if (props.onPress) {
+    return (
+      <TouchableOpacity style={styles.optionWrapper} onPress={props.onPress}>
+        <Text style={styles.optionName}>{props.optionName}</Text>
+      </TouchableOpacity>
+    );
+  }
   return (
     <TouchableOpacity
       style={styles.optionWrapper}
