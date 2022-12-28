@@ -74,10 +74,12 @@ export default function Settings() {
       setName(user.name);
       setSurname(user.surname);
       setEmail(user.email);
-      setCity(user.address.city);
-      setDistrict(user.address.district);
-      setPhoneNumber(user.address.mobile);
-      setAddressLine(user.address.address_line);
+      if (user.address) {
+        setCity(user.address.city);
+        setDistrict(user.address.district);
+        setPhoneNumber(user.address.mobile);
+        setAddressLine(user.address.address_line);
+      }
     }
   }, [isLoadingGet, isSuccessGet]);
 
