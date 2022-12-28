@@ -148,8 +148,9 @@ class UserService {
   login = async (form) => {
     try {
       let user = await User.findOne({ where: { email: form.email } });
-      if (!user) throw new BadRequestError("Email is not match with any user!");
-
+      if (!user) {
+        throw new BadRequestError("Email does not match with any user!");
+      }
       const passwordHash = Crypto.createHash("sha256")
         .update(form.password)
         .update(
