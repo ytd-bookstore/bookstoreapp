@@ -4,12 +4,12 @@ const httpStatusCode = require("./httpStatusCode");
 
 dotenv.config();
 
-class JwtToken {
+class TokenService {
   generateAccessToken = (user) => {
     return jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: "12h" });
   };
 
-  authenticateToken = (req, res, next) => {
+  authToken = (req, res, next) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -22,7 +22,7 @@ class JwtToken {
     });
   };
 
-  authenticateAdminToken = (req, res, next) => {
+  authAdminToken = (req, res, next) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -37,6 +37,6 @@ class JwtToken {
   };
 }
 
-const jwtToken = new JwtToken();
+const tokenService = new TokenService();
 
-module.exports = jwtToken;
+module.exports = tokenService;

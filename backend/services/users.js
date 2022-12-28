@@ -3,7 +3,7 @@ const Address = require("../models/Address");
 const Crypto = require("crypto");
 
 const { NotFoundError, APIError, BadRequestError } = require("../utils/errors");
-const jwtToken = require("../utils/jwtToken");
+const tokenService = require("../utils/tokenService");
 
 class UserService {
   getUsers = async () => {
@@ -160,7 +160,7 @@ class UserService {
       if (passwordHash != user.passwordHash) {
         throw new BadRequestError("Wrong password!");
       }
-      return jwtToken.generateAccessToken(user.toJSON());
+      return tokenService.generateAccessToken(user.toJSON());
     } catch (err) {
       console.log(err);
       if (
