@@ -4,7 +4,7 @@ import apiConstants from "../assets/constants/apiConstants";
 
 const fetchSignIn = async (email, password) => {
   const body = JSON.stringify({ email, password });
-  const data = await fetch(apiConstants.api + `users/auth/login`, {
+  const data = await fetch(apiConstants.mobile_api + `users/auth/login`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

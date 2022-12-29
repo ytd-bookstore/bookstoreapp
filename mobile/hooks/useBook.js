@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import apiConstants from "../assets/constants/apiConstants";
 
 const fetchBook = async (bookId) => {
-  const data = await fetch(apiConstants.api + `books/${bookId}/genres`, {
+  const data = await fetch(apiConstants.mobile_api + `books/${bookId}/genres`, {
     headers: {
       Authorization: "Bearer " + global.token,
     },
