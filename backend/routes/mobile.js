@@ -5,61 +5,21 @@ const tokenService = require("../utils/tokenService");
 
 const router = express.Router();
 
-router.get(
-  "/users/address",
-  tokenService.authToken,
-  controller.getUserWithAddress
-);
-router.get(
-  "/favorites/users",
-  tokenService.authToken,
-  controller.getFavoritesOfUserWithBooks
-);
-router.get(
-  "/carts/users",
-  tokenService.authToken,
-  controller.getCartsOfUserWithBooks
-);
-router.get(
-  "/orders/users",
-  tokenService.authToken,
-  controller.getOrdersOfUserWithBooks
-);
-router.put(
-  "/users/address",
-  tokenService.authToken,
-  controller.updateUserWithAddress
-);
-router.post(
-  "/favorites/books",
-  tokenService.authToken,
-  controller.createFavorite
-);
-router.post("/carts/books", tokenService.authToken, controller.addBookToCart);
-router.post("/checkout", tokenService.authToken, controller.checkout);
-router.delete(
-  "/carts/books",
-  tokenService.authToken,
-  controller.removeBookFromCart
-);
-router.delete(
-  "/favorites/books",
-  tokenService.authToken,
-  controller.deleteFavorite
-);
+router.get("/users/address", controller.getUserWithAddress);
+router.get("/favorites/users", controller.getFavoritesOfUserWithBooks);
+router.get("/carts/users", controller.getCartsOfUserWithBooks);
+router.get("/orders/users", controller.getOrdersOfUserWithBooks);
+router.get("/genres", controller.getGenres);
+router.get("/genres/:id/books", controller.getGenreByIdWithBooks);
+router.get("/books/:id/genres", controller.getBooksByIdWithGenres);
+router.get("/search/:keyword", controller.searchBooks);
+router.put("/users/address", controller.updateUserWithAddress);
 router.post("/users/auth/register/", controller.register);
 router.post("/users/auth/login/", controller.login);
-router.get(
-  "/books/:id/genres",
-  tokenService.authToken,
-  controller.getBooksByIdWithGenres
-);
-router.get(
-  "/genres/:id/books",
-  tokenService.authToken,
-  controller.getGenreByIdWithBooks
-);
-router.get("/genres", tokenService.authToken, controller.getGenres);
-router.get("/search/:keyword", tokenService.authToken, controller.searchBooks);
+router.post("/favorites/books", controller.createFavorite);
+router.post("/carts/books", controller.addBookToCart);
+router.post("/checkout", controller.checkout);
+router.delete("/carts/books", controller.removeBookFromCart);
+router.delete("/favorites/books", controller.deleteFavorite);
 
 module.exports = router;
