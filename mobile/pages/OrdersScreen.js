@@ -16,7 +16,7 @@ export default function Orders({ navigation }) {
   const isFocused = useIsFocused();
   const [pageState, setPageState] = React.useState(false);
 
-  const { data: ordersData, isSuccess, isLoading } = useOrders(pageState, 1);
+  const { data: ordersData, isSuccess, isLoading } = useOrders(pageState);
 
   React.useEffect(() => {
     if (isFocused) {

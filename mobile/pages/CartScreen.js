@@ -30,7 +30,7 @@ export default function Cart({ navigation }) {
     }
   }, [isFocused]);
 
-  const { data: cart, isSuccess, isLoading } = useCart(pageState, 1);
+  const { data: cart, isSuccess, isLoading } = useCart(pageState);
 
   const {
     isSuccess: isSuccessDelete,
@@ -40,7 +40,7 @@ export default function Cart({ navigation }) {
   } = deleteBookFromCart();
 
   const deleteFromCart = (bookId) => {
-    mutate({ userId: 1, bookId });
+    mutate({ bookId });
   };
 
   React.useEffect(() => {

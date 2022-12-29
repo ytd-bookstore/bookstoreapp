@@ -13,51 +13,6 @@ import colors from "../assets/constants/colors";
 import Header from "../components/Header";
 import SearchedBookContainer from "../components/SearchedBookContainer";
 
-const DATA = [
-  {
-    id: "1",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "2",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-  {
-    id: "3",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "4",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-  {
-    id: "5",
-    title: "Hunger Games",
-    image: "https://images.gr-assets.com/books/1447303603l/2767052.jpg",
-    author: "Susanne Collins",
-    genre: "Fiction, Distopia, Fantasy, Science-Fiction",
-  },
-  {
-    id: "6",
-    title: "Harry Potter: Order of The Phoenix",
-    image: "https://images.gr-assets.com/books/1255614970l/2.jpg",
-    author: "J.K. Rowling, Mary GrandPre",
-    genre: "Fantasy, Young Adults, Fiction",
-  },
-];
-
 export default function Genre({ route, navigation }) {
   var books = [];
 

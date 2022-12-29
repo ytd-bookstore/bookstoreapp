@@ -52,7 +52,7 @@ export default function Payment({ route, navigation }) {
   const { isSuccess, isLoading, isIdle, mutate } = checkout();
 
   const mutateCheckout = (information) => {
-    mutate({ userId: 1, information });
+    mutate({ information });
   };
 
   const checkInfo = () => {

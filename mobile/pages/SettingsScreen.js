@@ -34,37 +34,28 @@ export default function Settings() {
     isSuccess: isSuccessGet,
     isLoading: isLoadingGet,
     remove,
-  } = useUser(1);
+  } = useUser();
 
   const {
     data: userInfo,
     isLoading: isLoadingUpdate,
     isSuccess: isSuccessUpdate,
     mutate,
-  } = sendUserInformation(1, {
-    name,
-    surname,
-    email,
-    password,
-    address: {
-      city,
-      district,
-      mobile: phoneNumber,
-      address_line: addressLine,
-    },
-  });
+  } = sendUserInformation();
 
   const updateUserInfo = () => {
-    mutate(1, {
-      name,
-      surname,
-      email,
-      password,
-      address: {
-        city,
-        district,
-        mobile: phoneNumber,
-        address_line: addressLine,
+    mutate({
+      information: {
+        name,
+        surname,
+        email,
+        password,
+        address: {
+          city,
+          district,
+          mobile: phoneNumber,
+          address_line: addressLine,
+        },
       },
     });
   };

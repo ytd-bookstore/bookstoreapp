@@ -2,7 +2,7 @@ import { useMutation } from "react-query";
 
 import apiConstants from "../assets/constants/apiConstants";
 
-const fetchAddBookToCart = async (userId, bookId) => {
+const fetchAddBookToCart = async (bookId) => {
   const body = JSON.stringify({ book_id: bookId });
   await fetch(apiConstants.mobile_api + `carts/books`, {
     headers: {
@@ -16,8 +16,8 @@ const fetchAddBookToCart = async (userId, bookId) => {
 };
 
 const addBookToCart = () =>
-  useMutation(({ userId, bookId }) => {
-    fetchAddBookToCart(userId, bookId);
+  useMutation(({ bookId }) => {
+    fetchAddBookToCart(bookId);
   });
 
 export default addBookToCart;

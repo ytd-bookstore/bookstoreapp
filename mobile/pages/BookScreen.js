@@ -116,7 +116,7 @@ export default function Book({ route, navigation }) {
   } = addFavorite();
 
   const addFav = () => {
-    mutateFav({ userId: 1, bookId: book.id });
+    mutateFav({ bookId: book.id });
     setHeartIcon("heart");
   };
 
@@ -128,7 +128,7 @@ export default function Book({ route, navigation }) {
   } = addBookToCart();
 
   const addToCart = () => {
-    mutateCart({ userId: 1, bookId: book.id });
+    mutateCart({ bookId: book.id });
     createCartAlert(book.title);
   };
 

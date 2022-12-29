@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 
 import apiConstants from "../assets/constants/apiConstants";
 
-const fetchOrders = async (userId) => {
+const fetchOrders = async () => {
   const data = await fetch(apiConstants.mobile_api + `orders/users`, {
     headers: {
       Authorization: "Bearer " + global.token,
@@ -12,7 +12,6 @@ const fetchOrders = async (userId) => {
   return jsonData;
 };
 
-const useOrders = (state, userId) =>
-  useQuery([state, "orders", userId], () => fetchOrders(userId));
+const useOrders = (state) => useQuery([state, "orders"], () => fetchOrders());
 
 export default useOrders;

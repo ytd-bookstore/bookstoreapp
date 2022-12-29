@@ -2,7 +2,7 @@ import { useMutation } from "react-query";
 
 import apiConstants from "../assets/constants/apiConstants";
 
-const postInformation = async (userId, information) => {
+const postInformation = async (information) => {
   const data = await fetch(apiConstants.mobile_api + `users/address`, {
     headers: {
       Accept: "application/json",
@@ -16,7 +16,7 @@ const postInformation = async (userId, information) => {
   return jsonData;
 };
 
-const sendUserInformation = (userId, information) =>
-  useMutation(() => postInformation(userId, information));
+const sendUserInformation = () =>
+  useMutation(({ information }) => postInformation(information));
 
 export default sendUserInformation;
