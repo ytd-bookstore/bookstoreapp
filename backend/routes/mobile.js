@@ -47,5 +47,19 @@ router.delete(
   tokenService.authToken,
   controller.deleteFavorite
 );
+router.post("/users/auth/register/", controller.register);
+router.post("/users/auth/login/", controller.login);
+router.get(
+  "/books/:id/genres",
+  tokenService.authToken,
+  controller.getBooksByIdWithGenres
+);
+router.get(
+  "/genres/:id/books",
+  tokenService.authToken,
+  controller.getGenreByIdWithBooks
+);
+router.get("/genres", tokenService.authToken, controller.getGenres);
+router.get("/search/:keyword", tokenService.authToken, controller.searchBooks);
 
 module.exports = router;
