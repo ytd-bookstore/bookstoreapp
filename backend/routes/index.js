@@ -8,6 +8,7 @@ const favoriteRouter = require("./favorites");
 const cartRouter = require("./carts");
 const orderRouter = require("./orders");
 const mobileRouter = require("./mobile");
+const authRouter = require("./auth");
 
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.use("/favorites", favoriteRouter);
 router.use("/carts", cartRouter);
 router.use("/orders", orderRouter);
 router.use("/mobile", mobileRouter);
+router.use("/auth", authRouter);
 
 module.exports = router;
