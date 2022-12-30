@@ -29,6 +29,22 @@ export default function Settings() {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [addressLine, setAddressLine] = React.useState("");
 
+  const [disabled, setDisabled] = React.useState(true);
+
+  React.useEffect(() => {
+    if (
+      city.length > 0 &&
+      district.length > 0 &&
+      phoneNumber.length === 11 &&
+      !/[a-zA-Z]/.test(phoneNumber) &&
+      addressLine.length > 0
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [city, district, phoneNumber, addressLine]);
+
   const {
     data: user,
     isSuccess: isSuccessGet,
@@ -190,15 +206,14 @@ export default function Settings() {
           style={{
             width: 360,
             height: 50,
-            backgroundColor:
-              phoneNumber.length <= 11 && !/[a-zA-Z]/.test(phoneNumber)
-                ? colors.headerTextColor
-                : colors.textColor,
+            backgroundColor: !disabled
+              ? colors.headerTextColor
+              : colors.textColor,
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 10,
           }}
-          disabled={phoneNumber.length > 11 || /[a-zA-Z]/.test(phoneNumber)}
+          disabled={disabled}
           onPress={() => updateUserInfo()}
         >
           <Text

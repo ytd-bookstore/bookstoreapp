@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 
 import colors from "../assets/constants/colors";
@@ -18,19 +19,42 @@ import RequestError from "../components/RequestErrorScreen";
 
 import { useIsFocused } from "@react-navigation/core";
 import useCart from "../hooks/useCart";
+import useUser from "../hooks/useUser";
 import deleteBookFromCart from "../hooks/deleteBookFromCart";
 
 export default function Cart({ navigation }) {
   const isFocused = useIsFocused();
   const [pageState, setPageState] = React.useState(false);
 
+  const {
+    data: user,
+    isSuccess: isSuccessUser,
+    isLoading: isLoadingUser,
+    refetch,
+  } = useUser();
+
   React.useEffect(() => {
     if (isFocused) {
       setPageState(!pageState);
+      refetch();
     }
   }, [isFocused]);
 
   const { data: cart, isSuccess, isLoading } = useCart(pageState);
+
+  const purchase = () => {
+    if (user.address) {
+      navigation.push("Payment", {
+        price: cart.total,
+      });
+    } else {
+      ToastAndroid.showWithGravity(
+        "You should have an address to purchase!",
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP
+      );
+    }
+  };
 
   const {
     isSuccess: isSuccessDelete,
@@ -52,6 +76,12 @@ export default function Cart({ navigation }) {
   if (isLoadingDelete && !isSuccessDelete) {
     return <Loading />;
   } else if (!isLoadingDelete && !isSuccessDelete && !isIdleDelete) {
+    return <RequestError />;
+  }
+
+  if (isLoadingUser && !isSuccessUser) {
+    return <Loading />;
+  } else if (!isLoadingUser && !isSuccessUser) {
     return <RequestError />;
   }
 
@@ -123,11 +153,7 @@ export default function Cart({ navigation }) {
         <View style={styles.purchaseButtonWrapper}>
           <TouchableOpacity
             style={styles.purchaseButton}
-            onPress={() =>
-              navigation.push("Payment", {
-                price: cart.total,
-              })
-            }
+            onPress={() => purchase()}
           >
             <Text style={styles.purchaseButtonText}>Purchase</Text>
           </TouchableOpacity>
