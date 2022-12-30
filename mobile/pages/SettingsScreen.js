@@ -190,11 +190,15 @@ export default function Settings() {
           style={{
             width: 360,
             height: 50,
-            backgroundColor: colors.headerTextColor,
+            backgroundColor:
+              phoneNumber.length <= 11 && !/[a-zA-Z]/.test(phoneNumber)
+                ? colors.headerTextColor
+                : colors.textColor,
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 10,
           }}
+          disabled={phoneNumber.length > 11 || /[a-zA-Z]/.test(phoneNumber)}
           onPress={() => updateUserInfo()}
         >
           <Text
