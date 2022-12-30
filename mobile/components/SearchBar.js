@@ -30,7 +30,7 @@ export default function SearchBar(props) {
             size={34}
             color={colors.textColor}
             onPress={() => {
-              if (searchedItem.length > 0) {
+              if (searchedItem.length > 2) {
                 props.navigation.navigate("SearchResults", {
                   searchedItem: searchedItem,
                 });
