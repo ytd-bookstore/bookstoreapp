@@ -1,6 +1,7 @@
 const genreService = require("../../services/genres");
 const migrate = require("../../database/migration");
 
+//GET GENRES
 describe("get genres", () => {
   it("should return genres", async () => {
     const response = await genreService.getGenres();
@@ -8,7 +9,8 @@ describe("get genres", () => {
   });
 });
 
-describe("get genres by id with books", () => {
+//GET GENRES BY ID WITH BOOKS
+describe("get genres by id with books(existing genre id)", () => {
   let genre;
   beforeAll(async () => {
     const response = await genreService.getGenres();
@@ -17,5 +19,19 @@ describe("get genres by id with books", () => {
   it("should return genre with books", async () => {
     const response = await genreService.getGenresByIdWithBooks(genre.id);
     expect(response.books.length >= 1).toBe(true);
+  });
+});
+
+describe("get genres by id with books(non-existing genre id)", () => {
+  it("should return genre with books", async () => {
+    const response = await genreService.getGenresByIdWithBooks(12368);
+    //TODO: expect(response.books.length >= 1).toBe(true);
+  });
+});
+
+describe("get genres by id with books(invalid genre id)", () => {
+  it("should return genre with books", async () => {
+    const response = await genreService.getGenresByIdWithBooks(-1);
+    //TODO: expect(response.books.length >= 1).toBe(true);
   });
 });
