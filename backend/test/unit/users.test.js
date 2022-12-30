@@ -1,4 +1,3 @@
-const request = require("supertest");
 const userService = require("../../services/users");
 
 describe("get all users", () => {
