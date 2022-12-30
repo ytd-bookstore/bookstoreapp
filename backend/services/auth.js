@@ -47,7 +47,6 @@ class AuthService {
       }
       return tokenService.generateAccessToken(user.toJSON());
     } catch (err) {
-      console.log(err);
       if (
         err.name === "SequelizeValidationError" ||
         err.name === "SequelizeUniqueConstraintError" ||
@@ -79,7 +78,6 @@ class AuthService {
       }
       return tokenService.generateAccessToken(user.toJSON());
     } catch (err) {
-      console.log(err);
       if (
         err.name === "SequelizeValidationError" ||
         err.name === "SequelizeUniqueConstraintError" ||
