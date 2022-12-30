@@ -14,8 +14,6 @@ router.get("/genres/:id/books", controller.getGenreByIdWithBooks);
 router.get("/books/:id/genres", controller.getBooksByIdWithGenres);
 router.get("/search/:keyword", controller.searchBooks);
 router.put("/users/address", controller.updateUserWithAddress);
-router.post("/users/auth/register/", controller.register);
-router.post("/users/auth/login/", controller.login);
 router.post("/favorites/books", controller.createFavorite);
 router.post("/carts/books", controller.addBookToCart);
 router.post("/checkout", controller.checkout);
