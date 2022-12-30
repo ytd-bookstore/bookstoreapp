@@ -13,19 +13,19 @@ import useGenreIDs from "../hooks/useGenreIDs";
 
 const genreNames = [
   {
-    genre: "action",
+    genre: "adventure",
   },
   {
-    genre: "science",
+    genre: "classics",
   },
   {
-    genre: "history",
+    genre: "historical",
   },
   {
     genre: "fiction",
   },
   {
-    genre: "romance",
+    genre: "humor",
   },
 ];
 

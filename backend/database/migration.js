@@ -19,13 +19,7 @@ Address.belongsTo(User, {
 
 Order.belongsTo(User, {
   foreignKey: "user_id",
-  onDelete: "RESTRICT",
-  onUpdate: "CASCADE",
-});
-
-Order.belongsTo(Address, {
-  foreignKey: "address_id",
-  onDelete: "RESTRICT",
+  onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
 
@@ -54,7 +48,7 @@ Order.belongsToMany(Book, {
   through: OrderBook,
   foreignKey: "order_id",
   otherKey: "book_id",
-  onDelete: "RESTRICT",
+  onDelete: "CASCADE",
   onUpdate: "CASCADE",
   as: "books",
 });

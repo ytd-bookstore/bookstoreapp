@@ -43,16 +43,7 @@ export default function Register({ navigation }) {
   const { data, isSuccess, isLoading, isIdle, mutate } = register();
 
   const mutateRegister = (name, surname, email, password) => {
-    mutate(
-      { name, surname, email, password },
-      {
-        onSuccess: () => {
-          if (!data) {
-            registerUser(navigation, mail);
-          }
-        },
-      }
-    );
+    mutate({ name, surname, email, password });
   };
 
   React.useEffect(() => {
@@ -77,6 +68,8 @@ export default function Register({ navigation }) {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM
       );
+    } else if (isSuccess) {
+      registerUser(navigation, mail);
     }
   }, [isSuccess]);
 

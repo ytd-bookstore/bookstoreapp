@@ -22,7 +22,7 @@ export default function Favorites({ navigation }) {
       setPageState(!pageState);
     }
   }, [isFocused]);
-  const { data: favorites, isSuccess, isLoading } = useFavorites(pageState, 1);
+  const { data: favorites, isSuccess, isLoading } = useFavorites(pageState);
   const {
     isSuccess: isSuccessDelete,
     isLoading: isLoadingDelete,
@@ -31,7 +31,7 @@ export default function Favorites({ navigation }) {
   } = deleteFavorite();
 
   const unFav = (bookId) => {
-    mutate({ userId: 1, bookId });
+    mutate({ bookId });
   };
 
   React.useEffect(() => {

@@ -4,7 +4,7 @@ import apiConstants from "../assets/constants/apiConstants";
 
 const fetchRegister = async (name, surname, email, password) => {
   const body = JSON.stringify({ name, surname, email, password });
-  const data = await fetch(apiConstants.api + `users/auth/register`, {
+  const data = await fetch(apiConstants.auth_api + `register`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

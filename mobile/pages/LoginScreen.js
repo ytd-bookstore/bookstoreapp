@@ -12,8 +12,6 @@ import {
 
 import colors from "../assets/constants/colors";
 
-import * as SecureStore from "expo-secure-store";
-
 import LoginHeader from "../components/LoginHeader";
 import FormTextInput from "../components/FormTextInput";
 import FormButton from "../components/FormButton";
@@ -48,7 +46,7 @@ export default function Login({ navigation, route }) {
       {
         onSuccess: async (value) => {
           if (value && !value.errors) {
-            await SecureStore.setItemAsync("jwtToken", value);
+            global.token = value;
             login(navigation);
           }
         },

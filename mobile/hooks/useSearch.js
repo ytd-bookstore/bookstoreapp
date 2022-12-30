@@ -3,7 +3,11 @@ import { useQuery } from "react-query";
 import apiConstants from "../assets/constants/apiConstants";
 
 const fetchSearch = async (searchedItem) => {
-  const data = await fetch(apiConstants.api + `books/search/${searchedItem}`);
+  const data = await fetch(apiConstants.mobile_api + `search/${searchedItem}`, {
+    headers: {
+      Authorization: "Bearer " + global.token,
+    },
+  });
   const jsonData = await data.json();
   return jsonData;
 };

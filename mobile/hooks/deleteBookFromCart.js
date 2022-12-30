@@ -2,15 +2,22 @@ import { useMutation } from "react-query";
 
 import apiConstants from "../assets/constants/apiConstants";
 
-const fetchDeleteFromCart = async (userId, bookId) => {
-  await fetch(apiConstants.api + `carts/users/${userId}/books/${bookId}`, {
+const fetchDeleteFromCart = async (bookId) => {
+  const body = JSON.stringify({ book_id: bookId });
+  await fetch(apiConstants.mobile_api + `carts/books`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + global.token,
+    },
     method: "DELETE",
+    body: body,
   });
 };
 
 const deleteBookFromCart = () =>
-  useMutation(({ userId, bookId }) => {
-    fetchDeleteFromCart(userId, bookId);
+  useMutation(({ bookId }) => {
+    fetchDeleteFromCart(bookId);
   });
 
 export default deleteBookFromCart;

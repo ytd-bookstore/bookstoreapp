@@ -2,12 +2,13 @@ import { useMutation } from "react-query";
 
 import apiConstants from "../assets/constants/apiConstants";
 
-const fetchCheckout = async (userId, information) => {
+const fetchCheckout = async (information) => {
   const body = JSON.stringify(information);
-  const data = await fetch(apiConstants.api + `orders/users/${userId}`, {
+  await fetch(apiConstants.mobile_api + `checkout`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: "Bearer " + global.token,
     },
     method: "POST",
     body: body,
@@ -15,8 +16,8 @@ const fetchCheckout = async (userId, information) => {
 };
 
 const checkout = () =>
-  useMutation(({ userId, information }) => {
-    fetchCheckout(userId, information);
+  useMutation(({ information }) => {
+    fetchCheckout(information);
   });
 
 export default checkout;

@@ -7,6 +7,18 @@ import Header from "../components/Header";
 import ProfileOptionContianer from "../components/ProfileOptionContainer";
 
 export default function Profile({ navigation }) {
+  const logout = () => {
+    global.token = null;
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "Login",
+        },
+      ],
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Header />
@@ -32,6 +44,7 @@ export default function Profile({ navigation }) {
           navigation={navigation}
           screenName="Settings"
         />
+        <ProfileOptionContianer optionName="Log Out" onPress={() => logout()} />
       </ScrollView>
     </View>
   );
