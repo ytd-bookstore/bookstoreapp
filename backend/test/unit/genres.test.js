@@ -13,7 +13,6 @@ describe("get genres by id with books", () => {
   beforeAll(async () => {
     const response = await genreService.getGenres();
     genre = response[0].toJSON();
-    console.log(genre);
   });
   it("should return genre with books", async () => {
     const response = await genreService.getGenresByIdWithBooks(genre.id);
