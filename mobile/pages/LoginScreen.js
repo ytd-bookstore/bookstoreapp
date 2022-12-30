@@ -112,11 +112,13 @@ export default function Login({ navigation, route }) {
           <FormTextInput
             icon={"mail-outline"}
             placeholder={"Email"}
+            value={mail}
             onChangeText={onChangeMail}
           ></FormTextInput>
           <FormTextInput
             icon={"lock-closed-outline"}
             placeholder={"Password"}
+            value={pswd}
             secure={true}
             onChangeText={onChangePswd}
           ></FormTextInput>
