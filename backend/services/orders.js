@@ -29,7 +29,6 @@ class OrderService {
       });
       return order;
     } catch (err) {
-      console.log(err);
       throw new APIError(err);
     }
   };
@@ -48,7 +47,6 @@ class OrderService {
       });
       return order;
     } catch (err) {
-      console.log(err);
       throw new APIError(err);
     }
   };
@@ -134,7 +132,6 @@ class OrderService {
       await cart.destroy();
       return;
     } catch (err) {
-      console.log(err);
       if (err instanceof BadRequestError) {
         throw err;
       }
