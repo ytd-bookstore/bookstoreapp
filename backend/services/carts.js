@@ -28,13 +28,17 @@ class CartService {
       });
       return cart ? cart : {};
     } catch (err) {
-      console.log(err);
       throw new APIError(err);
     }
   };
 
   getCartOfUserWithBooks = async (user_id) => {
     try {
+      if (typeof user_id == "number" && user_id <= 0) {
+        throw new BadRequestError("Invalid user id.");
+      }
+      const user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError("User does not exist.");
       const cart = await Cart.findOne({
         where: { user_id },
         include: {
@@ -47,7 +51,9 @@ class CartService {
       });
       return cart ? cart : {};
     } catch (err) {
-      console.log(err);
+      if (err instanceof BadRequestError) {
+        throw err;
+      }
       throw new APIError(err);
     }
   };
@@ -109,10 +115,16 @@ class CartService {
 
   addBookToCart = async (user_id, book_id) => {
     try {
+      if (typeof user_id == "number" && user_id <= 0) {
+        throw new BadRequestError("Invalid user id.");
+      }
+      if (typeof book_id == "number" && book_id <= 0) {
+        throw new BadRequestError("Invalid book id.");
+      }
       const user = await User.findByPk(user_id);
-      if (!user) throw new BadRequestError();
+      if (!user) throw new BadRequestError("User does not exist.");
       const book = await Book.findByPk(book_id);
-      if (!book) throw new BadRequestError();
+      if (!book) throw new BadRequestError("Book does not exist.");
 
       const [cart, created_cart] = await Cart.findOrCreate({
         where: { user_id },
@@ -138,18 +150,25 @@ class CartService {
 
   removeBookFromCart = async (user_id, book_id) => {
     try {
+      if (typeof user_id == "number" && user_id <= 0) {
+        throw new BadRequestError("Invalid user id.");
+      }
+      if (typeof book_id == "number" && book_id <= 0) {
+        throw new BadRequestError("Invalid book id.");
+      }
+
       const user = await User.findByPk(user_id);
-      if (!user) throw new BadRequestError();
+      if (!user) throw new BadRequestError("User does not exist.");
       const book = await Book.findByPk(book_id);
-      if (!book) throw new BadRequestError();
+      if (!book) throw new BadRequestError("Book does not exist.");
 
       const cart = await Cart.findOne({ where: { user_id } });
-      if (!cart) throw new BadRequestError();
+      if (!cart) throw new BadRequestError("Cart does not exist.");
 
       const cartbook = await CartBook.findOne({
         where: { cart_id: user_id, book_id },
       });
-      if (!cartbook) throw new BadRequestError();
+      if (!cartbook) throw new BadRequestError("Book is not in cart.");
 
       cartbook.destroy();
       await cart.update({ total: cart.total - book.price });

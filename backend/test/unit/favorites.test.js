@@ -1,6 +1,7 @@
 const userService = require("../../services/users");
 const favoriteService = require("../../services/favorites");
 const migrate = require("../../database/migration");
+const { BadRequestError } = require("../../utils/errors");
 
 //CREATE FAVORITE
 describe("create a favorite (valid form)", () => {
@@ -55,12 +56,9 @@ describe("create a favorite (invalid form)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should create a new favorite", async () => {
-    const createdFavorite = await (
-      await favoriteService.createFavorite(favoriteForm)
-    ).toJSON();
-    /*TODO:
-    expect(createdFavorite.book_id).toBe(favoriteForm.book_id);
-    expect(createdFavorite.user_id).toBe(favoriteForm.user_id);*/
+    expect(
+      async () => await await favoriteService.createFavorite(favoriteForm)
+    ).rejects.toThrowError();
   });
 });
 
@@ -98,15 +96,17 @@ describe("get favorites of user with books (existing user id)", () => {
 
 describe("get favorites of user with books (non-existing user id)", () => {
   it("should return users favorite books", async () => {
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(12368);
-    //TODO: expect(favorites.length >= 1).toBe(true);
+    expect(
+      async () => await favoriteService.getFavoritesOfUserWithBooks(12368)
+    ).rejects.toThrow(new BadRequestError("User does not exist."));
   });
 });
 
 describe("get favorites of user with books (invalid user id)", () => {
   it("should return users favorite books", async () => {
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(-1);
-    //TODO: expect(favorites.length >= 1).toBe(true);
+    expect(
+      async () => await favoriteService.getFavoritesOfUserWithBooks(-1)
+    ).rejects.toThrow(new BadRequestError("Invalid user id."));
   });
 });
 
@@ -135,7 +135,7 @@ describe("delete favorite(existing user, existing book)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(newUser.id, favoriteForm.book_id);
+    await favoriteService.deleteFavorite(newUser.id, favoriteForm.book_id);
     const favorites = await favoriteService.getFavoritesOfUserWithBooks(
       newUser.id
     );
@@ -167,11 +167,9 @@ describe("delete favorite(existing user, non-existing book)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(newUser.id, 12368);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () => await favoriteService.deleteFavorite(newUser.id, 12368)
+    ).rejects.toThrow(new BadRequestError("Book does not exist."));
   });
 });
 
@@ -199,11 +197,9 @@ describe("delete favorite(existing user, invalid book id)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(newUser.id, -1);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () => await favoriteService.deleteFavorite(newUser.id, -1)
+    ).rejects.toThrow(new BadRequestError("Invalid book id."));
   });
 });
 
@@ -231,11 +227,10 @@ describe("delete favorite(non-existing user, existing book)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(12368, favoriteForm.book_id);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () =>
+        await favoriteService.deleteFavorite(12368, favoriteForm.book_id)
+    ).rejects.toThrow(new BadRequestError("User does not exist."));
   });
 });
 
@@ -263,11 +258,9 @@ describe("delete favorite(non-existing user, non-existing book)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(12368, 12368);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () => await favoriteService.deleteFavorite(12368, 12368)
+    ).rejects.toThrow(new BadRequestError("User does not exist."));
   });
 });
 
@@ -295,11 +288,9 @@ describe("delete favorite(non-existing user, invalid book id)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(12368, -1);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () => await favoriteService.deleteFavorite(12368, -1)
+    ).rejects.toThrow(new BadRequestError("Invalid book id."));
   });
 });
 
@@ -327,11 +318,9 @@ describe("delete favorite(invalid user id, existing book)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(-1, favoriteForm.book_id);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () => await favoriteService.deleteFavorite(-1, favoriteForm.book_id)
+    ).rejects.toThrow(new BadRequestError("Invalid user id."));
   });
 });
 
@@ -359,11 +348,9 @@ describe("delete favorite(invalid user id, non-existing book)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(-1, 12368);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () => await favoriteService.deleteFavorite(-1, 12368)
+    ).rejects.toThrow(new BadRequestError("Invalid user id."));
   });
 });
 
@@ -391,10 +378,8 @@ describe("delete favorite(invalid user id, invalid book id)", () => {
     await userService.deleteUser(newUser.id);
   });
   it("should return users favorite books", async () => {
-    favoriteService.deleteFavorite(-1, -1);
-    const favorites = await favoriteService.getFavoritesOfUserWithBooks(
-      newUser.id
-    );
-    //TODO: expect(favorites.length >= 1).toBe(false);
+    expect(
+      async () => await favoriteService.deleteFavorite(-1, -1)
+    ).rejects.toThrow(new BadRequestError("Invalid user id."));
   });
 });

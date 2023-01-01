@@ -4,6 +4,8 @@ backend/database/dataset
 # Database Key
 backend/database/dbConfig.json
 backend/database/dbConfigLocal.json
+backend/output/
+backend/test/test-report.html
 
 # Elastic Beanstalk Files
 backend/.elasticbeanstalk/*

@@ -8,7 +8,7 @@ class GenreService {
       const genres = await Genre.findAll({ where });
       return genres;
     } catch (err) {
-      throw new APIError(err);
+      throw new APIError();
     }
   };
 
@@ -18,12 +18,15 @@ class GenreService {
       if (!genre) throw new NotFoundError();
       return genre;
     } catch (err) {
-      throw new APIError(err);
+      throw new APIError();
     }
   };
 
   getGenresByIdWithBooks = async (id) => {
     try {
+      if (typeof id == "number" && id <= 0) {
+        throw new BadRequestError("Invalid genre id.");
+      }
       const genre = await Genre.findByPk(id, {
         include: {
           model: Book,
@@ -33,10 +36,13 @@ class GenreService {
           as: "books",
         },
       });
-      if (!genre) throw new NotFoundError();
+      if (!genre) throw new BadRequestError("Genre does not exist.");
       return genre;
     } catch (err) {
-      throw new APIError(err);
+      if (err instanceof BadRequestError) {
+        throw err;
+      }
+      throw new APIError();
     }
   };
   createGenre = async (form) => {

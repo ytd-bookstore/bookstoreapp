@@ -16,8 +16,11 @@ class FavoriteService {
 
   getFavoritesOfUserWithBooks = async (user_id) => {
     try {
+      if (typeof user_id == "number" && user_id <= 0) {
+        throw new BadRequestError("Invalid user id.");
+      }
       let user = await User.findByPk(user_id);
-      if (!user) throw new BadRequestError();
+      if (!user) throw new BadRequestError("User does not exist.");
 
       const favorites = await Favorite.findAll({
         where: { user_id },
@@ -83,6 +86,16 @@ class FavoriteService {
 
   deleteFavorite = async (user_id, book_id) => {
     try {
+      if (typeof user_id == "number" && user_id <= 0) {
+        throw new BadRequestError("Invalid user id.");
+      }
+      if (typeof book_id == "number" && book_id <= 0) {
+        throw new BadRequestError("Invalid book id.");
+      }
+      const user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError("User does not exist.");
+      const book = await User.findByPk(book_id);
+      if (!book) throw new BadRequestError("Book does not exist.");
       let favorite = await Favorite.findOne({ where: { user_id, book_id } });
       if (!favorite) throw new BadRequestError();
       await favorite.destroy();

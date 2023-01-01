@@ -27,6 +27,9 @@ class BookService {
 
   getBooksByIdWithGenres = async (id) => {
     try {
+      if (typeof id == "number" && id <= 0) {
+        throw new BadRequestError("Invalid book id.");
+      }
       const book = await Book.findByPk(id, {
         include: {
           model: Genre,
@@ -38,6 +41,13 @@ class BookService {
       });
       return book;
     } catch (err) {
+      if (
+        err.name === "SequelizeValidationError" ||
+        err.name === "SequelizeUniqueConstraintError" ||
+        err instanceof BadRequestError
+      ) {
+        throw err;
+      }
       throw new APIError();
     }
   };
@@ -60,6 +70,9 @@ class BookService {
 
   updateBook = async (id, form) => {
     try {
+      if (typeof id == "number" && id <= 0) {
+        throw new BadRequestError("Invalid book id.");
+      }
       let book = await Book.findByPk(id);
       if (!book) throw new BadRequestError();
       book = await book.update(form);

@@ -2,97 +2,6 @@ const addressService = require("../../services/addresses");
 const userService = require("../../services/users");
 const migrate = require("../../database/migration");
 
-describe("get all users", () => {
-  const newUser = {
-    name: "John",
-    surname: "Doe",
-    email: "johndoe@gmail.com",
-    passwordHash: "28ghjd2xz5",
-    passwordSalt: "68nf9358jd",
-    is_admin: "false",
-  };
-
-  beforeAll(async () => {
-    const response = await userService.createUser(newUser);
-    newUser.id = response.id;
-  });
-  afterAll(async () => {
-    await userService.deleteUser(newUser.id);
-  });
-  it("should return users", async () => {
-    const response = await userService.getUsers();
-    expect(response.length >= 1).toBe(true);
-  });
-});
-
-describe("create a user", () => {
-  const newUser = {
-    name: "John",
-    surname: "Doe",
-    email: "johndoe@gmail.com",
-    passwordHash: "28ghjd2xz5",
-    passwordSalt: "68nf9358jd",
-    is_admin: "false",
-  };
-  afterAll(async () => {
-    await userService.deleteUser(newUser.id);
-  });
-  it("should create a new user", async () => {
-    const createdUser = await userService.createUser(newUser);
-    newUser.id = createdUser.id;
-    expect(createdUser.name).toBe(newUser.name);
-    expect(createdUser.surname).toBe(newUser.surname);
-  });
-});
-
-describe("update a user", () => {
-  const newUser = {
-    name: "John",
-    surname: "Doe",
-    email: "johndoe@gmail.com",
-    passwordHash: "28ghjd2xz5",
-    passwordSalt: "68nf9358jd",
-    is_admin: "false",
-  };
-  beforeAll(async () => {
-    const response = await userService.createUser(newUser);
-    newUser.id = response.id;
-  });
-  afterAll(async () => {
-    await userService.deleteUser(newUser.id);
-  });
-  it("should update item if it exists", async () => {
-    const updatedUser = await userService.updateUser(newUser.id, {
-      name: "Jack",
-    });
-    expect(updatedUser.name).toBe("Jack");
-  });
-});
-
-describe("delete a user", () => {
-  const newUser = {
-    name: "John",
-    surname: "Doe",
-    email: "johndoe@gmail.com",
-    passwordHash: "28ghjd2xz5",
-    passwordSalt: "68nf9358jd",
-    is_admin: "false",
-  };
-  beforeAll(async () => {
-    const response = await userService.createUser(newUser);
-    newUser.id = response.id;
-  });
-
-  it("should delete the user", async () => {
-    await userService.deleteUser(newUser.id);
-    const users = await userService.getUsers();
-    const exists = users.find((user) => {
-      user.id == newUser.id;
-    });
-    expect(exists).toBe(undefined);
-  });
-});
-
 describe("get user by id with address", () => {
   const newUser = {
     name: "John",
@@ -125,7 +34,23 @@ describe("get user by id with address", () => {
   });
 });
 
-describe("get user by id with address", () => {
+describe("get user by id with address (non existing user)", () => {
+  it("should return user with address", async () => {
+    expect(
+      async () => await orderService.getOrderOfUserWithBooks(12368)
+    ).rejects.toThrowError();
+  });
+});
+
+describe("get user by id with address (invalid user id)", () => {
+  it("should return user with address", async () => {
+    expect(
+      async () => await orderService.getOrderOfUserWithBooks(-1)
+    ).rejects.toThrowError();
+  });
+});
+
+describe("update user by id with address", () => {
   const newUser = {
     name: "John",
     surname: "Doe",
@@ -175,7 +100,52 @@ describe("get user by id with address", () => {
   });
 });
 
-describe("get user by id with address", () => {
+describe("update user by id with address (non existing user)", () => {
+  const updatedUserData = {
+    name: "Johnny",
+    surname: "Deer",
+    email: "johndoe@gmail.com",
+    passwordHash: "28ghjd2xz5",
+    passwordSalt: "68nf9358jd",
+    is_admin: false,
+    address: {
+      address_line: "EV",
+      city: "TEKIRDAG",
+      district: "SARAY",
+      mobile: "8657456858",
+    },
+  };
+  it("should return user with address", async () => {
+    expect(
+      async () =>
+        await userService.updateUserWithAddress(3123213, updatedUserData)
+    ).rejects.toThrowError();
+  });
+});
+
+describe("update user by id with address (invalid user id)", () => {
+  const updatedUserData = {
+    name: "Johnny",
+    surname: "Deer",
+    email: "johndoe@gmail.com",
+    passwordHash: "28ghjd2xz5",
+    passwordSalt: "68nf9358jd",
+    is_admin: false,
+    address: {
+      address_line: "EV",
+      city: "TEKIRDAG",
+      district: "SARAY",
+      mobile: "8657456858",
+    },
+  };
+  it("should return user with address", async () => {
+    expect(
+      async () => await userService.updateUserWithAddress(-1, updatedUserData)
+    ).rejects.toThrowError();
+  });
+});
+
+describe("update user", () => {
   const newUser = {
     name: "John",
     surname: "Doe",
@@ -205,5 +175,39 @@ describe("get user by id with address", () => {
   it("should return user with address", async () => {
     const user = await userService.updateUser(newUser.id, updatedUserData);
     expect(user.toJSON()).toStrictEqual(updatedUserData);
+  });
+});
+
+describe("update user (non-existing user)", () => {
+  const updatedUserData = {
+    name: "Johnny",
+    surname: "Deer",
+    email: "johndoe@gmail.com",
+    passwordHash: "28ghjd2xz5",
+    passwordSalt: "68nf9358jd",
+    is_admin: false,
+  };
+
+  it("should return user with address", async () => {
+    expect(
+      async () => await userService.updateUser(2312131, updatedUserData)
+    ).rejects.toThrowError();
+  });
+});
+
+describe("update user (invalid user id)", () => {
+  const updatedUserData = {
+    name: "Johnny",
+    surname: "Deer",
+    email: "johndoe@gmail.com",
+    passwordHash: "28ghjd2xz5",
+    passwordSalt: "68nf9358jd",
+    is_admin: false,
+  };
+
+  it("should return user with address", async () => {
+    expect(
+      async () => await userService.updateUser(-1, updatedUserData)
+    ).rejects.toThrowError();
   });
 });

@@ -35,6 +35,11 @@ class OrderService {
 
   getOrderOfUserWithBooks = async (user_id) => {
     try {
+      if (typeof user_id == "number" && user_id <= 0) {
+        throw new BadRequestError("Invalid user id.");
+      }
+      let user = await User.findByPk(user_id);
+      if (!user) throw new BadRequestError("User does not exist.");
       const order = await Order.findAll({
         where: { user_id },
         include: {
@@ -47,7 +52,7 @@ class OrderService {
       });
       return order;
     } catch (err) {
-      throw new APIError(err);
+      throw new APIError();
     }
   };
 
@@ -70,9 +75,11 @@ class OrderService {
 
   updateOrder = async (id, form) => {
     try {
-      //TODO: User must be exist
+      if (typeof id == "number" && id <= 0) {
+        throw new BadRequestError("Invalid order id.");
+      }
       let order = await Order.findByPk(id);
-      if (!order) throw new BadRequestError();
+      if (!order) throw new BadRequestError("Order does not exist.");
       order = await order.update(form);
       return order;
     } catch (err) {
@@ -103,9 +110,13 @@ class OrderService {
 
   checkout = async (user_id, form) => {
     try {
-      if (!this.#validateCardInformation(form)) throw new BadRequestError();
+      if (typeof user_id == "number" && user_id <= 0) {
+        throw new BadRequestError("Invalid user id.");
+      }
+      if (!this.#validateCardInformation(form))
+        throw new BadRequestError("Invalid card.");
       const user = await User.findByPk(user_id);
-      if (!user) throw new BadRequestError();
+      if (!user) throw new BadRequestError("User does not exist.");
       const cart = await Cart.findOne({
         where: { user_id },
         include: {
@@ -116,7 +127,7 @@ class OrderService {
           as: "books",
         },
       });
-      if (!cart) throw new BadRequestError();
+      if (!cart) throw new BadRequestError("Cart does not exist.");
       const order = await Order.create({
         user_id,
         total: cart.total,
