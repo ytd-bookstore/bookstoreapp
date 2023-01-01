@@ -66,7 +66,7 @@ describe("checkout (existing user, invalid card)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should change order status", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.checkout(newUser.id, cardForm)
     ).rejects.toThrowError();
@@ -83,7 +83,7 @@ describe("checkout (non-existing user, valid card)", () => {
     year: "2022",
   };
 
-  it("should change order status", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.checkout(12368, cardForm)
     ).rejects.toThrow(new BadRequestError("User does not exist."));
@@ -100,7 +100,7 @@ describe("checkout (non-existing user, invalid card)", () => {
     year: "2022",
   };
 
-  it("should change order status", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.checkout(12368, cardForm)
     ).rejects.toThrow(new BadRequestError("Invalid card."));
@@ -117,7 +117,7 @@ describe("checkout (invalid user, valid card)", () => {
     year: "2022",
   };
 
-  it("should change order status", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.checkout(-1, cardForm)
     ).rejects.toThrow(new BadRequestError("Invalid user id."));
@@ -133,7 +133,7 @@ describe("checkout (invalid user, invalid card)", () => {
     cvv: "111",
     year: "2022",
   };
-  it("should change order status", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.checkout(-1, cardForm)
     ).rejects.toThrow(new BadRequestError("Invalid user id."));
@@ -176,7 +176,7 @@ describe("get order of user with books (existing user)", () => {
 });
 
 describe("get order of user with books(non-existing user)", () => {
-  it("should return orders of user with books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.getOrderOfUserWithBooks(123698)
     ).rejects.toThrowError();
@@ -184,7 +184,7 @@ describe("get order of user with books(non-existing user)", () => {
 });
 
 describe("get order of user with books (invalid user id)", () => {
-  it("should return orders of user with books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.getOrderOfUserWithBooks(-2)
     ).rejects.toThrowError();
@@ -272,7 +272,7 @@ describe("update order (existing order, invalid form)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should change status of the order", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.updateOrder(order.id, orderForm)
     ).rejects.toThrowError();
@@ -316,7 +316,7 @@ describe("update order (non-existing order, valid form)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should change status of the order", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.updateOrder(12368, orderForm)
     ).rejects.toThrow(new BadRequestError("Order does not exist."));
@@ -327,7 +327,7 @@ describe("update order (non-existing order, invalid form)", () => {
   const orderForm = {
     status: "Status",
   };
-  it("should change status of the order", async () => {
+  it("should change return an error", async () => {
     expect(
       async () => await orderService.updateOrder(12368, orderForm)
     ).rejects.toThrow(new BadRequestError("Order does not exist."));
@@ -371,7 +371,7 @@ describe("update order (invalid order id, valid form)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should change status of the order", async () => {
+  it("should change return an error", async () => {
     expect(
       async () => await orderService.updateOrder(-1, orderForm)
     ).rejects.toThrow(new BadRequestError("Invalid order id."));
@@ -415,7 +415,7 @@ describe("update order (invalid order id, invalid form)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should change status of the order", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.updateOrder(-1, orderForm)
     ).rejects.toThrow(new BadRequestError("Invalid order id."));

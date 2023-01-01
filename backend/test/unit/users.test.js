@@ -35,7 +35,7 @@ describe("get user by id with address", () => {
 });
 
 describe("get user by id with address (non existing user)", () => {
-  it("should return user with address", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.getOrderOfUserWithBooks(12368)
     ).rejects.toThrowError();
@@ -43,7 +43,7 @@ describe("get user by id with address (non existing user)", () => {
 });
 
 describe("get user by id with address (invalid user id)", () => {
-  it("should return user with address", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await orderService.getOrderOfUserWithBooks(-1)
     ).rejects.toThrowError();
@@ -115,7 +115,7 @@ describe("update user by id with address (non existing user)", () => {
       mobile: "8657456858",
     },
   };
-  it("should return user with address", async () => {
+  it("should return an error", async () => {
     expect(
       async () =>
         await userService.updateUserWithAddress(3123213, updatedUserData)
@@ -138,7 +138,7 @@ describe("update user by id with address (invalid user id)", () => {
       mobile: "8657456858",
     },
   };
-  it("should return user with address", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await userService.updateUserWithAddress(-1, updatedUserData)
     ).rejects.toThrowError();
@@ -188,7 +188,7 @@ describe("update user (non-existing user)", () => {
     is_admin: false,
   };
 
-  it("should return user with address", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await userService.updateUser(2312131, updatedUserData)
     ).rejects.toThrowError();
@@ -205,7 +205,7 @@ describe("update user (invalid user id)", () => {
     is_admin: false,
   };
 
-  it("should return user with address", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await userService.updateUser(-1, updatedUserData)
     ).rejects.toThrowError();

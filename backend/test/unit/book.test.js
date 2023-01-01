@@ -10,7 +10,7 @@ describe("search books (valid name)", () => {
 });
 
 describe("search books (invalid name)", () => {
-  it("should return the searched book", async () => {
+  it("should return an error", async () => {
     const response = await bookService.searchBooks("Princeee");
     expect(response.length >= 1).toBe(false);
   });
@@ -25,7 +25,7 @@ describe("get books by id with genres  Valid Book ID)", () => {
 });
 
 describe("get books by id with genres (Invalid Book ID)", () => {
-  it("should return the book with its genres", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await bookService.getBooksByIdWithGenres(-5)
     ).rejects.toThrow(new BadRequestError("Invalid book id."));
@@ -33,7 +33,7 @@ describe("get books by id with genres (Invalid Book ID)", () => {
 });
 
 describe("get books by id with genres (Non-existing Book ID)", () => {
-  it("should return the book with its genres", async () => {
+  it("should return an error", async () => {
     const response = await bookService.getBooksByIdWithGenres(1005);
 
     expect(response.genres.length >= 0).toBe(true);
@@ -114,7 +114,7 @@ describe("update books (Invalid Book Information", () => {
     newBook.id = bookResponse.id;
   });
 
-  it("should return the updated book", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await bookService.updateBook(newBook.id, updatedBook)
     ).rejects.toThrowError();
@@ -155,7 +155,7 @@ describe("update books (Invalid Book ID)", () => {
     newBook.id = bookResponse.id;
   });
 
-  it("should return the updated book", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await bookService.updateBook(-5, updatedBook)
     ).rejects.toThrow(new BadRequestError("Invalid book id."));
@@ -196,7 +196,7 @@ describe("update books (Non-existing Book ID)", () => {
     newBook.id = bookResponse.id;
   });
 
-  it("should return the updated book", async () => {
+  it("should return an error", async () => {
     const response = await bookService.updateBook(1005, updatedBook);
     expect(response.stock >= 14).toBe(true);
   });

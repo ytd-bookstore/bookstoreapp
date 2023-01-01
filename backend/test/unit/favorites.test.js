@@ -55,7 +55,7 @@ describe("create a favorite (invalid form)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should create a new favorite", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await await favoriteService.createFavorite(favoriteForm)
     ).rejects.toThrowError();
@@ -95,7 +95,7 @@ describe("get favorites of user with books (existing user id)", () => {
 });
 
 describe("get favorites of user with books (non-existing user id)", () => {
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.getFavoritesOfUserWithBooks(12368)
     ).rejects.toThrow(new BadRequestError("User does not exist."));
@@ -103,7 +103,7 @@ describe("get favorites of user with books (non-existing user id)", () => {
 });
 
 describe("get favorites of user with books (invalid user id)", () => {
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.getFavoritesOfUserWithBooks(-1)
     ).rejects.toThrow(new BadRequestError("Invalid user id."));
@@ -166,7 +166,7 @@ describe("delete favorite(existing user, non-existing book)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.deleteFavorite(newUser.id, 12368)
     ).rejects.toThrow(new BadRequestError("Book does not exist."));
@@ -196,7 +196,7 @@ describe("delete favorite(existing user, invalid book id)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.deleteFavorite(newUser.id, -1)
     ).rejects.toThrow(new BadRequestError("Invalid book id."));
@@ -226,7 +226,7 @@ describe("delete favorite(non-existing user, existing book)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () =>
         await favoriteService.deleteFavorite(12368, favoriteForm.book_id)
@@ -257,7 +257,7 @@ describe("delete favorite(non-existing user, non-existing book)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.deleteFavorite(12368, 12368)
     ).rejects.toThrow(new BadRequestError("User does not exist."));
@@ -287,7 +287,7 @@ describe("delete favorite(non-existing user, invalid book id)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.deleteFavorite(12368, -1)
     ).rejects.toThrow(new BadRequestError("Invalid book id."));
@@ -317,7 +317,7 @@ describe("delete favorite(invalid user id, existing book)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.deleteFavorite(-1, favoriteForm.book_id)
     ).rejects.toThrow(new BadRequestError("Invalid user id."));
@@ -347,7 +347,7 @@ describe("delete favorite(invalid user id, non-existing book)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.deleteFavorite(-1, 12368)
     ).rejects.toThrow(new BadRequestError("Invalid user id."));
@@ -377,7 +377,7 @@ describe("delete favorite(invalid user id, invalid book id)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return users favorite books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await favoriteService.deleteFavorite(-1, -1)
     ).rejects.toThrow(new BadRequestError("Invalid user id."));

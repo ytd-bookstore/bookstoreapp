@@ -24,7 +24,7 @@ describe("get genres by id with books (existing genre id)", () => {
 });
 
 describe("get genres by id with books (non-existing genre id)", () => {
-  it("should return genre with books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await genreService.getGenresByIdWithBooks(12368)
     ).rejects.toThrow(new BadRequestError("Genre does not exist."));
@@ -32,7 +32,7 @@ describe("get genres by id with books (non-existing genre id)", () => {
 });
 
 describe("get genres by id with books (invalid genre id)", () => {
-  it("should return genre with books", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await genreService.getGenresByIdWithBooks(-1)
     ).rejects.toThrow(new BadRequestError("Invalid genre id."));

@@ -18,7 +18,7 @@ describe("register with valid information", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return registered user", async () => {
+  it("should return jwt token", async () => {
     const response = await userService.getUsersById(newUser.id);
     expect(response).not.toBe(null);
   });

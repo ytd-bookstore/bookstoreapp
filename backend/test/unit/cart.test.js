@@ -44,7 +44,7 @@ describe("add book to cart (Invalid User ID)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return cart with a book in it", async () => {
+  it("should return an error", async () => {
     expect(async () => await cartService.addBookToCart(-5, 1)).rejects.toThrow(
       new BadRequestError("Invalid user id.")
     );
@@ -52,7 +52,7 @@ describe("add book to cart (Invalid User ID)", () => {
 });
 
 describe("add book to cart (Non-existing User ID)", () => {
-  it("should return cart with a book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.addBookToCart(1000000, 1)
     ).rejects.toThrow(new BadRequestError("User does not exist."));
@@ -76,7 +76,7 @@ describe("add book to cart (Invalid Book ID)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return cart with a book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.addBookToCart(newUser.id, -3)
     ).rejects.toThrow(new BadRequestError("Invalid book id."));
@@ -100,7 +100,7 @@ describe("add book to cart (Non-existing Book ID)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return cart with a book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.addBookToCart(newUser.id, 1000000)
     ).rejects.toThrow(new BadRequestError("Book does not exist."));
@@ -132,7 +132,7 @@ describe("get cart of user with books (Valid User Id and Non-empty Cart)", () =>
 });
 
 describe("get cart of user with books (Invalid User ID)", () => {
-  it("should return cart with a book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.getCartOfUserWithBooks(-1)
     ).rejects.toThrow(new BadRequestError("Invalid user id."));
@@ -140,7 +140,7 @@ describe("get cart of user with books (Invalid User ID)", () => {
 });
 
 describe("get cart of user with books (Non-existing User ID)", () => {
-  it("should return cart with a book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.getCartOfUserWithBooks(1000000)
     ).rejects.toThrow(new BadRequestError("User does not exist."));
@@ -181,7 +181,7 @@ describe("remove book from cart (Invalid User ID)", () => {
 });
 
 describe("remove book from cart (Non-existing User ID)", () => {
-  it("should return cart with no book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.removeBookFromCart(10000000, 1)
     ).rejects.toThrow(new BadRequestError("User does not exist."));
@@ -205,7 +205,7 @@ describe("remove book from cart (Invalid Book ID)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return cart with no book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.removeBookFromCart(newUser.id, -1)
     ).rejects.toThrow(new BadRequestError("Invalid book id."));
@@ -229,7 +229,7 @@ describe("remove book from cart (Non existing Book ID)", () => {
   afterAll(async () => {
     await userService.deleteUser(newUser.id);
   });
-  it("should return cart with no book in it", async () => {
+  it("should return an error", async () => {
     expect(
       async () => await cartService.removeBookFromCart(newUser.id, 1000000)
     ).rejects.toThrow(new BadRequestError("Book does not exist."));
