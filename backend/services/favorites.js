@@ -51,6 +51,10 @@ class FavoriteService {
 
   createFavorite = async (form) => {
     try {
+      const book = await Book.findByPk(form.book_id);
+      if (!book) throw new BadRequestError("Book not found!");
+      const user = await User.findByPk(form.user_id);
+      if (!user) throw new BadRequestError("User not found!");
       const favorite = await Favorite.create(form);
       return favorite;
     } catch (err) {
@@ -68,7 +72,7 @@ class FavoriteService {
   updateFavorite = async (user_id, book_id, form) => {
     try {
       let favorite = await Favorite.findOne({ where: { user_id, book_id } });
-      if (!favorite) throw new BadRequestError();
+      if (!favorite) throw new BadRequestError("Favorite not found!");
       this.deleteFavorite(user_id, book_id);
       let newFavorite = this.createFavorite(form);
       return newFavorite;
@@ -94,7 +98,7 @@ class FavoriteService {
       }
       const user = await User.findByPk(user_id);
       if (!user) throw new BadRequestError("User does not exist.");
-      const book = await User.findByPk(book_id);
+      const book = await Book.findByPk(book_id);
       if (!book) throw new BadRequestError("Book does not exist.");
       let favorite = await Favorite.findOne({ where: { user_id, book_id } });
       if (!favorite) throw new BadRequestError();
