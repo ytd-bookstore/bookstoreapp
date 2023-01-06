@@ -45,9 +45,7 @@ class AddressService {
   updateAddress = async (id, form) => {
     try {
       let address = await Address.findByPk(id);
-      if (!address) throw new BadRequestError();
-      let addresses = await Address.findOne({ where: { user_id } });
-      if (addresses) throw new BadRequestError();
+      if (!address) throw new BadRequestError("Address not found!");
       address = await address.update(form);
       return address;
     } catch (err) {
