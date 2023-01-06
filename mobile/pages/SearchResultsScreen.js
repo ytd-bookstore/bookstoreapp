@@ -30,7 +30,7 @@ export default function SearchResults({ route, navigation }) {
     return <RequestError />;
   }
 
-  if (searchResults.length === 0) {
+  if (searchResults.length === 0 || searchResults.errors) {
     return (
       <View style={styles.container}>
         <Header />
