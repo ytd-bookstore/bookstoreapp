@@ -94,7 +94,7 @@ class FavoriteService {
       }
       const user = await User.findByPk(user_id);
       if (!user) throw new BadRequestError("User does not exist.");
-      const book = await User.findByPk(book_id);
+      const book = await Book.findByPk(book_id);
       if (!book) throw new BadRequestError("Book does not exist.");
       let favorite = await Favorite.findOne({ where: { user_id, book_id } });
       if (!favorite) throw new BadRequestError();
