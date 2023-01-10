@@ -12,6 +12,7 @@ import { Formik } from "formik";
 import useMediaQuerry from "@mui/material/useMediaQuery";
 import * as yup from "yup";
 import { token } from "../login";
+import CustomizedDialogs from "../../components/dialog";
 
 const initialValues = {
   user_id: 0,
@@ -48,7 +49,7 @@ const Addresses = () => {
   const addBooksData = async (value) => {
     await axios
       .post(
-        "http://localhost:3000/api/addresses/",
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/addresses/",
         {
           user_id: value.user_id,
           address_line: value.address_line,
@@ -72,11 +73,14 @@ const Addresses = () => {
 
   const getAddressData = async () => {
     await axios
-      .get("http://localhost:3000/api/addresses", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/addresses",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
@@ -130,6 +134,107 @@ const Addresses = () => {
 
         <Box m="20px">
           <Header title="Addresses" subtitle="Tables of the Addresses" />
+          <CustomizedDialogs>
+            <Formik
+              onSubmit={handleFormSubmit}
+              initialValues={initialValues}
+              validationSchema={userSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Box
+                    display="grid"
+                    gap="30px"
+                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                    sx={{
+                      "& > div": {
+                        gridColumn: isNonMobile ? undefined : "span4",
+                      },
+                    }}
+                  >
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="user_id"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.user_id}
+                      name="user_id"
+                      error={!!touched.user_id && !!errors.user_id}
+                      helperText={touched.user_id && errors.user_id}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="address_line"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.address_line}
+                      name="address_line"
+                      error={!!touched.address_line && !!errors.address_line}
+                      helperText={touched.address_line && errors.address_line}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="city"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.city}
+                      name="city"
+                      error={!!touched.city && !!errors.city}
+                      helperText={touched.city && errors.city}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="district"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.district}
+                      name="district"
+                      error={!!touched.district && !!errors.district}
+                      helperText={touched.district && errors.district}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="mobile"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.mobile}
+                      name="mobile"
+                      error={!!touched.mobile && !!errors.mobile}
+                      helperText={touched.mobile && errors.mobile}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                  </Box>
+                  <Box display="flex" justifyContent="end" mt="20px">
+                    <Button type="submit" color="secondary" variant="contained">
+                      Add
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
+          </CustomizedDialogs>
           <Box
             m="40px 0 0 0"
             height="75vh"
@@ -170,105 +275,6 @@ const Addresses = () => {
               onCellEditCommit={(params) => setRowId(params.id)}
             />
           </Box>
-          <Formik
-            onSubmit={handleFormSubmit}
-            initialValues={initialValues}
-            validationSchema={userSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box
-                  display="grid"
-                  gap="30px"
-                  gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                  sx={{
-                    "& > div": {
-                      gridColumn: isNonMobile ? undefined : "span4",
-                    },
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="user_id"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.user_id}
-                    name="user_id"
-                    error={!!touched.user_id && !!errors.user_id}
-                    helperText={touched.user_id && errors.user_id}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="address_line"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.address_line}
-                    name="address_line"
-                    error={!!touched.address_line && !!errors.address_line}
-                    helperText={touched.address_line && errors.address_line}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="city"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.city}
-                    name="city"
-                    error={!!touched.city && !!errors.city}
-                    helperText={touched.city && errors.city}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="district"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.district}
-                    name="district"
-                    error={!!touched.district && !!errors.district}
-                    helperText={touched.district && errors.district}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="mobile"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.mobile}
-                    name="mobile"
-                    error={!!touched.mobile && !!errors.mobile}
-                    helperText={touched.mobile && errors.mobile}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                </Box>
-                <Box display="flex" justifyContent="end" mt="20px">
-                  <Button type="submit" color="secondary" variant="contained">
-                    Add
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
         </Box>
       </main>
     </div>

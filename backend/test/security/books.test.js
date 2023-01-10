@@ -1,6 +1,7 @@
 const request = require("supertest");
 const bookService = require("../../services/books");
-const baseURL = "http://localhost:3000/api";
+const baseURL =
+  "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api";
 
 describe("search books (valid)", () => {
   const credentials = {

@@ -12,18 +12,22 @@ const AddressActions = ({ params, rowId, setRowId, data, setData }) => {
 
   const getAddressData = async () => {
     await axios
-      .get("http://localhost:3000/api/addresses", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/addresses",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
   };
 
   const updateAddressesData = async (itemName) => {
-    let a = "http://localhost:3000/api/addresses/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/addresses/";
     let b = itemName;
     let c = a + b;
     console.log(itemName);
@@ -48,7 +52,8 @@ const AddressActions = ({ params, rowId, setRowId, data, setData }) => {
   };
 
   const handleDelete = async (itemName) => {
-    let a = "http://localhost:3000/api/addresses/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/addresses/";
     let b = itemName;
     let c = a + b;
     await axios

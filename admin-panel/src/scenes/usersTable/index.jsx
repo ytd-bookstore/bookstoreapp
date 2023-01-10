@@ -12,6 +12,7 @@ import { Formik } from "formik";
 import useMediaQuerry from "@mui/material/useMediaQuery";
 import * as yup from "yup";
 import { token } from "../login";
+import CustomizedDialogs from "../../components/dialog";
 
 const initialValues = {
   name: "",
@@ -54,7 +55,7 @@ const Users = () => {
   const addUsersData = async (value) => {
     await axios
       .post(
-        "http://localhost:3000/api/users",
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/users",
         {
           name: value.name,
           surname: value.surname,
@@ -79,11 +80,14 @@ const Users = () => {
 
   const getUsersData = async () => {
     await axios
-      .get("http://localhost:3000/api/users", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/users",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
@@ -166,6 +170,120 @@ const Users = () => {
         <Topbar />
         <Box m="20px">
           <Header title="Users" subtitle="Tables of the Users" />
+          <CustomizedDialogs>
+            <Formik
+              onSubmit={handleFormSubmit}
+              initialValues={initialValues}
+              validationSchema={userSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Box
+                    display="grid"
+                    gap="30px"
+                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                    sx={{
+                      "& > div": {
+                        gridColumn: isNonMobile ? undefined : "span4",
+                      },
+                    }}
+                  >
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="name"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.name}
+                      name="name"
+                      error={!!touched.name && !!errors.name}
+                      helperText={touched.name && errors.name}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="surname"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.surname}
+                      name="surname"
+                      error={!!touched.surname && !!errors.surname}
+                      helperText={touched.surname && errors.surname}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="email"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.email}
+                      name="email"
+                      error={!!touched.email && !!errors.email}
+                      helperText={touched.email && errors.email}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="passwordHash"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.passwordHash}
+                      name="passwordHash"
+                      error={!!touched.passwordHash && !!errors.passwordHash}
+                      helperText={touched.passwordHash && errors.passwordHash}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="passwordSalt"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.passwordSalt}
+                      name="passwordSalt"
+                      error={!!touched.passwordSalt && !!errors.passwordSalt}
+                      helperText={touched.passwordSalt && errors.passwordSalt}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="is_admin"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.is_admin}
+                      name="is_admin"
+                      error={!!touched.is_admin && !!errors.is_admin}
+                      helperText={touched.is_admin && errors.is_admin}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                  </Box>
+                  <Box display="flex" justifyContent="end" mt="20px">
+                    <Button type="submit" color="secondary" variant="contained">
+                      Add
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
+          </CustomizedDialogs>
           <Box
             m="40px 0 0 0"
             height="75vh"
@@ -206,118 +324,6 @@ const Users = () => {
               onCellEditCommit={(params) => setRowId(params.id)}
             />
           </Box>
-          <Formik
-            onSubmit={handleFormSubmit}
-            initialValues={initialValues}
-            validationSchema={userSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box
-                  display="grid"
-                  gap="30px"
-                  gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                  sx={{
-                    "& > div": {
-                      gridColumn: isNonMobile ? undefined : "span4",
-                    },
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="name"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.name}
-                    name="name"
-                    error={!!touched.name && !!errors.name}
-                    helperText={touched.name && errors.name}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="surname"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.surname}
-                    name="surname"
-                    error={!!touched.surname && !!errors.surname}
-                    helperText={touched.surname && errors.surname}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="email"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.email}
-                    name="email"
-                    error={!!touched.email && !!errors.email}
-                    helperText={touched.email && errors.email}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="passwordHash"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.passwordHash}
-                    name="passwordHash"
-                    error={!!touched.passwordHash && !!errors.passwordHash}
-                    helperText={touched.passwordHash && errors.passwordHash}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="passwordSalt"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.passwordSalt}
-                    name="passwordSalt"
-                    error={!!touched.passwordSalt && !!errors.passwordSalt}
-                    helperText={touched.passwordSalt && errors.passwordSalt}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="is_admin"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.is_admin}
-                    name="is_admin"
-                    error={!!touched.is_admin && !!errors.is_admin}
-                    helperText={touched.is_admin && errors.is_admin}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                </Box>
-                <Box display="flex" justifyContent="end" mt="20px">
-                  <Button type="submit" color="secondary" variant="contained">
-                    Add
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
         </Box>
       </main>
     </div>

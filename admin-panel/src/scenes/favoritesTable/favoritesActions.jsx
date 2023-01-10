@@ -7,28 +7,44 @@ import axios from "axios";
 import { valid } from ".";
 import { useEffect } from "react";
 
-const FavoritesActions = ({ params, rowId, setRowId, data, setData }) => {
+const FavoritesActions = ({
+  params,
+  rowId,
+  setRowId,
+  data,
+  setData,
+  initialValues,
+  setInitialValues,
+}) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const getFavoritesData = async () => {
     await axios
-      .get("http://localhost:3000/api/favorites", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/favorites",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
   };
 
   const updateFavoritessData = async (itemName) => {
-    let a = "http://localhost:3000/api/favorites/";
-    let b = itemName;
-    let c = a + b;
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/favorites/users/";
+    let b = Number(initialValues.user_id);
+    let c = Number(initialValues.book_id);
+    let d = "/";
+    let f = "books";
+    let e = a + b + d + f + d + c;
+
     await axios
-      .put(c, params.row, {
+      .put(e, params.row, {
         headers: {
           Authorization: valid,
         },
@@ -47,11 +63,15 @@ const FavoritesActions = ({ params, rowId, setRowId, data, setData }) => {
     setSuccess(false);
   };
   const handleDelete = async (itemName) => {
-    let a = "http://localhost:3000/api/favorites/";
-    let b = itemName;
-    let c = a + b;
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/favorites/users/";
+    let b = params.row.user_id;
+    let c = params.row.book_id;
+    let d = "/";
+    let f = "books";
+    let e = a + b + d + f + d + c;
     await axios
-      .delete(c, {
+      .delete(e, {
         headers: {
           Authorization: valid,
         },

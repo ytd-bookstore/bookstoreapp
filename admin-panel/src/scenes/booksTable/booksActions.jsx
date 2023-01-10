@@ -12,18 +12,22 @@ const BooksActions = ({ params, rowId, setRowId, data, setData }) => {
 
   const getBooksData = async () => {
     await axios
-      .get("http://localhost:3000/api/books", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/books",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
   };
 
   const updateBooksData = async (itemName) => {
-    let a = "http://localhost:3000/api/books/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/books/";
     let b = itemName;
     let c = a + b;
     await axios
@@ -47,7 +51,8 @@ const BooksActions = ({ params, rowId, setRowId, data, setData }) => {
   };
 
   const handleDelete = async (itemName) => {
-    let a = "http://localhost:3000/api/books/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/books/";
     let b = itemName;
     let c = a + b;
     await axios

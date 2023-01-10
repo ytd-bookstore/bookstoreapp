@@ -13,18 +13,22 @@ const GenresActions = ({ params, rowId, setRowId, data, setData }) => {
 
   const getGenresData = async () => {
     await axios
-      .get("http://localhost:3000/api/genres", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/genres",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
   };
 
   const updateGenresData = async (itemName) => {
-    let a = "http://localhost:3000/api/genres/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/genres/";
     let b = itemName;
     let c = a + b;
     await axios
@@ -47,7 +51,8 @@ const GenresActions = ({ params, rowId, setRowId, data, setData }) => {
     setSuccess(false);
   };
   const handleDelete = async (itemName) => {
-    let a = "http://localhost:3000/api/genres/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/genres/";
     let b = itemName;
     let c = a + b;
     await axios

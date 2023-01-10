@@ -22,10 +22,13 @@ const Login = () => {
   const navigate = useNavigate();
   const isNonMobile = useMediaQuerry("(min-width:600px)");
   const handleFormSubmit = async (value) => {
-    token = await axios.post("http://localhost:3000/api/auth/adminlogin", {
-      email: value.email,
-      password: value.password,
-    });
+    token = await axios.post(
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/auth/adminlogin",
+      {
+        email: value.email,
+        password: value.password,
+      }
+    );
     if (token === "") {
     } else {
       navigate("/users");

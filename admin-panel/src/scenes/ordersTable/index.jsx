@@ -12,6 +12,7 @@ import { Formik } from "formik";
 import useMediaQuerry from "@mui/material/useMediaQuery";
 import * as yup from "yup";
 import { token } from "../login";
+import CustomizedDialogs from "../../components/dialog";
 
 const initialValues = {
   user_id: 0,
@@ -46,7 +47,7 @@ const Orders = () => {
   const addOrdersData = async (value) => {
     await axios
       .post(
-        "http://localhost:3000/api/orders",
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/orders",
         {
           user_id: value.user_id,
           total: value.total,
@@ -68,11 +69,14 @@ const Orders = () => {
 
   const getOrdersData = async () => {
     await axios
-      .get("http://localhost:3000/api/orders", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/orders",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
@@ -131,6 +135,81 @@ const Orders = () => {
         <Topbar />
         <Box m="20px">
           <Header title="Orders" subtitle="Tables of the Orders" />
+          <CustomizedDialogs>
+            <Formik
+              onSubmit={handleFormSubmit}
+              initialValues={initialValues}
+              validationSchema={userSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Box
+                    display="grid"
+                    gap="30px"
+                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                    sx={{
+                      "& > div": {
+                        gridColumn: isNonMobile ? undefined : "span4",
+                      },
+                    }}
+                  >
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="user_id"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.user_id}
+                      name="user_id"
+                      error={!!touched.user_id && !!errors.user_id}
+                      helperText={touched.user_id && errors.user_id}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="total"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.total}
+                      name="total"
+                      error={!!touched.total && !!errors.total}
+                      helperText={touched.total && errors.total}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="status"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.status}
+                      name="status"
+                      error={!!touched.status && !!errors.status}
+                      helperText={touched.status && errors.status}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                  </Box>
+                  <Box display="flex" justifyContent="end" mt="20px">
+                    <Button type="submit" color="secondary" variant="contained">
+                      Add
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
+          </CustomizedDialogs>
           <Box
             m="40px 0 0 0"
             height="75vh"
@@ -171,79 +250,6 @@ const Orders = () => {
               onCellEditCommit={(params) => setRowId(params.id)}
             />
           </Box>
-          <Formik
-            onSubmit={handleFormSubmit}
-            initialValues={initialValues}
-            validationSchema={userSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box
-                  display="grid"
-                  gap="30px"
-                  gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                  sx={{
-                    "& > div": {
-                      gridColumn: isNonMobile ? undefined : "span4",
-                    },
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="user_id"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.user_id}
-                    name="user_id"
-                    error={!!touched.user_id && !!errors.user_id}
-                    helperText={touched.user_id && errors.user_id}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="total"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.total}
-                    name="total"
-                    error={!!touched.total && !!errors.total}
-                    helperText={touched.total && errors.total}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="status"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.status}
-                    name="status"
-                    error={!!touched.status && !!errors.status}
-                    helperText={touched.status && errors.status}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                </Box>
-                <Box display="flex" justifyContent="end" mt="20px">
-                  <Button type="submit" color="secondary" variant="contained">
-                    Add
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
         </Box>
       </main>
     </div>

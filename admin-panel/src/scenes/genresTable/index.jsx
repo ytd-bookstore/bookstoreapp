@@ -12,6 +12,7 @@ import { token } from "../login";
 import { Formik } from "formik";
 import useMediaQuerry from "@mui/material/useMediaQuery";
 import * as yup from "yup";
+import CustomizedDialogs from "../../components/dialog";
 
 let a = token.data;
 let b = "Bearer ";
@@ -41,7 +42,7 @@ const Genres = () => {
   const addGenresData = async (value) => {
     await axios
       .post(
-        "http://localhost:3000/api/genres",
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/genres",
         {
           name: value.name,
         },
@@ -61,11 +62,14 @@ const Genres = () => {
 
   const getGenresData = async () => {
     await axios
-      .get("http://localhost:3000/api/genres", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/genres",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
@@ -101,6 +105,54 @@ const Genres = () => {
         <Topbar />
         <Box m="20px">
           <Header title="Genres" subtitle="Tables of the Genres" />
+          <CustomizedDialogs>
+            <Formik
+              onSubmit={handleFormSubmit}
+              initialValues={initialValues}
+              validationSchema={userSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Box
+                    display="grid"
+                    gap="30px"
+                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                    sx={{
+                      "& > div": {
+                        gridColumn: isNonMobile ? undefined : "span4",
+                      },
+                    }}
+                  >
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="name"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.name}
+                      name="name"
+                      error={!!touched.name && !!errors.name}
+                      helperText={touched.name && errors.name}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                  </Box>
+                  <Box display="flex" justifyContent="end" mt="20px">
+                    <Button type="submit" color="secondary" variant="contained">
+                      Add
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
+          </CustomizedDialogs>
           <Box
             m="40px 0 0 0"
             height="75vh"
@@ -141,52 +193,6 @@ const Genres = () => {
               onCellEditCommit={(params) => setRowId(params.id)}
             />
           </Box>
-          <Formik
-            onSubmit={handleFormSubmit}
-            initialValues={initialValues}
-            validationSchema={userSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box
-                  display="grid"
-                  gap="30px"
-                  gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                  sx={{
-                    "& > div": {
-                      gridColumn: isNonMobile ? undefined : "span4",
-                    },
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="name"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.name}
-                    name="name"
-                    error={!!touched.name && !!errors.name}
-                    helperText={touched.name && errors.name}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                </Box>
-                <Box display="flex" justifyContent="end" mt="20px">
-                  <Button type="submit" color="secondary" variant="contained">
-                    Add
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
         </Box>
       </main>
     </div>

@@ -11,7 +11,8 @@ const CartsActions = ({ params, rowId, setRowId, data, setData }) => {
   const [success, setSuccess] = useState(false);
 
   const updateCartsData = async (itemName) => {
-    let a = "http://localhost:3000/api/carts/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/carts/";
     let b = itemName;
     let c = a + b;
     await axios
@@ -36,18 +37,22 @@ const CartsActions = ({ params, rowId, setRowId, data, setData }) => {
 
   const getCartsData = async () => {
     await axios
-      .get("http://localhost:3000/api/carts", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/carts",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
   };
 
   const handleDelete = async (itemName) => {
-    let a = "http://localhost:3000/api/carts/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/carts/";
     let b = itemName;
     let c = a + b;
     await axios

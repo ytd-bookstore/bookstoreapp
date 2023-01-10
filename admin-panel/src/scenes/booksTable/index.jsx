@@ -12,6 +12,7 @@ import { Formik } from "formik";
 import useMediaQuerry from "@mui/material/useMediaQuery";
 import * as yup from "yup";
 import { token } from "../login";
+import CustomizedDialogs from "../../components/dialog";
 
 const initialValues = {
   title: "",
@@ -61,7 +62,7 @@ const Books = () => {
   const addBooksData = async (value) => {
     await axios
       .post(
-        "http://localhost:3000/api/books",
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/books",
         {
           title: value.title,
           author: value.author,
@@ -91,11 +92,14 @@ const Books = () => {
 
   const getBooksData = async () => {
     await axios
-      .get("http://localhost:3000/api/books", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/books",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
@@ -176,6 +180,185 @@ const Books = () => {
         <Topbar />
         <Box m="20px">
           <Header title="Books" subtitle="Tables of the Books" />
+          <CustomizedDialogs>
+            <Formik
+              onSubmit={handleFormSubmit}
+              initialValues={initialValues}
+              validationSchema={userSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <Box
+                    display="grid"
+                    gap="30px"
+                    gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                    sx={{
+                      "& > div": {
+                        gridColumn: isNonMobile ? undefined : "span4",
+                      },
+                    }}
+                  >
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="title"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.title}
+                      name="title"
+                      error={!!touched.title && !!errors.title}
+                      helperText={touched.title && errors.title}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="author"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.author}
+                      name="author"
+                      error={!!touched.author && !!errors.author}
+                      helperText={touched.author && errors.author}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="price"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.price}
+                      name="price"
+                      error={!!touched.price && !!errors.price}
+                      helperText={touched.price && errors.price}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="description"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.description}
+                      name="description"
+                      error={!!touched.description && !!errors.description}
+                      helperText={touched.description && errors.description}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="edition"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.edition}
+                      name="edition"
+                      error={!!touched.edition && !!errors.edition}
+                      helperText={touched.edition && errors.edition}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="format"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.format}
+                      name="format"
+                      error={!!touched.format && !!errors.format}
+                      helperText={touched.format && errors.format}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="page"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.page}
+                      name="page"
+                      error={!!touched.page && !!errors.page}
+                      helperText={touched.page && errors.page}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="rating"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.rating}
+                      name="rating"
+                      error={!!touched.rating && !!errors.rating}
+                      helperText={touched.rating && errors.rating}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="rating_count"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.rating_count}
+                      name="rating_count"
+                      error={!!touched.rating_count && !!errors.rating_count}
+                      helperText={touched.rating_count && errors.rating_count}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="image_url"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.image_url}
+                      name="image_url"
+                      error={!!touched.image_url && !!errors.image_url}
+                      helperText={touched.image_url && errors.image_url}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="number"
+                      label="stock"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.stock}
+                      name="stock"
+                      error={!!touched.stock && !!errors.stock}
+                      helperText={touched.stock && errors.stock}
+                      sx={{ gridColumn: "span 2" }}
+                    />
+                  </Box>
+                  <Box display="flex" justifyContent="end" mt="20px">
+                    <Button type="submit" color="secondary" variant="contained">
+                      Add
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Formik>
+          </CustomizedDialogs>
           <Box
             m="40px 0 0 0"
             height="75vh"
@@ -216,183 +399,6 @@ const Books = () => {
               onCellEditCommit={(params) => setRowId(params.id)}
             />
           </Box>
-          <Formik
-            onSubmit={handleFormSubmit}
-            initialValues={initialValues}
-            validationSchema={userSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box
-                  display="grid"
-                  gap="30px"
-                  gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                  sx={{
-                    "& > div": {
-                      gridColumn: isNonMobile ? undefined : "span4",
-                    },
-                  }}
-                >
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="title"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.title}
-                    name="title"
-                    error={!!touched.title && !!errors.title}
-                    helperText={touched.title && errors.title}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="author"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.author}
-                    name="author"
-                    error={!!touched.author && !!errors.author}
-                    helperText={touched.author && errors.author}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="price"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.price}
-                    name="price"
-                    error={!!touched.price && !!errors.price}
-                    helperText={touched.price && errors.price}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="description"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.description}
-                    name="description"
-                    error={!!touched.description && !!errors.description}
-                    helperText={touched.description && errors.description}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="edition"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.edition}
-                    name="edition"
-                    error={!!touched.edition && !!errors.edition}
-                    helperText={touched.edition && errors.edition}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="format"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.format}
-                    name="format"
-                    error={!!touched.format && !!errors.format}
-                    helperText={touched.format && errors.format}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="page"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.page}
-                    name="page"
-                    error={!!touched.page && !!errors.page}
-                    helperText={touched.page && errors.page}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="rating"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.rating}
-                    name="rating"
-                    error={!!touched.rating && !!errors.rating}
-                    helperText={touched.rating && errors.rating}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="rating_count"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.rating_count}
-                    name="rating_count"
-                    error={!!touched.rating_count && !!errors.rating_count}
-                    helperText={touched.rating_count && errors.rating_count}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="image_url"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.image_url}
-                    name="image_url"
-                    error={!!touched.image_url && !!errors.image_url}
-                    helperText={touched.image_url && errors.image_url}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="number"
-                    label="stock"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.stock}
-                    name="stock"
-                    error={!!touched.stock && !!errors.stock}
-                    helperText={touched.stock && errors.stock}
-                    sx={{ gridColumn: "span 2" }}
-                  />
-                </Box>
-                <Box display="flex" justifyContent="end" mt="20px">
-                  <Button type="submit" color="secondary" variant="contained">
-                    Add
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
         </Box>
       </main>
     </div>

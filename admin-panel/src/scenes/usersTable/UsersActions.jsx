@@ -12,18 +12,22 @@ const UsersActions = ({ params, rowId, setRowId, data, setData }) => {
 
   const getUsersData = async () => {
     await axios
-      .get("http://localhost:3000/api/users", {
-        headers: {
-          Authorization: valid,
-        },
-      })
+      .get(
+        "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/users",
+        {
+          headers: {
+            Authorization: valid,
+          },
+        }
+      )
       .then((res) => {
         setData(res.data);
       });
   };
 
   const updateUsersData = async (itemName) => {
-    let a = "http://localhost:3000/api/users/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/users/";
     let b = itemName;
     let c = a + b;
     await axios
@@ -46,7 +50,8 @@ const UsersActions = ({ params, rowId, setRowId, data, setData }) => {
   };
 
   const handleDelete = async (itemName) => {
-    let a = "http://localhost:3000/api/users/";
+    let a =
+      "http://ytd-bookstore.eba-96se7p2k.eu-central-1.elasticbeanstalk.com/api/users/";
     let b = itemName;
     let c = a + b;
     await axios
