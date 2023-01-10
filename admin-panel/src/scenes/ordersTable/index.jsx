@@ -105,6 +105,14 @@ const Orders = () => {
       {
         field: "status",
         headerName: "Status",
+        type: "singleSelect",
+        valueOptions: [
+          "Order Placed",
+          "Order Ready",
+          "In Transit",
+          "Delivered",
+        ],
+        editable: true,
       },
       {
         field: "updatedAt",
